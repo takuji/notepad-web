@@ -14,7 +14,7 @@ development:
   reconnect: false
   database: notepad_development
   pool: 5
-  username: root
+  username: app
   password:
   socket: /tmp/mysql.sock
 
@@ -27,7 +27,7 @@ test:
   reconnect: false
   database: notepad_test
   pool: 5
-  username: root
+  username: app
   password:
   socket: /tmp/mysql.sock
 
@@ -37,6 +37,6 @@ production:
   reconnect: false
   database: notepad_production
   pool: 5
-  username: root
-  password:
+  username: notepad
+  password: 0onaVF1BCJYOrLmP
   socket: /tmp/mysql.sock
