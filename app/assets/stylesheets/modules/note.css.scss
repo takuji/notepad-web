@@ -1,0 +1,35 @@
+.note {
+  padding: 0;
+
+  &::after {
+    clear:both;
+  }
+
+  textarea {
+    width:100%;
+    resize: none;
+    margin: 0;
+    padding: 0;
+    border: 0 dotted black;
+    background-color: lightgreen;
+  }
+
+  .index {
+    position: fixed;
+    float: left;
+    width: 200px;
+    background-color: #eee;
+    min-height: 10px;
+    overflow: scroll;
+    height: 100%;
+
+    ul {
+      list-style: none;
+    }
+  }
+
+  .editor {
+    padding-left: 220px;
+    background-color: #ddd;
+  }
+}

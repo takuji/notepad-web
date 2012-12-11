@@ -1,6 +1,10 @@
 Notepad::Application.routes.draw do
-  match '/auth/:provider/callback', to: 'sessions#create'
-  get '/sign_in' => 'sessions#new'
+  devise_for :users, :controllers => { :omniauth_callbacks => "users/omniauth_callbacks" }
+
+  #match '/auth/:provider/callback', to: 'sessions#create'
+  #get '/sign_in' => 'sessions#new'
+
+  resources :my_notes
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

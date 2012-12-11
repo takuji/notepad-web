@@ -1,15 +1,27 @@
 class User < ActiveRecord::Base
-  attr_accessible :email, :image, :name, :provider, :secret, :token, :uid
+  # Include default devise modules. Others available are:
+  # :token_authenticatable, :confirmable, :validatable
+  # :lockable, :timeoutable and :omniauthable
+  devise :database_authenticatable, :registerable,
+         :recoverable, :rememberable, :trackable, :omniauthable
 
-  def self.find_or_create_from_auth_hash(auth_hash)
-    User.find_by_uid(auth_hash["uid"]) || User.create! do |user|
-      user.provider = auth_hash["provider"]
-      user.uid = auth_hash["uid"]
-      user.name = auth_hash["info"]["name"]
-      user.email = auth_hash["info"]["email"]
-      user.image = auth_hash["info"]["image"]
-      user.token = auth_hash["credentials"]["token"]
-      user.secret = auth_hash["credentials"]["secret"]
+  class << self
+    def find_for_twitter_oauth(auth, signed_in_resource=nil)
+      user = User.where(:provider => auth.provider, :uid => auth.uid).first
+      unless user
+        user = User.create(name:auth.extra.raw_info.name,
+                           provider:auth.provider,
+                           uid:auth.uid,
+                           email:auth.info.email || "",
+                           password:Devise.friendly_token[0,20]
+        )
+      end
+      user
     end
   end
+
+  # Setup accessible (or protected) attributes for your model
+  attr_accessible :email, :password, :password_confirmation, :remember_me, :uid, :provider, :name
+
+  has_many :notes
 end

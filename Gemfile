@@ -6,7 +6,13 @@ gem 'rails', '3.2.9'
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
 gem 'mysql2'
+gem "devise"
+gem 'omniauth'
 gem 'omniauth-twitter'
+#gem "bootstrap-sass"
+gem "twitter-bootstrap-rails"
+gem "haml-rails"
+gem "kaminari"
 
 # Gems used only for assets and not required
 # in production environments by default.
@@ -38,10 +44,6 @@ gem 'jquery-rails'
 # To use debugger
 # gem 'debugger'
 
-#gem "devise"
-#gem "bootstrap-sass"
-gem "haml-rails"
-gem "kaminari"
 group :development, :test do
   gem "rspec-rails"
   gem "factory_girl_rails"
