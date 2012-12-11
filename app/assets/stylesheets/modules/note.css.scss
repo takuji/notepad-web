@@ -10,8 +10,8 @@
     resize: none;
     margin: 0;
     padding: 0;
-    border: 0 dotted black;
-    background-color: lightgreen;
+    border: 0;
+    //background-color: #fff;
   }
 
   .index {
@@ -25,11 +25,23 @@
 
     ul {
       list-style: none;
+      margin-left: 0px;
+
+      >li {
+        cursor: pointer;
+        padding: 0 10px;
+
+        &:hover {
+          background-color: #f8f8f8;
+        }
+      }
     }
   }
 
   .editor {
     padding-left: 220px;
+    //background-color: #fff;
+    height: 100%;
     background-color: #ddd;
   }
 }
