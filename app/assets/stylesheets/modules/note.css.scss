@@ -1,3 +1,5 @@
+@import "compass";
+
 .note {
   padding: 0;
 
@@ -12,6 +14,14 @@
     padding: 0;
     border: 0;
     //background-color: #fff;
+    @include border-radius(0);
+    //outline: 0px none transparent;
+    outline: none !important;
+    &:focus {
+      border: 0;
+      outline: 0px none transparent !important;
+      @include box-shadow(red 0px 0px 0px);
+    }
   }
 
   .index {
@@ -39,9 +49,9 @@
   }
 
   .editor {
-    padding-left: 220px;
+    margin-left: 220px;
     //background-color: #fff;
-    height: 100%;
-    background-color: #ddd;
+    min-height: 4000px;
+    background-color: #fff;
   }
 }

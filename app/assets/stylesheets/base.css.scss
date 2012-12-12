@@ -1,3 +1,11 @@
 //$navbarHeight: 30px;
 //
 //@import "bootstrap";
+
+textarea {
+  outline: none;
+}
+
+textarea:focus {
+  outline: none;
+}
