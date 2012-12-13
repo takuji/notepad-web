@@ -13,5 +13,8 @@
 //= require jquery
 //= require jquery_ujs
 //= require twitter/bootstrap
-//= require_tree .
+//= require underscore-min
+//= require backbone-min
 //= require jquery.autosize-min
+//= require note
+

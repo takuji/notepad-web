@@ -12,5 +12,11 @@ class MyNotesController < ApplicationController
 
   def show
     @note = Note.find(params[:id])
+    respond_to do |format|
+      format.html
+      format.json do
+        render json:@note
+      end
+    end
   end
 end
