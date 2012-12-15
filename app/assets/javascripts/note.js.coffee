@@ -28,11 +28,15 @@ NoteEditorView = Backbone.View.extend(
   events:
     "keyup": "update"
 
+  debug: true
+
   initialize: (options)->
     _.bindAll(this, "render")
     this.model.bind("change", this.render)
     this.render()
     this.$textArea = $("textarea", this.el).autosize();
+    self = this
+    this.timer = setInterval((-> self.checkChange()), 1000)
 
   render: ->
     indexItems = this.model.indexItems
@@ -41,8 +45,12 @@ NoteEditorView = Backbone.View.extend(
     list = $("<ul>")
     _.each(views, (view)->list.append(view.toElem()))
     $(".index").html(list);
+    if this.debug
+      if @lastKeyup
+        $("#debug > .last-keyup").html(@lastKeyup.toString())
 
   update: (e)->
+    @lastKeyup = new Date()
     this.model.updateContent($("textarea", this.el).val())
 
   lineCount: -> this.$textArea.val().split("\n").length;
@@ -52,6 +60,12 @@ NoteEditorView = Backbone.View.extend(
     h  = this.$textArea.height()
     y  = h * (lineNo - 1) / this.lineCount()
     window.scrollTo(0, Math.floor(y));
+
+  checkChange: ->
+    if @lastKeyup
+      d = new Date() - @lastKeyup
+      $("#debug > .time-since-last-change").text(Math.floor(d / 1000))
+
 )
 
 NoteIndexView = Backbone.View.extend(
