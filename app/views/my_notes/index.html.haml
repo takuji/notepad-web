@@ -1,2 +1,10 @@
 %h1=t("titles.my_notes")
 
+-if @notes.blank?
+  =t("messages.no_notes")
+-else
+  %table.table.notes
+    %tbody
+      -@notes.each do |note|
+        %tr
+          %td=link_to truncate(note.content), my_note_path(note)

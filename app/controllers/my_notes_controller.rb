@@ -19,4 +19,13 @@ class MyNotesController < ApplicationController
       end
     end
   end
+
+  def update
+    @note = current_user.notes.find(params[:id])
+    if @note.update_attributes(content:params[:content])
+      render json:@note
+    else
+      render json:@note, :status => :unprocessable_entity
+    end
+  end
 end

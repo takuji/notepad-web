@@ -1,10 +1,16 @@
 Note = Backbone.Model.extend(
   initialize: (options)->
-    this._updateIndex();
+    this._updateIndex(options.content);
+    this.url = "/my_notes/#{options.id}"
 
   updateContent: (newContent)->
     this._updateIndex(newContent)
     this.set("content", newContent)
+    @dirty = true
+
+  saveContent: ->
+    this.save()
+    @dirty = false
 
   _updateIndex: (content)->
     @indexItems = this._markdownToIndexItems(content)
@@ -31,12 +37,15 @@ NoteEditorView = Backbone.View.extend(
   debug: true
 
   initialize: (options)->
+    this.$textArea = $("textarea", this.el).autosize();
+    if this.model.get("content")
+      this.$textArea.val(this.model.get("content"))
     _.bindAll(this, "render")
     this.model.bind("change", this.render)
     this.render()
-    this.$textArea = $("textarea", this.el).autosize();
     self = this
     this.timer = setInterval((-> self.checkChange()), 1000)
+    this.autoSaveInterval = 10 * 1000
 
   render: ->
     indexItems = this.model.indexItems
@@ -64,6 +73,8 @@ NoteEditorView = Backbone.View.extend(
   checkChange: ->
     if @lastKeyup
       d = new Date() - @lastKeyup
+      if d > @autoSaveInterval && this.model.dirty
+        this.model.saveContent()
       $("#debug > .time-since-last-change").text(Math.floor(d / 1000))
 
 )
@@ -111,4 +122,8 @@ $ ->
     $.getJSON("#{id}.json", (data)->
       note = new Note(data)
       editor = new NoteEditorView(el:$(".editor"), model:note)
+      $(window).bind("beforeunload", (event)->
+        note.save()
+        null
+      )
     )
