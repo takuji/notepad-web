@@ -15,3 +15,5 @@
 /tmp
 
 /.idea
+vendor/assets/javascripts/jquery.autosize.js
+vendor/assets/javascripts/jquery.autosize2.js

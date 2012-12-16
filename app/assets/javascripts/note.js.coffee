@@ -4,9 +4,10 @@ Note = Backbone.Model.extend(
     this.url = "/my_notes/#{options.id}"
 
   updateContent: (newContent)->
-    this._updateIndex(newContent)
-    this.set("content", newContent)
-    @dirty = true
+    if newContent != this.get("content")
+      this._updateIndex(newContent)
+      this.set("content", newContent)
+      @dirty = true
 
   saveContent: ->
     this.save()
@@ -33,17 +34,20 @@ Note = Backbone.Model.extend(
 NoteEditorView = Backbone.View.extend(
   events:
     "keyup": "update"
+    "click": "startEditing"
 
   debug: true
 
   initialize: (options)->
-    this.$textArea = $("textarea", this.el).autosize();
-    if this.model.get("content")
-      this.$textArea.val(this.model.get("content"))
+    this.$textArea = $("textarea", this.el).autosize()
+    self = this
     _.bindAll(this, "render")
     this.model.bind("change", this.render)
+    if this.model.get("content")
+      this.$textArea.val(this.model.get("content"))
+      setTimeout((-> self.$textArea.trigger("autosize")), 0) # タイマーで実行しないとautosizeが機能しなかったので已む無くそうしている。
+      #this.$textArea.trigger("autosize")
     this.render()
-    self = this
     this.timer = setInterval((-> self.checkChange()), 1000)
     this.autoSaveInterval = 10 * 1000
 
@@ -77,6 +81,8 @@ NoteEditorView = Backbone.View.extend(
         this.model.saveContent()
       $("#debug > .time-since-last-change").text(Math.floor(d / 1000))
 
+  startEditing: ->
+    this.$textArea.focus()
 )
 
 NoteIndexView = Backbone.View.extend(

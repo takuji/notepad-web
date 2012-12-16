@@ -11,7 +11,7 @@
     width:100%;
     resize: none;
     margin: 0;
-    padding: 0;
+    padding: 10px;
     border: 0;
     border-bottom: 1px dotted #888;
     //background-color: #fff;
@@ -51,9 +51,12 @@
 
   .editor {
     margin-left: 220px;
-    //background-color: #fff;
-    min-height: 4000px;
-    background-color: #fff;
+    height: 100%;
+    background-color: #ffc;
+    .footer {
+      height: 100px;
+      background-color: #ccf;
+    }
   }
 }
 
