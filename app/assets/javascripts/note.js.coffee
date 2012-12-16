@@ -6,7 +6,7 @@ Note = Backbone.Model.extend(
 
   updateContent: (newContent)->
     if newContent != this.get("content")
-      this._updateTitle()
+      this._updateTitle(newContent)
       this._updateIndex(newContent)
       this.set("content", newContent)
       @dirty = true
