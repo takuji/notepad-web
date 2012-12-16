@@ -53,7 +53,7 @@ NoteEditorView = Backbone.View.extend(
       #this.$textArea.trigger("autosize")
     this.render()
     this.timer = setInterval((-> self.checkChange()), 1000)
-    this.autoSaveInterval = 10 * 1000
+    this.autoSaveInterval = 5 * 1000
 
   render: ->
     indexItems = this.model.indexItems
