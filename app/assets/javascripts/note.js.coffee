@@ -16,7 +16,8 @@ Note = Backbone.Model.extend(
     @dirty = false
 
   _updateTitle: (content)->
-    @title = content.split("\n")[0]
+    if content
+      @title = content.split("\n")[0]
   _updateIndex: (content)->
     @indexItems = this._markdownToIndexItems(content)
 

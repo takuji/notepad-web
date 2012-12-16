@@ -28,7 +28,7 @@
   .index {
     position: fixed;
     float: left;
-    width: 200px;
+    width: 216px;
     background-color: #eee;
     min-height: 10px;
     overflow: scroll;
@@ -41,6 +41,7 @@
       >li {
         cursor: pointer;
         padding: 0 10px;
+        white-space: nowrap;
 
         &:hover {
           background-color: #f8f8f8;
@@ -91,6 +92,8 @@
 
   .editor {
     padding: 10px;
+    min-height: 480px;
+    @include border-radius(0px 6px 0px 6px);
     background-color: #fff;
     .footer {
       height: 100px;
