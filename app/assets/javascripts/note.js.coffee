@@ -15,6 +15,9 @@ Note = Backbone.Model.extend(
     this.save()
     @dirty = false
 
+  isBlank: ->
+    !this.get("content")?
+
   _updateTitle: (content)->
     if content
       @title = content.split("\n")[0]
@@ -41,7 +44,7 @@ NoteEditorView = Backbone.View.extend(
     "keyup": "update"
     "click": "startEditing"
 
-  debug: true
+  debug: false
 
   initialize: (options)->
     this.$textArea = $("textarea", this.el).autosize()
@@ -55,6 +58,7 @@ NoteEditorView = Backbone.View.extend(
     this.render()
     this.timer = setInterval((-> self.checkChange()), 1000)
     this.autoSaveInterval = 5 * 1000
+    $("#debug").toggle(this.debug)
 
   render: ->
     indexItems = this.model.indexItems
@@ -88,6 +92,10 @@ NoteEditorView = Backbone.View.extend(
 
   startEditing: ->
     this.$textArea.focus()
+
+  save: ->
+    this.update()
+    this.model.saveContent()
 )
 
 NoteIndexView = Backbone.View.extend(
@@ -134,7 +142,12 @@ $ ->
       note = new Note(data)
       editor = new NoteEditorView(el:$(".editor"), model:note)
       $(window).bind("beforeunload", (event)->
-        note.save()
-        null
+        if note.dirty
+          editor.save()
+          "Quit?"
+        else
+          if note.isBlank
+            note.destroy()
+            "Deleted!"
       )
     )

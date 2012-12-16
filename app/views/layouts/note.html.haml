@@ -17,11 +17,11 @@
     -#%link(href="images/favicon.ico" rel="shortcut icon")
 
 
-  %body
+  %body{id:"#{params[:controller]}-#{params[:action]}"}
     .navbar.navbar-fixed-top
       .navbar-inner
         .container-fluid
-          %a.brand(href="#") Notepad
+          %a.brand{href:root_path} Notepad
           %ul.nav
             %li=link_to "My Notes", my_notes_path
             %li=link_to "New Note", my_notes_path, method:"post"

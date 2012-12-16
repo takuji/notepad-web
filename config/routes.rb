@@ -4,7 +4,11 @@ Notepad::Application.routes.draw do
   #match '/auth/:provider/callback', to: 'sessions#create'
   #get '/sign_in' => 'sessions#new'
 
-  resources :my_notes
+  resources :my_notes do
+    member do
+      get :content
+    end
+  end
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

@@ -17,4 +17,4 @@
 //= require backbone-min
 //= require jquery.autosize-min
 //= require note
-
+//= require note-list

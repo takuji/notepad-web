@@ -3,6 +3,12 @@ class MyNotesController < ApplicationController
 
   def index
     @notes = current_user.notes.page(params[:page])
+    respond_to do |format|
+      format.html
+      format.json do
+        render json:@notes.as_json(:methods => :title)
+      end
+    end
   end
 
   def create
@@ -22,6 +28,11 @@ class MyNotesController < ApplicationController
     end
   end
 
+  def content
+    @note = current_user.notes.find(params[:id])
+    render layout:false
+  end
+
   def update
     @note = current_user.notes.find(params[:id])
     if @note.update_attributes(content:params[:content])
@@ -29,5 +40,13 @@ class MyNotesController < ApplicationController
     else
       render json:@note, :status => :unprocessable_entity
     end
+  end
+
+  def destroy
+    @note = current_user.notes.find(params[:id])
+    if @note
+      @note.destroy
+    end
+    head :ok
   end
 end

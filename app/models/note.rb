@@ -3,6 +3,6 @@ class Note < ActiveRecord::Base
   attr_accessible :content, :user
 
   def title
-    content.split("\n", 2)[0]
+    content ? content.split("\n", 2)[0] : "Untitiled"
   end
 end
