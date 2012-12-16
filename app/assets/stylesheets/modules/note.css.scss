@@ -10,18 +10,18 @@
   textarea {
     width:100%;
     resize: none;
-    margin: 0;
-    padding: 10px;
+    margin: 0px;
+    padding: 0px;
     border: 0;
-    border-bottom: 1px dotted #888;
+    //border-bottom: 1px dotted #888;
     //background-color: #fff;
     @include border-radius(0);
+    @include box-shadow(red 0px 0px 0px);
     //outline: 0px none transparent;
     outline: none !important;
     &:focus {
       border: 0;
       outline: 0px none transparent !important;
-      @include box-shadow(red 0px 0px 0px);
     }
   }
 
@@ -85,23 +85,26 @@
     }
   }
 
+  .layout {
+    padding-left: 220px;
+  }
+
   .editor {
-    margin-left: 220px;
-    height: 100%;
-    background-color: #ffc;
+    padding: 10px;
+    background-color: #fff;
     .footer {
       height: 100px;
-      background-color: #ccf;
+      background-color: #fff;
     }
   }
 }
 
 #debug {
   z-index: 10;
-  background-color: rgba(255, 255, 0, 0.5);
+  background-color: rgba(255, 255, 0, 0.2);
   width: 300px;
   height: 240px;
   position: fixed;
-  top: 40px;
-  right: 0;
+  top: 60px;
+  right: 20px;
 }
