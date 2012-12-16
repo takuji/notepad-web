@@ -7,4 +7,4 @@
     %tbody
       -@notes.each do |note|
         %tr
-          %td=link_to truncate(note.content), my_note_path(note)
+          %td=link_to note.title, my_note_path(note)

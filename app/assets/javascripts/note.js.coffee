@@ -1,10 +1,12 @@
 Note = Backbone.Model.extend(
   initialize: (options)->
+    this._updateTitle(options.content)
     this._updateIndex(options.content);
     this.url = "/my_notes/#{options.id}"
 
   updateContent: (newContent)->
     if newContent != this.get("content")
+      this._updateTitle()
       this._updateIndex(newContent)
       this.set("content", newContent)
       @dirty = true
@@ -13,6 +15,8 @@ Note = Backbone.Model.extend(
     this.save()
     @dirty = false
 
+  _updateTitle: (content)->
+    @title = content.split("\n")[0]
   _updateIndex: (content)->
     @indexItems = this._markdownToIndexItems(content)
 
