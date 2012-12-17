@@ -137,17 +137,17 @@ NoteIndexItemView = Backbone.View.extend(
 $ ->
   $("body:has(.note)").css("backgroundColor": "#e4e4e4")
   if $(".editor").length
-    id = $(".note").attr("data-id")
-    $.getJSON("#{id}.json", (data)->
+    $note = $(".note")
+    id = $note.attr("data-id")
+    $.getJSON "#{id}.json", (data)->
       note = new Note(data)
       editor = new NoteEditorView(el:$(".editor"), model:note)
-      $(window).bind("beforeunload", (event)->
+      $(window).bind "beforeunload", (event)->
         if note.dirty
           editor.save()
           "Quit?"
         else
-          if note.isBlank
+          if note.isBlank()
             note.destroy()
             "Deleted!"
-      )
-    )
+    $(".index", $note).height(($(window).height() - 40) + "px")
