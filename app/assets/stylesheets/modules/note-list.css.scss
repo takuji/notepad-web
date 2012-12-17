@@ -2,24 +2,23 @@
   position: fixed;
   top: 0px;
   left: 0px;
-  width: 40%;
+  width: 320px;
   height: 100%;
 
   background-color: #eee;
 }
 
 #main {
-  padding-left: 40%;
-  background-color: #ffc;
-  min-height: 100px;
+  padding-left: 310px;
+  //background-color: #ffc;
+  //min-height: 100px;
   width: 100%;
 }
 
 .notes {
   position: relative;
   top: 40px;
-  //background-color: yellow;
-  
+
   ul {
     list-style: none;
     margin-left: 10px;

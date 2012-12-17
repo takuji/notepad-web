@@ -1,6 +1,7 @@
 @import "compass";
 
 .note {
+  position: relative;
   padding: 0;
 
   &::after {
@@ -27,10 +28,8 @@
 
   .index {
     position: fixed;
-    float: left;
     width: 216px;
     background-color: #eee;
-    min-height: 10px;
     overflow: scroll;
     height: 100%;
 
