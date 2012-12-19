@@ -30,7 +30,7 @@ Note = Backbone.Model.extend(
       lines_with_index = $.map(lines, (line, i)->{title:line, line: i + 1})
       indexes = $.grep(lines_with_index, (title_and_index, i)->title_and_index.title.match("^#+"))
       $.map(indexes, (idx)->
-        idx.title.match(/^(#+)(.+)$/)
+        idx.title.match(/^(#+)(.*)$/)
         title = $.trim(RegExp.$2)
         depth = RegExp.$1.length
         new NoteIndexItem($.extend(idx, {depth:depth, title:title}))
@@ -126,7 +126,7 @@ NoteIndexItemView = Backbone.View.extend(
     this
 
   toElem: ->
-    this.$el.text(this.model.get("title")).attr("data-line":this.model.get("line"), "data-depth":this.model.get("depth"))
+    this.$el.text(this.model.get("title") || "?").attr("data-line":this.model.get("line"), "data-depth":this.model.get("depth"))
 
   scroll: ->
     lineNo = this.model.get("line")
