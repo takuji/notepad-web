@@ -23,7 +23,7 @@
         .container-fluid
           %a.brand{href:root_path} Notepad
           %ul.nav
-            %li=link_to "My Notes", my_notes_path
+            /%li=link_to "My Notes", my_notes_path
             %li=link_to "New Note", my_notes_path, method:"post"
           %ul.nav.pull-right
             -if user_signed_in?
