@@ -27,7 +27,7 @@
             %li=link_to "New Note", my_notes_path, method:"post"
           %ul.nav.pull-right
             -if user_signed_in?
-              %li=link_to "Sign out", user_session_path, :method => :delete
+              %li=link_to "Sign out", destroy_user_session_path, :method => :delete
             -else
               %li=link_to "Sign in with Twitter", user_omniauth_authorize_path(:twitter)
     .wrapper

@@ -1,6 +1,9 @@
-#sidebar
-  .notes
-#main
-  .note-preview
+-if user_signed_in?
+  #sidebar
+    .notes
+  #main
+    .note-preview
 
-=render "templates"
+  =render "templates"
+-else
+  Please sign in!
