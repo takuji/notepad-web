@@ -2,7 +2,7 @@ class MyNotesController < ApplicationController
   before_filter :authenticate_user!
 
   def index
-    @notes = current_user.notes.page(params[:page])
+    @notes = current_user.latest_notes.page(params[:page])
     respond_to do |format|
       format.html
       format.json do

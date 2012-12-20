@@ -150,4 +150,6 @@ $ ->
           if note.isBlank()
             note.destroy()
             "Deleted!"
-    $(".index", $note).height(($(window).height() - 40) + "px")
+    updateIndexPaneSize = -> $(".index", $note).height(($(window).height() - 40) + "px")
+    $(window).bind "resize", (e)-> updateIndexPaneSize()
+    updateIndexPaneSize()

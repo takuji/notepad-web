@@ -22,4 +22,7 @@ $ ->
         $(".note-preview").load("/my_notes/#{id}/content", (responseText)->
           cache[id] = responseText
         )
+    ).on("click", "li", (e)->
+      id = $(this).attr("data-id")
+      location.href = "/my_notes/#{id}"
     )

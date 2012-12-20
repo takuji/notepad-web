@@ -28,4 +28,8 @@ class User < ActiveRecord::Base
   attr_accessible :email, :password, :password_confirmation, :remember_me, :uid, :provider, :name
 
   has_many :notes
+
+  def latest_notes
+    notes.order("updated_at DESC")
+  end
 end

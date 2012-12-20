@@ -32,7 +32,7 @@
             -else
               %li=link_to "Sign in with Twitter", user_omniauth_authorize_path(:twitter)
     .container-fluid
-      .content
+      .content.row-fluid
         /= bootstrap_flash
         = yield
       %footer
