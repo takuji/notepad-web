@@ -39,4 +39,4 @@ production:
   pool: 5
   username: notepad
   password: 0onaVF1BCJYOrLmP
-  socket: /tmp/mysql.sock
+  socket: /var/lib/mysql/mysql.sock
