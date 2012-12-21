@@ -1,9 +1,6 @@
 Notepad::Application.routes.draw do
   devise_for :users, :controllers => { :omniauth_callbacks => "users/omniauth_callbacks" }
 
-  #match '/auth/:provider/callback', to: 'sessions#create'
-  #get '/sign_in' => 'sessions#new'
-
   resources :my_notes do
     member do
       get :content

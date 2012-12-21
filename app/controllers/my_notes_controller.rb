@@ -17,7 +17,7 @@ class MyNotesController < ApplicationController
   end
 
   def show
-    @note = Note.find(params[:id])
+    @note = current_user.notes.find(params[:id])
     respond_to do |format|
       format.html do
         render layout:"note"
