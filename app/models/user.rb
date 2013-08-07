@@ -20,9 +20,6 @@ class User < ActiveRecord::Base
     end
   end
 
-  # Setup accessible (or protected) attributes for your model
-  attr_accessible :email, :password, :password_confirmation, :remember_me, :uid, :provider, :name
-
   has_many :notes
 
   def latest_notes
