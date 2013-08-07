@@ -18,19 +18,17 @@
 
 
   %body{id:"#{params[:controller]}-#{params[:action]}"}
-    .navbar.navbar-fixed-top
-      .navbar-inner
-        .container-fluid
-          %a.brand{href:root_path} Notepad
-          %ul.nav
-            /%li=link_to "My Notes", my_notes_path
-            -if user_signed_in?
-              %li=link_to "New Note", my_notes_path, method:"post"
-          %ul.nav.pull-right
-            -if user_signed_in?
-              %li=link_to "Sign out", destroy_user_session_path, :method => :delete
-            -else
-              %li=link_to "Sign in with Twitter", user_omniauth_authorize_path(:twitter)
+    .navbar.navbar-inverse.navbar-fixed-top
+      %a.navbar-brand{href:root_path} Notepad
+      %ul.nav.navbar-nav
+        /%li=link_to "My Notes", my_notes_path
+        -if user_signed_in?
+          %li=link_to 'New Note', my_notes_path, method: :post
+      %ul.nav.navbar-nav.pull-right
+        -if user_signed_in?
+          %li=link_to 'Sign out', destroy_user_session_path, :method => :delete
+        -else
+          %li=link_to 'Sign in with Twitter', user_omniauth_authorize_path(:twitter)
     .container-fluid
       .content.row-fluid
         /= bootstrap_flash
@@ -41,4 +39,4 @@
       Javascripts
       \==================================================
     / Placed at the end of the document so the pages load faster
-    = javascript_include_tag "application"
+    = javascript_include_tag 'application'
