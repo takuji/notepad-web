@@ -10,6 +10,7 @@ gem 'devise'
 gem 'omniauth'
 gem 'omniauth-twitter'
 #gem "bootstrap-sass"
+gem 'less-rails'
 gem 'twitter-bootstrap-rails'
 gem 'haml-rails'
 gem 'kaminari'

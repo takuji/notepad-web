@@ -52,6 +52,7 @@ GEM
       coffee-script-source
       execjs
     coffee-script-source (1.6.3)
+    commonjs (0.2.6)
     compass (0.12.2)
       chunky_png (~> 1.2)
       fssm (>= 0.2.7)
@@ -95,6 +96,11 @@ GEM
       actionpack (>= 3.0.0)
       activesupport (>= 3.0.0)
     kgio (2.8.0)
+    less (2.2.1)
+      commonjs (~> 0.2.6)
+    less-rails (2.2.3)
+      actionpack (>= 3.1)
+      less (~> 2.2.0)
     libv8 (3.11.8.17)
     mail (2.5.4)
       mime-types (~> 1.16)
@@ -218,6 +224,7 @@ DEPENDENCIES
   jbuilder (~> 1.2)
   jquery-rails
   kaminari
+  less-rails
   mysql2
   omniauth
   omniauth-twitter
