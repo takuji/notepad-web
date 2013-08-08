@@ -12,8 +12,8 @@ class MyNotesController < ApplicationController
   end
 
   def create
-    @note = Note.create!(user:current_user)
-    redirect_to action:"show", id:@note
+    @note = Note.create!(user: current_user)
+    redirect_to action: :show, id:@note
   end
 
   def show
