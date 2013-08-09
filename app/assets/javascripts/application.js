@@ -16,5 +16,12 @@
 //= require underscore-min
 //= require backbone-min
 //= require jquery.autosize-min
+//= require namespaces
+//= require utils
+//= require models
+//= require collections
+//= require views
+//= require inits
 //= require note
 //= require note-list
+//= require app
