@@ -40,7 +40,5 @@ App.Inits =
   initNoteList: ->
     notes = new App.Collections.NoteList([])
     notes.url = '/my_notes'
-    notes.fetch
-      success: (col)=>
-        view = new App.Views.NoteListView(el: $('.notes'), collection: col)
-        view.render()
+    view = new App.Views.NoteListView(el: $('.notes'), collection: notes)
+    view.fetchMore()

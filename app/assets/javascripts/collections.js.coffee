@@ -1,5 +1,5 @@
 class App.Collections.NoteList extends Backbone.Collection
-  page: 0
+  page: 1
 
   more: ->
     notes = new App.Collections.NoteList([])
