@@ -68,7 +68,9 @@ class App.Views.NoteHtmlView extends Backbone.View
   initialize: ->
     _.bindAll @
     @model.on 'change', @redraw
+    $(window).on 'resize', @resize
     @redraw()
+    @resize()
 
   render: ->
     @$el.html @html
@@ -80,6 +82,9 @@ class App.Views.NoteHtmlView extends Backbone.View
   redraw: ->
     @compile()
     @render()
+
+  resize: ->
+    @$el.height(($(window).height() - 40) + "px")
 
 #
 #

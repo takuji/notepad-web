@@ -116,7 +116,8 @@ body#my_notes-show {
 }
 
 .preview {
-  position: absolute;
+  position: fixed;
   right: 0px;
   width: 300px;
+  overflow-y: scroll;
 }
