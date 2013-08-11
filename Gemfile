@@ -23,6 +23,7 @@ gem 'therubyracer', :platforms => :ruby
 gem 'font-awesome-rails'
 
 gem 'jquery-rails'
+gem 'jquery-ui-rails', '~> 4.0.4'
 
 # gem 'turbolinks'
 
