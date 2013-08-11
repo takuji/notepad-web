@@ -22,6 +22,4 @@
 //= require collections
 //= require views
 //= require inits
-//= require note
-//= require note-list
 //= require app

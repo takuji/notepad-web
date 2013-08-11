@@ -36,3 +36,11 @@ App.Inits =
     updateIndexPaneSize = -> $(".index", $note).height(($(window).height() - 40) + "px")
     $(window).bind "resize", (e)-> updateIndexPaneSize()
     updateIndexPaneSize()
+
+  initNoteList: ->
+    notes = new App.Collections.NoteList([])
+    notes.url = '/my_notes'
+    notes.fetch
+      success: (col)=>
+        view = new App.Views.NoteListView(el: $('.notes'), collection: col)
+        view.render()

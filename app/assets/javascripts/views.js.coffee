@@ -93,3 +93,56 @@ class App.Views.NoteIndexItemView extends Backbone.View
   scroll: ->
     lineNo = this.model.get("line")
     this.editor.scrollTo(lineNo)
+
+#
+#
+#
+class App.Views.NoteListView extends Backbone.View
+  cache: {}
+
+  events:
+    'mouseenter li': 'preview'
+    'click li':      'openNote'
+    'click .more':   'fetchMore'
+
+  initialize: ->
+    _.bindAll @
+    @collection.on 'add', @addItem
+
+  render: ->
+    @collection.each (note)=>
+      @addItem note
+
+  fetchMore: ->
+    @collection.more()
+
+  preview: (e)->
+    $note = $(e.currentTarget)
+    id = $note.attr("data-id")
+    if @cache[id]
+      @$(".note-preview").html(cache[id])
+    else
+      @$(".note-preview").load "/my_notes/#{id}/content", (responseText)=>
+        @cache[id] = responseText
+
+  openNote: (e)->
+    $note = $(e.currentTarget)
+    id = $note.attr("data-id")
+    location.href = "/my_notes/#{id}"
+
+  addItem: (note)->
+    view = new App.Views.NoteListItemView(model: note)
+    @$('ul').append view.render().el
+
+#
+#
+#
+class App.Views.NoteListItemView extends Backbone.View
+  tagName: 'li'
+
+  render: ->
+    id = @model.get('id')
+    @$el.attr 'data-id', id
+    link = $('<a>').attr('href', "/my_notes/#{id}").text(@model.get('title'))
+    @$el.html link
+    @
