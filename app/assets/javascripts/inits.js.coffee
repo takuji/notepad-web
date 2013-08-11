@@ -34,6 +34,7 @@ App.Inits =
       attachGlobalKeyEvents(note)
       sidebar.on 'resized', => editor.sidebarResized(width: sidebar.width())
       preview = new App.Views.NoteHtmlView(el: $('.preview'), model: note)
+      sidebar.load()
 
     updateIndexPaneSize = -> $(".index", $note).height(($(window).height() - 40) + "px")
     $(window).bind "resize", (e)-> updateIndexPaneSize()

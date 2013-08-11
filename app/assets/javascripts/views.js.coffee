@@ -102,6 +102,7 @@ class App.Views.NoteHtmlView extends Backbone.View
 #
 #
 class App.Views.NoteEditorSidebarView extends Backbone.View
+  visible: false
   #events:
     #'drag .handle': 'resize'
     #'stop .handle': 'resize'
@@ -116,10 +117,21 @@ class App.Views.NoteEditorSidebarView extends Backbone.View
   resize: (e)->
     console.log e
     @$el.width @$handle.position().left
+    @save()
     @trigger 'resized'
 
   width: ->
     @$el.width() + 10
+
+  save: ->
+    $.cookie 'sidebar-width', @$el.width()
+    $.cookie 'sidebar-visible', @visible
+
+  load: ->
+    w = $.cookie('sidebar-width')
+    if w
+      @$el.width +w
+      @trigger 'resized'
 #
 #
 #
