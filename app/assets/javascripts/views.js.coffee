@@ -77,7 +77,15 @@ class App.Views.NoteHtmlView extends Backbone.View
     @
 
   compile: ->
-    @html = markdown.toHTML @model.get('content')
+    @html = marked @model.get('content')
+
+  _compile: ->
+    if marked?
+      marked @model.get('content')
+    else if markdown?
+      markdown.toHTML @model.get('content')
+    else
+      ''
 
   redraw: ->
     @compile()
