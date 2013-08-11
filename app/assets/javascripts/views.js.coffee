@@ -27,7 +27,7 @@ class App.Views.NoteEditorView extends Backbone.View
     self = this
     views = $.map(indexItems, (item)-> new App.Views.NoteIndexItemView(model:item, editor:self))
     list = $("<ul>")
-    _.each(views, (view)->list.append(view.toElem()))
+    _.each(views, (view)->list.append(view.render().el))
     $(".index").html(list);
     if this.debug
       if @lastKeyup
@@ -139,6 +139,7 @@ class App.Views.NoteIndexView extends Backbone.View
 class App.Views.NoteIndexItemView extends Backbone.View
   tagName: "li"
   className: "indexItem"
+  mark: '<i class="icon-caret-right"></i>'
   events:
     "click": "scroll"
 
@@ -146,9 +147,9 @@ class App.Views.NoteIndexItemView extends Backbone.View
     @editor = options.editor
 
   render: ->
-    template = _.template($("#index-template").html())
-    this.$el.html(template(this.model.toJSON()))
-    this
+    content = this.model.get("title") || "?"
+    @$el.html(@mark + ' ' + content).attr("data-line":this.model.get("line"), "data-depth":this.model.get("depth"))
+    @
 
   toElem: ->
     this.$el.text(this.model.get("title") || "?").attr("data-line":this.model.get("line"), "data-depth":this.model.get("depth"))

@@ -2,6 +2,7 @@
 
 $note-background-color: #44aa44;
 $index-background-color: #aaeeaa;
+$index-mark-color: #484;
 
 body#my_notes-show {
   background-color: $note-background-color;
@@ -57,7 +58,12 @@ body#my_notes-show {
           background-color: #f8f8f8;
         }
 
+        i {
+          color: $index-mark-color;
+        }
+
         &[data-depth="1"] {
+          margin-top: 8px;
           font-size: 100%;
           color: #000;
         }
