@@ -1,7 +1,7 @@
 #
 #
 #
-App.Models.Note = Backbone.Model.extend
+class App.Models.Note extends Backbone.Model
   initialize: (options)->
     this._updateTitle(options.content)
     this._updateIndex(options.content);
@@ -44,4 +44,4 @@ App.Models.Note = Backbone.Model.extend
 #
 #
 #
-App.Models.NoteIndexItem = Backbone.Model.extend
+class App.Models.NoteIndexItem extends Backbone.Model

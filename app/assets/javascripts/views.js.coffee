@@ -1,7 +1,7 @@
 #
 #
 #
-App.Views.NoteEditorView = Backbone.View.extend
+class App.Views.NoteEditorView extends Backbone.View
   events:
     "keyup": "update"
     "click": "startEditing"
@@ -62,7 +62,7 @@ App.Views.NoteEditorView = Backbone.View.extend
 #
 #
 #
-App.Views.NoteIndexView = Backbone.View.extend
+class App.Views.NoteIndexView extends Backbone.View
   initialize: (options)->
     _.bindAll(this)
     this.model.bind("change:content", this.render)
@@ -73,7 +73,7 @@ App.Views.NoteIndexView = Backbone.View.extend
 #
 #
 #
-App.Views.NoteIndexItemView = Backbone.View.extend
+class App.Views.NoteIndexItemView extends Backbone.View
   tagName: "li"
   className: "indexItem"
   events:
