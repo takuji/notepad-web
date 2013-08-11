@@ -1,10 +1,13 @@
 .note{"data-id" => @note.id}
   .sidebar
     .index
-  .layout
+  .editor-container
     .editor
-      %textarea(name="note[content]" id="note_content" cols="30" rows="10")
+      %textarea(name="note[content]" id="note_content" cols="30" rows="10" tabindex="1" )
       .footer
+
+    .preview
+
 #debug
   .last-keyup
   .time-since-last-change

@@ -16,6 +16,7 @@
 //= require underscore-min
 //= require backbone-min
 //= require jquery.autosize-min
+//= require markdown/markdown
 //= require namespaces
 //= require utils
 //= require models
