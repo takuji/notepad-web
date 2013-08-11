@@ -9,7 +9,7 @@ class App.Views.NoteEditorView extends Backbone.View
   debug: false
 
   initialize: (options)->
-    this.$textArea = $("textarea", this.el).autosize()
+    this.$textArea = $("textarea", this.el).autosize().focus()
     self = this
     _.bindAll(this, "render")
     this.model.bind("change", this.render)
@@ -58,6 +58,41 @@ class App.Views.NoteEditorView extends Backbone.View
   save: ->
     this.update()
     this.model.saveContent()
+
+#
+#
+#
+class App.Views.NoteHtmlView extends Backbone.View
+  html: null
+
+  initialize: ->
+    _.bindAll @
+    @model.on 'change', @redraw
+    $(window).on 'resize', @resize
+    @redraw()
+    @resize()
+
+  render: ->
+    @$el.html @html
+    @
+
+  compile: ->
+    @html = marked @model.get('content')
+
+  _compile: ->
+    if marked?
+      marked @model.get('content')
+    else if markdown?
+      markdown.toHTML @model.get('content')
+    else
+      ''
+
+  redraw: ->
+    @compile()
+    @render()
+
+  resize: ->
+    @$el.height(($(window).height() - 40) + "px")
 
 #
 #

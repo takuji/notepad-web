@@ -1,5 +1,3 @@
-$("body:has(.note)").css("backgroundColor": "#e4e4e4")
-
 App.Inits =
   initEditor: ->
     $note = $(".note")
@@ -32,10 +30,12 @@ App.Inits =
             note.destroy()
             "Deleted!"
       attachGlobalKeyEvents(note)
+      preview = new App.Views.NoteHtmlView(el: $('.preview'), model: note)
 
     updateIndexPaneSize = -> $(".index", $note).height(($(window).height() - 40) + "px")
     $(window).bind "resize", (e)-> updateIndexPaneSize()
     updateIndexPaneSize()
+
 
   initNoteList: ->
     notes = new App.Collections.NoteList([])
