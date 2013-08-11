@@ -59,6 +59,10 @@ class App.Views.NoteEditorView extends Backbone.View
     this.update()
     this.model.saveContent()
 
+  sidebarResized: (size)->
+    if size.width?
+      @$el.css 'left', size.width + "px"
+
 #
 #
 #
@@ -97,13 +101,37 @@ class App.Views.NoteHtmlView extends Backbone.View
 #
 #
 #
+class App.Views.NoteEditorSidebarView extends Backbone.View
+  #events:
+    #'drag .handle': 'resize'
+    #'stop .handle': 'resize'
+
+  initialize: ->
+    @$handle = @$('.handle')
+    @$handle.draggable
+      axis: 'x'
+      stop: (e, ui)=> @resize(e)
+      drag: (e, ui)=> @resize(e)
+
+  resize: (e)->
+    console.log e
+    @$el.width @$handle.position().left
+    @trigger 'resized'
+
+  width: ->
+    @$el.width() + 10
+#
+#
+#
 class App.Views.NoteIndexView extends Backbone.View
   initialize: (options)->
     _.bindAll(this)
-    this.model.bind("change:content", this.render)
-    this.render()
+    @model.on 'change:content', @render
+    @render()
+    @$('.handle').draggable axis: 'x'
+
   render: ->
-    _.map(this.model.indexItems, (item)-> new App.Views.NoteIndexItemView(model:item))
+    _.map(@model.indexItems, (item)-> new App.Views.NoteIndexItemView(model:item))
 
 #
 #

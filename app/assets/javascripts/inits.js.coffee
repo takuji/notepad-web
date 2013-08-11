@@ -18,9 +18,11 @@ App.Inits =
           e.preventDefault()
           note.saveContent()
 
+    sidebar = new App.Views.NoteEditorSidebarView(el: $('.sidebar'))
+
     $.getJSON "#{id}.json", (data)->
       note = new App.Models.Note(data)
-      editor = new App.Views.NoteEditorView(el:$(".editor"), model:note)
+      editor = new App.Views.NoteEditorView(el:$(".editor-container"), model:note)
       $(window).bind "beforeunload", (event)->
         if note.dirty
           editor.save()
@@ -30,6 +32,7 @@ App.Inits =
             note.destroy()
             "Deleted!"
       attachGlobalKeyEvents(note)
+      sidebar.on 'resized', => editor.sidebarResized(width: sidebar.width())
       preview = new App.Views.NoteHtmlView(el: $('.preview'), model: note)
 
     updateIndexPaneSize = -> $(".index", $note).height(($(window).height() - 40) + "px")
