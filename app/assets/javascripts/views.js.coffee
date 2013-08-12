@@ -27,7 +27,7 @@ class App.Views.NoteEditorView extends Backbone.View
     self = this
     views = $.map(indexItems, (item)-> new App.Views.NoteIndexItemView(model:item, editor:self))
     list = $("<ul>")
-    _.each(views, (view)->list.append(view.toElem()))
+    _.each(views, (view)->list.append(view.render().el))
     $(".index").html(list);
     if this.debug
       if @lastKeyup
@@ -58,6 +58,14 @@ class App.Views.NoteEditorView extends Backbone.View
   save: ->
     this.update()
     this.model.saveContent()
+
+  sidebarResized: (size)->
+    if size.width?
+      @$el.css 'left', size.width + "px"
+
+  rightSidebarResized: (size)->
+    if size.width?
+      @$el.css 'right', size.width + 'px'
 
 #
 #
@@ -92,18 +100,91 @@ class App.Views.NoteHtmlView extends Backbone.View
     @render()
 
   resize: ->
-    @$el.height(($(window).height() - 40) + "px")
+    #@$el.height(($(window).height() - 54) + "px")
 
+#
+#
+#
+class App.Views.RightSidebarView extends Backbone.View
+  visible: false
+
+  initialize: ->
+    @$handle = @$('.handle')
+    @$handle.draggable
+      axis: 'x'
+      stop: (e, ui)=> @resize(e)
+#      drag: (e, ui)=> @resize(e)
+
+  resize: (e)->
+    console.log @$handle.offset()
+    w = @$el.offset().left + @width() - @$handle.offset().left
+    console.log w
+    console.log @$el.width()
+    @$el.width w
+    @$handle.css 'left', 0
+    @save()
+    @trigger 'resized'
+
+  width: ->
+    @$el.width()
+
+  save: ->
+    $.cookie 'right-sidebar-width', @width()
+    $.cookie 'right-sidebar-visible', @visible
+
+  load: ->
+    w = $.cookie('right-sidebar-width')
+    if w
+      @$el.width +w
+      @trigger 'resized'
+
+#
+#
+#
+class App.Views.NoteEditorSidebarView extends Backbone.View
+  visible: false
+  #events:
+    #'drag .handle': 'resize'
+    #'stop .handle': 'resize'
+
+  initialize: ->
+    @$handle = @$('.handle')
+    @$handle.draggable
+      axis: 'x'
+      appendTo: 'body'
+      stop: (e, ui)=> @resize(e)
+      #drag: (e, ui)=> @resize(e)
+
+  resize: (e)->
+    console.log e
+    @$el.width @$handle.position().left
+    @save()
+    @trigger 'resized'
+
+  width: ->
+    @$el.width() + 10
+
+  save: ->
+    $.cookie 'sidebar-width', @$el.width()
+    $.cookie 'sidebar-visible', @visible
+
+  load: ->
+    w = $.cookie('sidebar-width')
+    if w
+      @$el.width +w
+      @trigger 'resized'
 #
 #
 #
 class App.Views.NoteIndexView extends Backbone.View
   initialize: (options)->
     _.bindAll(this)
-    this.model.bind("change:content", this.render)
-    this.render()
+    @model.on 'change:content', @render
+    @render()
+#    @$('.handle').draggable axis: 'x'
+
   render: ->
-    _.map(this.model.indexItems, (item)-> new App.Views.NoteIndexItemView(model:item))
+    _.map(@model.indexItems, (item)-> new App.Views.NoteIndexItemView(model:item))
 
 #
 #
@@ -111,6 +192,7 @@ class App.Views.NoteIndexView extends Backbone.View
 class App.Views.NoteIndexItemView extends Backbone.View
   tagName: "li"
   className: "indexItem"
+  mark: '<i class="icon-caret-right"></i>'
   events:
     "click": "scroll"
 
@@ -118,9 +200,9 @@ class App.Views.NoteIndexItemView extends Backbone.View
     @editor = options.editor
 
   render: ->
-    template = _.template($("#index-template").html())
-    this.$el.html(template(this.model.toJSON()))
-    this
+    content = this.model.get("title") || "?"
+    @$el.html(@mark + ' ' + content).attr("data-line":this.model.get("line"), "data-depth":this.model.get("depth"))
+    @
 
   toElem: ->
     this.$el.text(this.model.get("title") || "?").attr("data-line":this.model.get("line"), "data-depth":this.model.get("depth"))
