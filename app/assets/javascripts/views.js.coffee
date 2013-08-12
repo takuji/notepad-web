@@ -63,6 +63,10 @@ class App.Views.NoteEditorView extends Backbone.View
     if size.width?
       @$el.css 'left', size.width + "px"
 
+  rightSidebarResized: (size)->
+    if size.width?
+      @$el.css 'right', size.width + 'px'
+
 #
 #
 #
@@ -96,7 +100,43 @@ class App.Views.NoteHtmlView extends Backbone.View
     @render()
 
   resize: ->
-    @$el.height(($(window).height() - 40) + "px")
+    #@$el.height(($(window).height() - 54) + "px")
+
+#
+#
+#
+class App.Views.RightSidebarView extends Backbone.View
+  visible: false
+
+  initialize: ->
+    @$handle = @$('.handle')
+    @$handle.draggable
+      axis: 'x'
+      stop: (e, ui)=> @resize(e)
+#      drag: (e, ui)=> @resize(e)
+
+  resize: (e)->
+    console.log @$handle.offset()
+    w = @$el.offset().left + @width() - @$handle.offset().left
+    console.log w
+    console.log @$el.width()
+    @$el.width w
+    @$handle.css 'left', 0
+    @save()
+    @trigger 'resized'
+
+  width: ->
+    @$el.width()
+
+  save: ->
+    $.cookie 'right-sidebar-width', @width()
+    $.cookie 'right-sidebar-visible', @visible
+
+  load: ->
+    w = $.cookie('right-sidebar-width')
+    if w
+      @$el.width +w
+      @trigger 'resized'
 
 #
 #
@@ -111,8 +151,9 @@ class App.Views.NoteEditorSidebarView extends Backbone.View
     @$handle = @$('.handle')
     @$handle.draggable
       axis: 'x'
+      appendTo: 'body'
       stop: (e, ui)=> @resize(e)
-      drag: (e, ui)=> @resize(e)
+      #drag: (e, ui)=> @resize(e)
 
   resize: (e)->
     console.log e
@@ -140,7 +181,7 @@ class App.Views.NoteIndexView extends Backbone.View
     _.bindAll(this)
     @model.on 'change:content', @render
     @render()
-    @$('.handle').draggable axis: 'x'
+#    @$('.handle').draggable axis: 'x'
 
   render: ->
     _.map(@model.indexItems, (item)-> new App.Views.NoteIndexItemView(model:item))

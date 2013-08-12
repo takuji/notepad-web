@@ -19,6 +19,7 @@ App.Inits =
           note.saveContent()
 
     sidebar = new App.Views.NoteEditorSidebarView(el: $('.sidebar'))
+    rightSidebar = new App.Views.RightSidebarView(el: $('.right-sidebar'))
 
     $.getJSON "#{id}.json", (data)->
       note = new App.Models.Note(data)
@@ -33,8 +34,11 @@ App.Inits =
             "Deleted!"
       attachGlobalKeyEvents(note)
       sidebar.on 'resized', => editor.sidebarResized(width: sidebar.width())
+      rightSidebar.on 'resized', => editor.rightSidebarResized(width: rightSidebar.width())
+
       preview = new App.Views.NoteHtmlView(el: $('.preview'), model: note)
       sidebar.load()
+      rightSidebar.load()
 
     updateIndexPaneSize = -> $(".index", $note).height(($(window).height() - 40) + "px")
     $(window).bind "resize", (e)-> updateIndexPaneSize()

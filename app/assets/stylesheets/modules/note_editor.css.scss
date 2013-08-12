@@ -7,6 +7,15 @@ $index-mark-color: #484;
 $note-background-color: #f0f0f0;
 $index-background-color: #ddd;
 $index-mark-color: #484;
+$handle-dragging-background-color: #dfc;
+
+@mixin handle-dragging {
+  //border-left: 1px dashed #666;
+  //border-right: 1px dashed #666;
+  border: 1px dashed #666;
+  border-top-width: 0;
+  border-bottom-width: 0;
+}
 
 body#my_notes-show {
   background-color: $note-background-color;
@@ -16,6 +25,7 @@ body#my_notes-show {
   position: relative;
   padding: 0;
 
+
   &::after {
     clear:both;
   }
@@ -24,10 +34,12 @@ body#my_notes-show {
     position: fixed;
     width: 216px;
     height: 100%;
+    z-index: 1;
 
     .handle {
       position: absolute;
-      z-index: 10;
+      //z-index: 10;
+      //z-index: 2;
       top: 0;
       bottom: 0;
       right: -10px;
@@ -35,6 +47,10 @@ body#my_notes-show {
       background-color: $note-background-color;
       //background-color: yellow;
       cursor: col-resize;
+
+      &.ui-draggable-dragging {
+        @include handle-dragging;
+      }
     }
   }
 
@@ -116,7 +132,9 @@ body#my_notes-show {
     left: 0;
     top: 0;
     bottom: 0;
-    right: 310px;
+    right: 0px;
+
+    z-index: 0;
 
     textarea {
       width:100%;
@@ -147,32 +165,70 @@ body#my_notes-show {
   top: 0;
   left: 226px;
   right: 0px;
+  height: 100px;
+
+  z-index: 0;
 }
 
-.preview {
+.right-sidebar {
   position: fixed;
-  right: 4px;
-  width: 296px;
-  overflow-y: scroll;
-  padding: 6px;
-  @include border-radius(6px);
+  right: 0;
+  top: 54px;
+  bottom: 0;
+  width: 310px;
+  z-index: 1;
+  //background: blue;
+
+  .handle {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0px;
+    width: 10px;
+    background-color: $note-background-color;
+    cursor: col-resize;
+    z-index: 2;
+
+    &.ui-draggable-dragging {
+      @include handle-dragging;
+    }
+  }
+}
+
+.preview-pane {
+  position: absolute;
+  left: 10px;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  @include border-radius(6px 0px 0px 6px);
   background-color: #fff;
+  overflow-y: scroll;
+  overflow-x: visible;
 
-  font-size: 81%;
+  .preview {
+    position: absolute;
+    right: 4px;
+    left: 0;
+    top: 0;
+    padding: 6px;
 
-  h1 {
-    font-size: 140%;
-  }
+    font-size: 81%;
 
-  h2 {
-    font-size: 120%;
-  }
+    h1 {
+      font-size: 140%;
+    }
 
-  h3 {
-    font-size: 110%;
-  }
+    h2 {
+      font-size: 120%;
+    }
 
-  h4, h5, h6 {
-    font-size: 100%;
+    h3 {
+      font-size: 110%;
+    }
+
+    h4, h5, h6 {
+      font-size: 100%;
+    }
   }
 }
