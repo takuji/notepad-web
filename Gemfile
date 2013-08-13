@@ -13,6 +13,7 @@ gem 'omniauth-twitter'
 gem 'less-rails'
 gem 'twitter-bootstrap-rails'
 gem 'haml-rails'
+gem 'slim-rails'
 gem 'kaminari'
 
 gem 'sass-rails', '~> 4.0.0'
