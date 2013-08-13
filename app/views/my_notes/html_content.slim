@@ -1,2 +1,5 @@
 article.note.note-html
-  = raw @note.html_content
+  -if @note.html_content.present?
+    = raw @note.html_content
+  -else
+    = simple_format @note.content
