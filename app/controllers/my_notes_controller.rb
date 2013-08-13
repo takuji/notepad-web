@@ -30,12 +30,17 @@ class MyNotesController < ApplicationController
 
   def content
     @note = current_user.notes.find(params[:id])
-    render layout:false
+    render layout: false
+  end
+
+  def html_content
+    @note = current_user.notes.find(params[:id])
+    render layout: false
   end
 
   def update
     @note = current_user.notes.find(params[:id])
-    if @note.update_attributes(content:params[:content])
+    if @note.update_attributes(content: params[:content], html_content: params[:html_content])
       render json:@note
     else
       render json:@note, :status => :unprocessable_entity

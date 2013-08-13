@@ -86,6 +86,7 @@ class App.Views.NoteHtmlView extends Backbone.View
 
   compile: ->
     @html = marked @model.get('content')
+    @model.set 'html_content', @html
 
   _compile: ->
     if marked?
@@ -276,6 +277,6 @@ class App.Views.NotePreviewView extends Backbone.View
       if @cache[@note_id]
         @$el.html(@cache[@note_id])
       else
-        @$el.load "/my_notes/#{@note_id}/content", (responseText)=>
+        @$el.load "/my_notes/#{@note_id}/html_content", (responseText)=>
           @cache[@note_id] = responseText
     @

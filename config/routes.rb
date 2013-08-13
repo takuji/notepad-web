@@ -4,6 +4,7 @@ Notepad::Application.routes.draw do
   resources :my_notes do
     member do
       get :content
+      get :html_content
     end
   end
 

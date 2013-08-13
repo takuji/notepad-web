@@ -15,12 +15,6 @@
   #main {
     width: 50%;
   }
-
-  .note-content {
-    padding: 6px;
-    background-color: #eee;
-    @include border-radius(6px);
-  }
 }
 
 #my_notes-show {
