@@ -3,7 +3,6 @@
 
 .note-html {
   padding: 6px;
-  background-color: #eee;
   @include border-radius(6px);
   @include note_common;
 }
