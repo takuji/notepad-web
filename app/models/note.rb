@@ -16,6 +16,10 @@ class Note < ActiveRecord::Base
   end
 
   def extract_title
-    content ? content.split("\n", 2)[0] : "Untitiled"
+    content ? strip_index_marking(content.split("\n", 2)[0]) : "Untitiled"
+  end
+
+  def strip_index_marking(s)
+    s.sub(/\A#+\s+/, '')
   end
 end
