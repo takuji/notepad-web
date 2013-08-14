@@ -23,6 +23,6 @@ class User < ActiveRecord::Base
   has_many :notes
 
   def latest_notes
-    notes.order("updated_at DESC")
+    notes.active.order("updated_at DESC")
   end
 end
