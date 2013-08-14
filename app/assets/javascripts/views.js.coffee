@@ -222,6 +222,7 @@ class App.Views.NoteListView extends Backbone.View
     'mouseenter li': 'preview'
     'click li':      'openNote'
     'click .more':   'fetchMore'
+    'appear .more':  'fetchMore'
 
   initialize: ->
     _.bindAll @
@@ -232,6 +233,7 @@ class App.Views.NoteListView extends Backbone.View
       @addItem note
 
   fetchMore: ->
+    console.log 'appear'
     @collection.more()
 
   preview: (e)->
