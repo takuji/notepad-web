@@ -44,6 +44,8 @@ App.Inits =
     $(window).bind "resize", (e)-> updateIndexPaneSize()
     updateIndexPaneSize()
 
+    $('.more').on 'appear', -> alert('Hi!')
+
 
   initNoteList: ->
     notes = new App.Collections.NoteList([])

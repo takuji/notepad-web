@@ -1,5 +1,6 @@
 class App.Collections.NoteList extends Backbone.Collection
   page: 1
+  _hasNext: true
 
   more: ->
     notes = new App.Collections.NoteList([])
@@ -10,6 +11,7 @@ class App.Collections.NoteList extends Backbone.Collection
       success: (col, res, options)=>
         @page += 1
         @.add col.models
+        @_hasNext = col.models.length > 0
       error: (col, res, options)=>
         console.log 'Failed to fetch notes'
 
@@ -19,3 +21,6 @@ class App.Collections.NoteList extends Backbone.Collection
       last.get('created_at')
     else
       null
+
+  hasNext: ->
+    @_hasNext

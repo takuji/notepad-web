@@ -53,6 +53,16 @@ namespace :deploy do
     #run "cd #{current_path} && RAILS_ENV=#{rails_env} script/delayed_job start"
   end
 
+  desc "Update, migrate, and restart"
+  task :umr do
+    transaction do
+      update_code
+      migrate
+      stop
+      start
+    end
+  end
+
   # desc "Make the symlink to public/uploads directory"
   # task :symlink_uploads do
   #   run "mkdir -p #{shared_path}/uploads"

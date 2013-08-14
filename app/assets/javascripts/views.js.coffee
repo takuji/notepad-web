@@ -227,6 +227,8 @@ class App.Views.NoteListView extends Backbone.View
   initialize: ->
     _.bindAll @
     @collection.on 'add', @addItem
+    $(window).on 'scroll', @fetchMoreIfReachedBottom
+    @$more = @$('.more')
 
   render: ->
     @collection.each (note)=>
@@ -235,6 +237,13 @@ class App.Views.NoteListView extends Backbone.View
   fetchMore: ->
     console.log 'appear'
     @collection.more()
+
+  fetchMoreIfReachedBottom: ->
+    if @shouldFetch()
+      @fetchMore()
+
+  shouldFetch: ->
+    @$more.viewportOffset().top < $(window).height() && @collection.hasNext()
 
   preview: (e)->
     $note = $(e.currentTarget)
