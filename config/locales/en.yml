@@ -3,3 +3,6 @@
 
 en:
   hello: "Hello world"
+  note:
+    messages:
+      confirm_to_delete: "Delete?"
