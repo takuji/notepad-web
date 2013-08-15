@@ -41,15 +41,22 @@ $.fn.extend
       cursorMoved = options['cursorMoved']
       if typeof(cursorMoved) == 'function'
         @.on 'keyup', =>
-          pos = @getCaretPos()
-          prevPos = @data('prevPos')
-          if !prevPos? || (prevPos.pos != pos)
-            content = @.val()
-            caretPos = @textareaHelper('caretPos')
-            val =
-              pos: pos
-              caretPos: caretPos
-              l_line: content.substr(0, pos).split("\n").length
-              p_line: (caretPos.top - 10) / 20 + 1
-            cursorMoved val
-            @data 'prevPos', val
+          loc = @getCaretLocation()
+          if loc
+            @data 'prevLocation', loc
+            cursorMoved loc
+
+  getCaretLocation: ->
+    pos = @getCaretPos()
+    prevPos = @data('prevLocation')
+    if !prevPos? || (prevPos.pos != pos)
+      content = @.val()
+      caretPos = @textareaHelper('caretPos')
+      {
+        pos: pos
+        caretPos: caretPos
+        l_line: content.substr(0, pos).split("\n").length
+        p_line: (caretPos.top - 10) / 20 + 1
+      }
+    else
+      prevPos

@@ -3,11 +3,8 @@ App.Inits =
     $note = $(".note")
     id = $note.attr("data-id")
 
-    isCtrlPressed = (e)->
-      (e.ctrlKey && !e.metaKey) || (!e.ctrlKey && e.metaKey)
-
     isSaveKey = (e)->
-      if isCtrlPressed(e)
+      if App.Views.isCtrlPressed(e)
         e.keyCode == 83
       else
         false

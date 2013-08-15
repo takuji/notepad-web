@@ -1,18 +1,25 @@
 #
 #
 #
+App.Views.isCtrlPressed = (e)->
+  (e.ctrlKey && !e.metaKey) || (!e.ctrlKey && e.metaKey)
+
+#
+#
+#
 class App.Views.NoteEditorView extends Backbone.View
   events:
     'click': 'startEditing'
     'keydown': 'onKeyDown'
     'keyup': 'onKeyUp'
+    'focus textarea': 'updateCaretPos'
 
   debug: false
 
   initialize: (options)->
     @$textArea = @$('textarea').autosize().focus()
     self = this
-    _.bindAll(this, "render")
+    _.bindAll @
     this.model.on "change", this.render
     if this.model.get("content")
       this.$textArea.val(this.model.get("content"))
@@ -73,9 +80,21 @@ class App.Views.NoteEditorView extends Backbone.View
     switch e.keyCode
       when 9 # tab
         e.preventDefault()
-        console.log @$textArea.getCaretPos()
         if @caretPos
           @forwardHeadingLevel(@caretPos.l_line)
+
+  _isLineHeading: ->
+    line = @getLine(@caretPos.l_line)
+    line[0] == '#'
+
+  _insertTabAtCaretPos: ->
+    content = @getContent()
+    pos = @caretPos.pos
+    @$textArea.val content.substring(0, pos) + "\t" + content.substring(pos)
+    @$textArea.setCaretPosition(pos + 1)
+
+  getContent: ->
+    @$textArea.val()
 
   onKeyUp: (e)->
     console.log @$textArea.getCaretPos()
@@ -140,6 +159,9 @@ class App.Views.NoteEditorView extends Backbone.View
       pos = newLinePos + 1
     newLinePos = text.indexOf("\n", pos)
     {start: pos, end: newLinePos}
+
+  updateCaretPos: ->
+    @caretPos = @$textArea.getCaretLocation()
 
 #
 #
