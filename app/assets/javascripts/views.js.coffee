@@ -94,7 +94,8 @@ class App.Views.NoteEditorView extends Backbone.View
     newLine = h + heading
     text = @$textArea.val()
     @$textArea.val @replaceLine(text, l_line, newLine)
-    @moveCaretToLine(l_line)
+    newCaretPos = if nextLevel > level then @caretPos.pos + 1 else @caretPos.pos - 6
+    @$textArea.setCaretPosition(newCaretPos)
 
   moveCaretToLine: (line_no)->
     pos = @rangeOfLine(line_no, @$textArea.val())
