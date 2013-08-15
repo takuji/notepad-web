@@ -22,6 +22,18 @@ $.fn.extend
     else
       0
 
+  setCaretPosition: (pos)->
+    el = @[0]
+    if el.setSelectionRange
+      el.focus()
+      el.setSelectionRange(pos,pos)
+    else if el.createTextRange
+      range = el.createTextRange()
+      range.collapse(true)
+      range.moveEnd('character', pos)
+      range.moveStart('character', pos);
+      range.select()
+
   textareaCaret: ->
     options = if arguments.length > 0 then arguments[0] else {}
     @textareaHelper()

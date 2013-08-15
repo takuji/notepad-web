@@ -94,6 +94,11 @@ class App.Views.NoteEditorView extends Backbone.View
     newLine = h + heading
     text = @$textArea.val()
     @$textArea.val @replaceLine(text, l_line, newLine)
+    @moveCaretToLine(l_line)
+
+  moveCaretToLine: (line_no)->
+    pos = @rangeOfLine(line_no, @$textArea.val())
+    @$textArea.setCaretPosition(pos.start)
 
   getLine: (l_line)->
     @$textArea.val().split("\n")[l_line - 1]
