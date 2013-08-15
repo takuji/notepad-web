@@ -7,6 +7,24 @@ App.Views.isCtrlPressed = (e)->
 #
 #
 #
+class App.Views.NoteView extends Backbone.View
+  marginTop: 54
+
+  initialize: ->
+    _.bindAll(@)
+    @$window = $(window)
+    @$window.on 'resize', @render
+    @render()
+
+  render: ->
+    height = @$window.height() - @marginTop
+    @$el.height(height)
+    console.log height
+    @
+
+#
+#
+#
 class App.Views.NoteEditorView extends Backbone.View
   events:
     'click': 'startEditing'
@@ -52,7 +70,7 @@ class App.Views.NoteEditorView extends Backbone.View
     y0 = this.$textArea.offset().top
     h  = this.$textArea.height()
     y  = h * (lineNo - 1) / this.lineCount()
-    window.scrollTo(0, Math.floor(y));
+    @$('.editor').scrollTop(Math.floor(y))
 
   checkChange: ->
     if @lastKeyup
@@ -274,14 +292,13 @@ class App.Views.NoteEditorSidebarView extends Backbone.View
 #
 #
 class App.Views.NoteIndexView extends Backbone.View
-  initialize: (options)->
-    _.bindAll(this)
+  initialize: ->
+    _.bindAll(@)
     @model.on 'change:content', @render
     @render()
-#    @$('.handle').draggable axis: 'x'
 
   render: ->
-    _.map(@model.indexItems, (item)-> new App.Views.NoteIndexItemView(model:item))
+    #_.map(@model.indexItems, (item)-> new App.Views.NoteIndexItemView(model:item))
 
 #
 #

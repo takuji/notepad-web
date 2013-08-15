@@ -31,7 +31,7 @@ body#my_notes-show {
   }
 
   .sidebar {
-    position: fixed;
+    position: absolute;
     width: 216px;
     height: 100%;
     z-index: 1;
@@ -131,10 +131,11 @@ body#my_notes-show {
     //}
     left: 0;
     top: 0;
-    bottom: 0;
+    //bottom: 0;
+    height: 100%;
     right: 0px;
-
     z-index: 0;
+    overflow-y: scroll;
 
     textarea {
       width:100%;
@@ -165,7 +166,7 @@ body#my_notes-show {
   top: 0;
   left: 226px;
   right: 0px;
-  height: 100px;
+  height: 100%;
 
   z-index: 0;
 }

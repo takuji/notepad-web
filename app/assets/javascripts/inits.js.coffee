@@ -36,13 +36,9 @@ App.Inits =
       preview = new App.Views.NoteHtmlView(el: $('.preview'), model: note)
       sidebar.load()
       rightSidebar.load()
-
-    updateIndexPaneSize = -> $(".index", $note).height(($(window).height() - 40) + "px")
-    $(window).bind "resize", (e)-> updateIndexPaneSize()
-    updateIndexPaneSize()
-
-    $('.more').on 'appear', -> alert('Hi!')
-
+      #
+      noteIndexView = new App.Views.NoteIndexView(el: $('.index'), model: note)
+      new App.Views.NoteView(el: $('.note'), model: note, indexView: noteIndexView)
 
   initNoteList: ->
     notes = new App.Collections.NoteList([])
