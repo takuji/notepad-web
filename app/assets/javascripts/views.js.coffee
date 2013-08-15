@@ -3,16 +3,17 @@
 #
 class App.Views.NoteEditorView extends Backbone.View
   events:
-    "keyup": "update"
-    "click": "startEditing"
+    'click': 'startEditing'
+    'keydown': 'onKeyDown'
+    'keyup': 'onKeyUp'
 
   debug: false
 
   initialize: (options)->
-    this.$textArea = $("textarea", this.el).autosize().focus()
+    @$textArea = @$('textarea').autosize().focus()
     self = this
     _.bindAll(this, "render")
-    this.model.bind("change", this.render)
+    this.model.on "change", this.render
     if this.model.get("content")
       this.$textArea.val(this.model.get("content"))
       setTimeout((-> self.$textArea.trigger("autosize")), 0) # タイマーで実行しないとautosizeが機能しなかったので已む無くそうしている。
@@ -21,6 +22,7 @@ class App.Views.NoteEditorView extends Backbone.View
     this.timer = setInterval((-> self.checkChange()), 1000)
     this.autoSaveInterval = 5 * 1000
     $("#debug").toggle(this.debug)
+    @$textArea.textareaCaret(cursorMoved: (params)=> @onCursorMoved(params))
 
   render: ->
     indexItems = this.model.indexItems
@@ -66,6 +68,78 @@ class App.Views.NoteEditorView extends Backbone.View
   rightSidebarResized: (size)->
     if size.width?
       @$el.css 'right', size.width + 'px'
+
+  onKeyDown: (e)->
+    switch e.keyCode
+      when 9 # tab
+        e.preventDefault()
+        console.log @$textArea.getCaretPos()
+        if @caretPos
+          @forwardHeadingLevel(@caretPos.l_line)
+
+  onKeyUp: (e)->
+    console.log @$textArea.getCaretPos()
+    @update(e)
+
+  forwardHeadingLevel: (l_line)->
+    console.log "l_line = #{l_line}"
+    line = @getLine(l_line)
+    console.log line
+    level = @headingLevel(line)
+    console.log "heading level = #{level}"
+    nextLevel = (level + 1) % 7
+    h = @makeHeading(nextLevel)
+    heading = @extractHeading(line)
+    newLine = h + heading
+    text = @$textArea.val()
+    @$textArea.val @replaceLine(text, l_line, newLine)
+    newCaretPos = if nextLevel > level then @caretPos.pos + 1 else @caretPos.pos - 6
+    @$textArea.setCaretPosition(newCaretPos)
+
+  moveCaretToLine: (line_no)->
+    pos = @rangeOfLine(line_no, @$textArea.val())
+    @$textArea.setCaretPosition(pos.start)
+
+  getLine: (l_line)->
+    @$textArea.val().split("\n")[l_line - 1]
+
+  headingLevel: (line) ->
+    level = 0
+    while line[level] == '#'
+      level += 1
+    if level <= 6 then level else 0
+
+  makeHeading: (level)->
+    h = ''
+    _.times(level, -> h += '#')
+    h
+
+  extractHeading: (line)->
+    line.replace /^#+/, ''
+
+  onCursorMoved: (params)->
+    console.log params
+    @caretPos = params
+
+  insertAt: (pos, s)->
+    text = @$textArea.val()
+    t1 = text.substring 0, pos
+    t2 = text.substring pos
+    @$textArea.val t1 + s + t2
+
+  replaceLine: (text, line_no, newLineText)->
+    range = @rangeOfLine(line_no, text)
+    t1 = text.substring(0, range.start)
+    t2 = if range.end >= 0 then text.substring(range.end) else ''
+    t1 + newLineText + t2
+
+  rangeOfLine: (line_no, text)->
+    pos = 0
+    _.times line_no - 1, ->
+      newLinePos = text.indexOf("\n", pos)
+      pos = newLinePos + 1
+    newLinePos = text.indexOf("\n", pos)
+    {start: pos, end: newLinePos}
 
 #
 #
@@ -257,20 +331,30 @@ class App.Views.NoteListView extends Backbone.View
 
   addItem: (note)->
     view = new App.Views.NoteListItemView(model: note)
-    @$('ul').append view.render().el
+    @$('ul.note-list').append view.render().el
 
 #
 #
 #
 class App.Views.NoteListItemView extends Backbone.View
   tagName: 'li'
+  className: 'note-list-item'
+
+  events:
+    'click .delete': 'delete'
 
   render: ->
     id = @model.get('id')
     @$el.attr 'data-id', id
     link = $('<a>').attr('href', "/my_notes/#{id}").text(@model.get('title'))
-    @$el.html link
+    template = _.template $('#templates .note-index-actions-template').html()
+    actions = template link: "/my_notes/#{id}"
+    @$el.html(link).append(actions)
     @
+
+  delete: (e)->
+    console.log 'delete'
+    e.stopPropagation()
 
 #
 #

@@ -18,6 +18,7 @@
 //= require jquery.ui.draggable
 //= require jquery.cookie
 //= require jquery.appear
+//= require textarea-helper
 //= require bootstrap3/bootstrap.min
 //= require underscore-min
 //= require backbone-min
