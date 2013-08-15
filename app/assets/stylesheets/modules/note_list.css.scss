@@ -6,3 +6,51 @@
   @include border-radius(6px);
   @include note_common;
 }
+
+.note-list {
+  padding-left: 10px;
+  padding-right: 10px;
+  list-style: none;
+  margin-left: 10px;
+
+  >li {
+    // box
+    padding: 4px 0 6px;
+    border-top: 1px dotted #888;
+
+    // background
+    //background-color: #f8f8f8;
+
+    &:last-child {
+      border-bottom: 1px dotted #888;
+    }
+
+    &:hover {
+      background-color: #efd;
+    }
+  }
+
+  .note-list-item {
+    position: relative;
+  }
+
+  .more {
+    padding-left: 10px;
+  }
+}
+
+.note-index-actions {
+  float: right;
+  padding: 0 4px;
+  margin: 0;
+  list-style: none;
+  background-color: #ddd;
+  @include border-radius(4px);
+  cursor: pointer;
+
+  li {
+    padding: 0;
+    margin: 0;
+    border-width: 0;
+  }
+}
