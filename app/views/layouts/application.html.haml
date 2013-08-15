@@ -24,7 +24,9 @@
         /%li=link_to "My Notes", my_notes_path
         -if user_signed_in?
           %li
-            =link_to 'New Note', my_notes_path, method: :post
+            =link_to my_notes_path, method: :post do
+              %i.icon-plus
+              New
       %ul.nav.navbar-nav.pull-right
         -if user_signed_in?
           %li=link_to 'Sign out', destroy_user_session_path, :method => :delete
