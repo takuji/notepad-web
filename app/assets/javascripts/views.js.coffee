@@ -76,11 +76,10 @@ class App.Views.NoteEditorView extends Backbone.View
         console.log @$textArea.getCaretPos()
         if @caretPos
           @forwardHeadingLevel(@caretPos.l_line)
-      else
-        @update(e)
 
   onKeyUp: (e)->
     console.log @$textArea.getCaretPos()
+    @update(e)
 
   forwardHeadingLevel: (l_line)->
     console.log "l_line = #{l_line}"
