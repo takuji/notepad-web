@@ -199,7 +199,7 @@ class App.Views.NoteHtmlView extends Backbone.View
     @
 
   compile: ->
-    @html = marked @model.get('content')
+    @html = marked (@model.get('content') || '')
     @model.set 'html_content', @html
 
   _compile: ->
