@@ -24,6 +24,7 @@
 //= require backbone-min
 //= require jquery.autosize-min
 //= require markdown/marked
+//= require highlight.js/highlight.pack
 //= require namespaces
 //= require utils
 //= require models

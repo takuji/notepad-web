@@ -1,6 +1,7 @@
 class App.Collections.NoteList extends Backbone.Collection
   page: 1
   _hasNext: true
+  model: App.Models.Note
 
   more: ->
     notes = new App.Collections.NoteList([])

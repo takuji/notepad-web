@@ -7,6 +7,24 @@ App.Views.isCtrlPressed = (e)->
 #
 #
 #
+class App.Views.NoteView extends Backbone.View
+  marginTop: 54
+
+  initialize: ->
+    _.bindAll(@)
+    @$window = $(window)
+    @$window.on 'resize', @render
+    @render()
+
+  render: ->
+    height = @$window.height() - @marginTop
+    @$el.height(height)
+    console.log height
+    @
+
+#
+#
+#
 class App.Views.NoteEditorView extends Backbone.View
   events:
     'click': 'startEditing'
@@ -52,7 +70,7 @@ class App.Views.NoteEditorView extends Backbone.View
     y0 = this.$textArea.offset().top
     h  = this.$textArea.height()
     y  = h * (lineNo - 1) / this.lineCount()
-    window.scrollTo(0, Math.floor(y));
+    @$('.editor').scrollTop(Math.floor(y))
 
   checkChange: ->
     if @lastKeyup
@@ -178,10 +196,11 @@ class App.Views.NoteHtmlView extends Backbone.View
 
   render: ->
     @$el.html @html
+    @hightlightSyntax()
     @
 
   compile: ->
-    @html = marked @model.get('content')
+    @html = marked (@model.get('content') || '')
     @model.set 'html_content', @html
 
   _compile: ->
@@ -198,6 +217,10 @@ class App.Views.NoteHtmlView extends Backbone.View
 
   resize: ->
     #@$el.height(($(window).height() - 54) + "px")
+
+  hightlightSyntax: ->
+    @$('pre code').each (i, elm)->
+      hljs.highlightBlock(elm)
 
 #
 #
@@ -274,14 +297,13 @@ class App.Views.NoteEditorSidebarView extends Backbone.View
 #
 #
 class App.Views.NoteIndexView extends Backbone.View
-  initialize: (options)->
-    _.bindAll(this)
+  initialize: ->
+    _.bindAll(@)
     @model.on 'change:content', @render
     @render()
-#    @$('.handle').draggable axis: 'x'
 
   render: ->
-    _.map(@model.indexItems, (item)-> new App.Views.NoteIndexItemView(model:item))
+    #_.map(@model.indexItems, (item)-> new App.Views.NoteIndexItemView(model:item))
 
 #
 #
@@ -363,7 +385,11 @@ class App.Views.NoteListItemView extends Backbone.View
   className: 'note-list-item'
 
   events:
-    'click .delete': 'delete'
+    'click .delete': 'deleteNote'
+
+  initialize: ->
+    _.bindAll @
+    @model.on 'deleted', @remove
 
   render: ->
     id = @model.get('id')
@@ -374,9 +400,15 @@ class App.Views.NoteListItemView extends Backbone.View
     @$el.html(link).append(actions)
     @
 
-  delete: (e)->
+  deleteNote: (e)->
     console.log 'delete'
     e.stopPropagation()
+    @model.delete()
+
+  remove: ->
+    if @model.collection
+      @model.collection.remove @model
+    @$el.remove()
 
 #
 #
@@ -396,4 +428,9 @@ class App.Views.NotePreviewView extends Backbone.View
       else
         @$el.load "/my_notes/#{@note_id}/html_content", (responseText)=>
           @cache[@note_id] = responseText
+      @hightlightSyntax()
     @
+
+  hightlightSyntax: ->
+    @$('pre code').each (i, elm)->
+      hljs.highlightBlock(elm)
