@@ -14,5 +14,6 @@
  *= require layout
  *= require modules
  *= require font-awesome
+ *= require highlight.js/default
  *= require_directory ./modules
  */

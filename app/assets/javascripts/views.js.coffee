@@ -196,6 +196,7 @@ class App.Views.NoteHtmlView extends Backbone.View
 
   render: ->
     @$el.html @html
+    @hightlightSyntax()
     @
 
   compile: ->
@@ -216,6 +217,10 @@ class App.Views.NoteHtmlView extends Backbone.View
 
   resize: ->
     #@$el.height(($(window).height() - 54) + "px")
+
+  hightlightSyntax: ->
+    @$('pre code').each (i, elm)->
+      hljs.highlightBlock(elm)
 
 #
 #
@@ -413,4 +418,9 @@ class App.Views.NotePreviewView extends Backbone.View
       else
         @$el.load "/my_notes/#{@note_id}/html_content", (responseText)=>
           @cache[@note_id] = responseText
+      @hightlightSyntax()
     @
+
+  hightlightSyntax: ->
+    @$('pre code').each (i, elm)->
+      hljs.highlightBlock(elm)
