@@ -18,6 +18,9 @@ class App.Models.Note extends Backbone.Model
     this.save()
     @dirty = false
 
+  delete: ->
+    console.log 'deleted!'
+
   isBlank: ->
     !this.get("content")?
 
