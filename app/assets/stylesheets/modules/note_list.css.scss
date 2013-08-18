@@ -7,6 +7,26 @@
   @include note_common;
 }
 
+.note-list-page {
+  position: relative;
+}
+
+.note-list-pane {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  width: 30%;
+  box-sizing: border-box;
+  border-right: 1px solid #ddd;
+}
+
+.note-preview-pane {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 30%;
+}
+
 .note-list {
   padding-left: 10px;
   padding-right: 10px;

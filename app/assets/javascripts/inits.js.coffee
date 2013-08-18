@@ -41,9 +41,10 @@ App.Inits =
       new App.Views.NoteView(el: $('.note'), model: note, indexView: noteIndexView)
 
   initNoteList: ->
+    new App.Views.NoteListPage(el: $('.note-list-page'))
     notes = new App.Collections.NoteList([])
     notes.url = '/my_notes'
-    view = new App.Views.NoteListView(el: $('.notes'), collection: notes)
+    view = new App.Views.NoteListView(el: $('.note-list'), collection: notes)
     preview = new App.Views.NotePreviewView(el: $('.note-preview'))
     view.on 'noteSelected', (id)-> preview.show(id)
     view.fetchMore()

@@ -5,5 +5,5 @@ $ ->
   if $(".editor").length
     App.Inits.initEditor()
 
-  if $('.notes').length
+  if $('.note-list-page').length
     App.Inits.initNoteList()
