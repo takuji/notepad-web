@@ -1,6 +1,6 @@
 class App.Views.NoteListPage extends Backbone.View
   initialize: ->
-    $(window).on 'resize', @resize, @
+    $(window).on 'resize', => @resize()
     @resize()
 
   resize: ->
@@ -15,8 +15,9 @@ class App.Views.NoteListView extends Backbone.View
 
   events:
     'mouseenter li': 'preview'
-    'click li':      'openNote'
+    #'click li':      'openNote'
     'click .more':   'fetchMore'
+    'dblclick li': 'openNote'
     'appear .more':  'fetchMore'
 
   initialize: ->
@@ -24,6 +25,7 @@ class App.Views.NoteListView extends Backbone.View
     @collection.on 'add', @addItem
     $(window).on 'scroll', @fetchMoreIfReachedBottom
     @$more = @$('.more')
+    @collection.on 'selected', @selectNote
 
   render: ->
     @collection.each (note)=>
@@ -50,8 +52,14 @@ class App.Views.NoteListView extends Backbone.View
     id = $note.attr("data-id")
     location.href = "/my_notes/#{id}"
 
+  selectNote: (note)->
+    @selectedNote = note
+    console.log "Note #{note.id} selected"
+
   addItem: (note)->
     view = new App.Views.NoteListItemView(model: note)
+    @listenTo view, 'selected', @selectNote
+    view.on 'selected'
     view.render()
     @$el.append view.el
 
@@ -64,6 +72,7 @@ class App.Views.NoteListItemView extends Backbone.View
 
   events:
     'click .delete': 'deleteNote'
+    'click': 'select'
 
   initialize: ->
     @model.on 'deleted', @remove, @
@@ -77,6 +86,9 @@ class App.Views.NoteListItemView extends Backbone.View
     actions = template link: "/my_notes/#{id}"
     @$el.html(link).append(actions)
     @
+
+  select: ->
+    @trigger 'selected', @model
 
   deleteNote: (e)->
     console.log 'delete'
