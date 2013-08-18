@@ -11,6 +11,16 @@ class MyNotesController < ApplicationController
     end
   end
 
+  def deleted
+    @notes = current_user.latest_notes.deleted.select(:id, :title).page(params[:page])
+    respond_to do |format|
+      format.html
+      format.json do
+        render json:@notes.as_json(:methods => :title)
+      end
+    end
+  end
+
   def create
     @note = Note.create!(user: current_user)
     redirect_to action: :show, id:@note
@@ -44,6 +54,15 @@ class MyNotesController < ApplicationController
       render json:@note
     else
       render json:@note, :status => :unprocessable_entity
+    end
+  end
+
+  def delete
+    @note = current_user.notes.find(params[:id])
+    if @note.move_to_trash
+      head :ok
+    else
+      head :unprocessable_entity
     end
   end
 

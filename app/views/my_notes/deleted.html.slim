@@ -1,0 +1,10 @@
+h1= t('note.titles.deleted')
+
+-if @notes.blank?
+  =t('messages.no_notes')
+-else
+  table.table.notes
+    tbody
+      -@notes.each do |note|
+        tr
+          td=link_to note.title, my_note_path(note)

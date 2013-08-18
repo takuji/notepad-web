@@ -3,9 +3,9 @@
 #
 class App.Models.Note extends Backbone.Model
   initialize: (options)->
-    this._updateTitle(options.content)
-    this._updateIndex(options.content);
-    this.url = "/my_notes/#{options.id}"
+    @._updateTitle(options.content)
+    @._updateIndex(options.content);
+    @.url = "/my_notes/#{options.id}"
 
   updateContent: (newContent)->
     if newContent != this.get("content")
@@ -20,6 +20,12 @@ class App.Models.Note extends Backbone.Model
 
   delete: ->
     console.log 'deleted!'
+    q = $.post @url + '/delete'
+    q.done =>
+      console.log 'success'
+      @trigger 'deleted', @
+    q.fail =>
+      console.log 'failed'
 
   isBlank: ->
     !this.get("content")?

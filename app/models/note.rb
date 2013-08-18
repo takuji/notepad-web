@@ -1,5 +1,6 @@
 class Note < ActiveRecord::Base
   scope :active, ->{ where(deleted: false) }
+  scope :deleted, ->{ where(deleted: true) }
 
   belongs_to :user
 

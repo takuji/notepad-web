@@ -387,6 +387,10 @@ class App.Views.NoteListItemView extends Backbone.View
   events:
     'click .delete': 'deleteNote'
 
+  initialize: ->
+    _.bindAll @
+    @model.on 'deleted', @remove
+
   render: ->
     id = @model.get('id')
     @$el.attr 'data-id', id
@@ -400,6 +404,11 @@ class App.Views.NoteListItemView extends Backbone.View
     console.log 'delete'
     e.stopPropagation()
     @model.delete()
+
+  remove: ->
+    if @model.collection
+      @model.collection.remove @model
+    @$el.remove()
 
 #
 #
