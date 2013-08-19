@@ -16,7 +16,7 @@ class App.Views.NoteListView extends Backbone.View
   events:
     'mouseenter li': 'preview'
     #'click li':      'openNote'
-    'click .more':   'fetchMore'
+    'click .more': 'fetchMore'
     'dblclick li': 'openNote'
     'appear .more':  'fetchMore'
 
@@ -61,7 +61,7 @@ class App.Views.NoteListView extends Backbone.View
     @listenTo view, 'selected', @selectNote
     view.on 'selected'
     view.render()
-    @$el.append view.el
+    @$('.note-list').append view.el
 
 #
 #

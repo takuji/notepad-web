@@ -44,7 +44,7 @@ App.Inits =
     new App.Views.NoteListPage(el: $('.note-list-page'))
     notes = new App.Collections.NoteList([])
     notes.url = '/my_notes'
-    view = new App.Views.NoteListView(el: $('.note-list'), collection: notes)
+    view = new App.Views.NoteListView(el: $('.note-list-pane'), collection: notes)
     preview = new App.Views.NotePreviewView(el: $('.note-preview'))
     view.on 'noteSelected', (id)-> preview.show(id)
     view.fetchMore()
