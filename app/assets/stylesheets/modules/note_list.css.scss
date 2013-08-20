@@ -53,6 +53,10 @@
         display: block;
       }
     }
+    
+    &.selected {
+      background-color: #eee;
+    }
   }
 
   .note-list-item {

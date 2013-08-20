@@ -12,6 +12,7 @@ class App.Views.NoteListPage extends Backbone.View
 #
 class App.Views.NoteListView extends Backbone.View
   cache: {}
+  selectedNoteView: null
 
   events:
     'mouseenter li': 'preview'
@@ -26,6 +27,7 @@ class App.Views.NoteListView extends Backbone.View
     $(window).on 'scroll', @fetchMoreIfReachedBottom
     @$more = @$('.more')
     @collection.on 'selected', @selectNote
+    @$noteList = @$('.note-list')
 
   render: ->
     @collection.each (note)=>
@@ -43,23 +45,33 @@ class App.Views.NoteListView extends Backbone.View
     @$more.viewportOffset().top < $(window).height() && @collection.hasNext()
 
   preview: (e)->
-    $note = $(e.currentTarget)
-    id = $note.attr("data-id")
-    @trigger 'noteSelected', id
+    unless @isNoteSelected()
+      $note = $(e.currentTarget)
+      id = $note.attr("data-id")
+      @trigger 'noteSelected', id
+
+  isNoteSelected: ->
+    @selectedNoteView?
 
   openNote: (e)->
     $note = $(e.currentTarget)
     id = $note.attr("data-id")
     location.href = "/my_notes/#{id}"
 
-  selectNote: (note)->
-    @selectedNote = note
+  selectNote: (noteView)->
+    @_clearCurrentSelect()
+    @selectedNoteView = noteView
+    note = noteView.model
+    @trigger 'noteSelected', note.id
     console.log "Note #{note.id} selected"
+
+  _clearCurrentSelect: ->
+    if @selectedNoteView
+      @selectedNoteView.unselect()
 
   addItem: (note)->
     view = new App.Views.NoteListItemView(model: note)
     @listenTo view, 'selected', @selectNote
-    view.on 'selected'
     view.render()
     @$('.note-list').append view.el
 
@@ -72,7 +84,7 @@ class App.Views.NoteListItemView extends Backbone.View
 
   events:
     'click .delete': 'deleteNote'
-    'click': 'select'
+    'click': 'toggleSelection'
 
   initialize: ->
     @model.on 'deleted', @remove, @
@@ -87,8 +99,18 @@ class App.Views.NoteListItemView extends Backbone.View
     @$el.html(link).append(actions)
     @
 
+  toggleSelection: ->
+    if @$el.hasClass('selected')
+      @unselect()
+    else
+      @select()
+
   select: ->
-    @trigger 'selected', @model
+    @$el.addClass 'selected'
+    @trigger 'selected', @
+
+  unselect: ->
+    @$el.removeClass 'selected'
 
   deleteNote: (e)->
     console.log 'delete'
