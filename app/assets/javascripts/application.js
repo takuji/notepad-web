@@ -31,5 +31,6 @@
 //= require collections
 //= require views
 //= require views/note_list_page
+//= require views/note_edit_page
 //= require inits
 //= require app

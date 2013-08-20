@@ -18,7 +18,7 @@ App.Inits =
     sidebar = new App.Views.NoteEditorSidebarView(el: $('.sidebar'))
     rightSidebar = new App.Views.RightSidebarView(el: $('.right-sidebar'))
 
-    $.getJSON "#{id}.json", (data)->
+    $.getJSON "/my_notes/#{id}.json", (data)->
       note = new App.Models.Note(data)
       editor = new App.Views.NoteEditorView(el:$(".editor-container"), model:note)
       $(window).bind "beforeunload", (event)->

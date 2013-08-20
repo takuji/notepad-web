@@ -48,6 +48,18 @@ class MyNotesController < ApplicationController
     render layout: false
   end
 
+  def edit
+    @note = current_user.notes.find(params[:id])
+    respond_to do |format|
+      format.html do
+        render layout: 'note'
+      end
+      format.json do
+        render json:@note
+      end
+    end
+  end
+
   def update
     @note = current_user.notes.find(params[:id])
     if @note.update_attributes(content: params[:content], html_content: params[:html_content])

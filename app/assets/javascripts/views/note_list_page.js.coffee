@@ -56,7 +56,7 @@ class App.Views.NoteListView extends Backbone.View
   openNote: (e)->
     $note = $(e.currentTarget)
     id = $note.attr("data-id")
-    location.href = "/my_notes/#{id}"
+    location.href = "/my_notes/#{id}/edit"
 
   selectNote: (noteView)->
     if noteView != @selectedNoteView
