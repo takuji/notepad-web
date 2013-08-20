@@ -2,7 +2,7 @@
 #
 #
 class App.Views.NoteView extends Backbone.View
-  marginTop: 54
+  marginTop: 40
 
   initialize: ->
     _.bindAll(@)
@@ -276,7 +276,7 @@ class App.Views.NoteEditorSidebarView extends Backbone.View
     @trigger 'resized'
 
   width: ->
-    @$el.width() + 10
+    @$el.width() + @$handle.width()
 
   save: ->
     $.cookie 'sidebar-width', @$el.width()
