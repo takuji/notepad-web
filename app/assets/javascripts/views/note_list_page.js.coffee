@@ -51,7 +51,7 @@ class App.Views.NoteListView extends Backbone.View
       @trigger 'noteSelected', id
 
   isNoteSelected: ->
-    @selectedNoteView?
+    @selectedNoteView? && @selectedNoteView.isSelected()
 
   openNote: (e)->
     $note = $(e.currentTarget)
@@ -59,11 +59,15 @@ class App.Views.NoteListView extends Backbone.View
     location.href = "/my_notes/#{id}"
 
   selectNote: (noteView)->
-    @_clearCurrentSelect()
+    if noteView != @selectedNoteView
+      @_clearCurrentSelect()
     @selectedNoteView = noteView
     note = noteView.model
     @trigger 'noteSelected', note.id
     console.log "Note #{note.id} selected"
+
+  unselectNote: (noteView)->
+    @_clearCurrentSelect()
 
   _clearCurrentSelect: ->
     if @selectedNoteView
@@ -72,6 +76,7 @@ class App.Views.NoteListView extends Backbone.View
   addItem: (note)->
     view = new App.Views.NoteListItemView(model: note)
     @listenTo view, 'selected', @selectNote
+    @listenTo view, 'unselected', @unselectNote
     view.render()
     @$('.note-list').append view.el
 
@@ -93,14 +98,17 @@ class App.Views.NoteListItemView extends Backbone.View
   render: ->
     id = @model.get('id')
     @$el.attr 'data-id', id
-    link = $('<a>').attr('href', "/my_notes/#{id}").text(@model.get('title'))
+    title = @model.get('title')
     template = _.template $('#templates .note-index-actions-template').html()
     actions = template link: "/my_notes/#{id}"
-    @$el.html(link).append(actions)
+    @$el.html(title).append(actions)
     @
 
+  isSelected: ->
+    @$el.hasClass 'selected'
+
   toggleSelection: ->
-    if @$el.hasClass('selected')
+    if @isSelected()
       @unselect()
     else
       @select()
