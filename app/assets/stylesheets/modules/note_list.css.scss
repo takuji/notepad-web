@@ -14,10 +14,16 @@
 .note-list-pane {
   position: absolute;
   top: 0;
+  left: 0;
   height: 100%;
   width: 30%;
+  overflow-y: scroll;
   box-sizing: border-box;
   border-right: 1px solid #ddd;
+  .more {
+    padding-left: 10px;
+    margin-left: 10px;
+  }
 }
 
 .note-preview-pane {
@@ -25,6 +31,8 @@
   top: 0;
   right: 0;
   left: 30%;
+  height: 100%;
+  overflow: scroll;
 }
 
 .note-list {
@@ -65,19 +73,6 @@
 
   .more {
     padding-left: 10px;
-  }
-}
-
-.note-list-pane {
-  position: fixed;
-  left: 0;
-  top: 44px;
-  height: 100%;
-  overflow-y: scroll;
-  
-  .more {
-    padding-left: 10px;
-    margin-left: 10px;
   }
 }
 
