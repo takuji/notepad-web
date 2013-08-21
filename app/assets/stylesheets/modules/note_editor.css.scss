@@ -9,11 +9,12 @@ $index-background-color: #f8f8f8;
 $index-mark-color: #484;
 $handle-dragging-background-color: #dfc;
 $handle-width: 5px;
+$handle-background-color: #ccc;
 
 @mixin handle-dragging {
   //border-left: 1px dashed #666;
   //border-right: 1px dashed #666;
-  border: 1px dashed #666;
+  border: 1px dashed #999;
   border-top-width: 0;
   border-bottom-width: 0;
 }
@@ -43,7 +44,7 @@ body#my_notes-show,#my_notes-edit {
       bottom: 0;
       right: -$handle-width;
       width: $handle-width;
-      background-color: $note-background-color;
+      background-color: $handle-background-color;
       cursor: col-resize;
 
       &.ui-draggable-dragging {
@@ -184,7 +185,7 @@ body#my_notes-show,#my_notes-edit {
     bottom: 0;
     left: 0px;
     width: $handle-width;
-    background-color: $note-background-color;
+    background-color: $handle-background-color;
     cursor: col-resize;
     z-index: 2;
 
