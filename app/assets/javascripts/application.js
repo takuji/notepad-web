@@ -19,7 +19,7 @@
 //= require jquery.cookie
 //= require jquery.appear
 //= require textarea-helper
-//= require bootstrap3/bootstrap.min
+//= require twitter/bootstrap
 //= require underscore-min
 //= require backbone-min
 //= require jquery.autosize-min

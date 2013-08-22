@@ -6,3 +6,5 @@ en:
   note:
     messages:
       confirm_to_delete: "Delete?"
+  session:
+    sign_out: "Sign out"
