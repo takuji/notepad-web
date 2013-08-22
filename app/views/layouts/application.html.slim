@@ -12,28 +12,7 @@ html lang="en"
     = stylesheet_link_tag "application", :media => "all"
     /link rel="stylesheet" href="/stylesheets/bootstrap3/css/bootstrap.min.css" type="text/css"
   body id="#{params[:controller]}-#{params[:action]}"
-    .navbar.navbar-default.navbar-fixed-top
-      a.navbar-brand href="#{root_path}" Notepad
-      ul.nav.navbar-nav
-        /%li=link_to "My Notes", my_notes_path
-        -if user_signed_in?
-          li
-            =link_to my_notes_path, method: :post do
-              i.icon-plus
-              |  New
-      ul.nav.navbar-nav.navbar-right
-        -if user_signed_in?
-          li.dropdown
-            a.dropdown-toggle href="#" data-toggle="dropdown"
-              =current_user.name
-              b.caret
-            ul.dropdown-menu
-              li
-                =link_to destroy_user_session_path, :method => :delete do
-                  span.glyphicon.glyphicon-log-out
-                  =" #{t('session.sign_out')}"
-        -else
-          li=link_to 'Sign in with Twitter', user_omniauth_authorize_path(:twitter)
+    =render 'navigation_bar'
     .container-fluid
       .content.row-fluid
         /= bootstrap_flash
