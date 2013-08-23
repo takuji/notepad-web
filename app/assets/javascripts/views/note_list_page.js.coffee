@@ -90,6 +90,7 @@ class App.Views.NoteListItemView extends Backbone.View
   events:
     'click .delete': 'deleteNote'
     'click': 'toggleSelection'
+    'click .edit': 'openNote'
 
   initialize: ->
     @model.on 'deleted', @remove, @
@@ -101,10 +102,10 @@ class App.Views.NoteListItemView extends Backbone.View
     title = @model.get('title')
     template = _.template $('#templates .note-index-actions-template').html()
     actions = template link: "/my_notes/#{id}"
-    @$el.html(title).append(actions)
+    @$el.html(title)
     time = new Date(Date.parse @model.get('created_at'))
     time_string = "#{time.getFullYear()}/#{time.getMonth() + 1}/#{time.getDate()}"
-    $('<div>').addClass('created_at').text(time_string).appendTo(@$el)
+    $('<div>').addClass('created_at').text(time_string).append(actions).appendTo(@$el)
     @
 
   isSelected: ->
@@ -122,6 +123,9 @@ class App.Views.NoteListItemView extends Backbone.View
 
   unselect: ->
     @$el.removeClass 'selected'
+
+  openNote: (e)->
+    location.href = "/my_notes/#{@model.get('id')}/edit"
 
   deleteNote: (e)->
     console.log 'delete'

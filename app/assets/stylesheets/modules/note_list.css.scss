@@ -69,7 +69,7 @@
     }
 
     &:hover {
-      background-color: #efd;
+      //background-color: #efd;
 
       .note-index-actions {
         display: block;
@@ -101,13 +101,25 @@
   padding: 0 4px;
   margin: 0;
   list-style: none;
-  background-color: #ddd;
   @include border-radius(4px);
   cursor: pointer;
 
   li {
-    padding: 0;
-    margin: 0;
-    border-width: 0;
+    float: left;
+    padding: 0px 4px;
+    margin-left: 4px;
+    border: 1px solid #aaa;
+    @include border-radius(4px);
+    text-align: center;
+    font-size: 120%;
+    color: #666;
+
+    &.edit {
+      width: 40px
+    }
+    
+    &:hover {
+      background-color: rgba(128, 128, 255, 0.5);
+    }
   }
 }
