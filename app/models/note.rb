@@ -21,6 +21,6 @@ class Note < ActiveRecord::Base
   end
 
   def strip_index_marking(s)
-    s.sub(/\A#+\s+/, '')
+    s.sub(/\A#+\s*/, '')
   end
 end
