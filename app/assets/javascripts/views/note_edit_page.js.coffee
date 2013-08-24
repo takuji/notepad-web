@@ -395,14 +395,19 @@ class App.Views.NoteMenuView extends Backbone.View
 
   initialize: ->
     @load()
+    @render()
 
   toggleSidebar: ->
     @sidebar = !@sidebar
     @save()
     @trigger 'change:sidebar'
+    @render()
 
   save: ->
     $.cookie 'show-sidebar', @sidebar
 
   load: ->
     @sidebar = $.cookie('show-sidebar') != 'false'
+
+  render: ->
+    @$('.toggle-sidebar i').toggle(@sidebar)
