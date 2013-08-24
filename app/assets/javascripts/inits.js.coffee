@@ -25,10 +25,6 @@ App.Inits =
         if note.dirty
           editor.save()
           "Quit?"
-        else
-          if note.isBlank()
-            note.destroy()
-            "Deleted!"
       attachGlobalKeyEvents(note)
       sidebar.on 'resized', => editor.sidebarResized(width: sidebar.width())
       rightSidebar.on 'resized', => editor.rightSidebarResized(width: rightSidebar.width())
