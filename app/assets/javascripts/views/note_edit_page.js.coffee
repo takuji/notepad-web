@@ -8,13 +8,60 @@ class App.Views.NoteView extends Backbone.View
     _.bindAll(@)
     @$window = $(window)
     @$window.on 'resize', @render
+
+    @_setupViews()
     @render()
+
+  _setupViews: ->
+    @sidebar = new App.Views.NoteEditorSidebarView(el: @$('.sidebar'))
+    @rightSidebar = new App.Views.RightSidebarView(el: @$('.right-sidebar'))
+    # editor pane
+    @editor = new App.Views.NoteEditorView(el: @$(".editor-container"))
+    @editor.listenTo @sidebar, 'resized', => @editor.sidebarResized(width: @sidebar.width())
+    @editor.listenTo @rightSidebar, 'resized', => @editor.rightSidebarResized(width: @rightSidebar.width())
+    @sidebar.trigger 'resized'
+    @rightSidebar.trigger 'resized'
+    @toggleSidebar($.cookie('show-sidebar') != 'false')
+    # menu
+    @menu = new App.Views.NoteMenuView()
+    @menu.on 'change:sidebar', @toggleSidebar
+
+  loadNote: (id)->
+    @model = new App.Models.Note(id: id)
+    @model.url = "/my_notes/#{id}.json"
+    @model.fetch
+      success: =>
+        @editor.setNote @model
+        @preview = new App.Views.NoteHtmlView(el: @$('.preview'), model: @model)
+        @noteIndexView = new App.Views.NoteIndexView(el: @$('.index'), model: @model)
+        @_attachGlobalKeyEvents(@model)
+      error: =>
+        console.log "Error!"
+
+  _attachGlobalKeyEvents: (note)->
+    $('body').on 'keydown', (e)=>
+      if @_isSaveKey(e)
+        e.preventDefault()
+        note.saveContent()
+
+  _isSaveKey: (e)->
+    if App.Views.isCtrlPressed(e)
+      e.keyCode == 83
+    else
+      false
 
   render: ->
     height = @$window.height() - @marginTop
     @$el.height(height)
     console.log height
     @
+
+  toggleSidebar: (flag)->
+    @sidebar.setVisible(flag)
+    if @sidebar.isVisible()
+      @editor.setLeft(@sidebar.width())
+    else
+      @editor.setLeft(0)
 
 #
 #
@@ -30,29 +77,28 @@ class App.Views.NoteEditorView extends Backbone.View
 
   initialize: (options)->
     @$textArea = @$('textarea').autosize().focus()
-    self = this
-    _.bindAll @
-    this.model.on "change", this.render
-    if this.model.get("content")
-      this.$textArea.val(this.model.get("content"))
-      setTimeout((-> self.$textArea.trigger("autosize")), 0) # タイマーで実行しないとautosizeが機能しなかったので已む無くそうしている。
-    #this.$textArea.trigger("autosize")
-    this.render()
-    this.timer = setInterval((-> self.checkChange()), 1000)
-    this.autoSaveInterval = 5 * 1000
+    @render()
+    if @model
+      @setNote @model
+
+  setNote: (note)->
+    @model = note
+    @model.on "change", @render, @
+    if @model.get("content")
+      @$textArea.val(@model.get("content"))
+      setTimeout((=> @$textArea.trigger("autosize")), 0) # タイマーで実行しないとautosizeが機能しなかったので已む無くそうしている。
+    @timer = setInterval((=> @checkChange()), 1000)
+    @autoSaveInterval = 5 * 1000
     $("#debug").toggle(this.debug)
     @$textArea.textareaCaret(cursorMoved: (params)=> @onCursorMoved(params))
+    $(window).bind "beforeunload", (event)=>
+      if @model.dirty
+        @save()
 
   render: ->
-    indexItems = this.model.indexItems
-    self = this
-    views = $.map(indexItems, (item)-> new App.Views.NoteIndexItemView(model:item, editor:self))
-    list = $("<ul>")
-    _.each(views, (view)->list.append(view.render().el))
-    $(".index").html(list);
-    if this.debug
-      if @lastKeyup
-        $("#debug > .last-keyup").html(@lastKeyup.toString())
+
+  setLeft: (left)->
+    @$el.css('left', left + 'px')
 
   update: (e)->
     @lastKeyup = new Date()
@@ -227,7 +273,7 @@ class App.Views.RightSidebarView extends Backbone.View
     @$handle.draggable
       axis: 'x'
       stop: (e, ui)=> @resize(e)
-#      drag: (e, ui)=> @resize(e)
+    @load()
 
   resize: (e)->
     console.log @$handle.offset()
@@ -267,6 +313,7 @@ class App.Views.NoteEditorSidebarView extends Backbone.View
       axis: 'x'
       appendTo: 'body'
       stop: (e, ui)=> @resize(e)
+    @load()
   #drag: (e, ui)=> @resize(e)
 
   resize: (e)->
@@ -287,17 +334,32 @@ class App.Views.NoteEditorSidebarView extends Backbone.View
     if w
       @$el.width +w
       @trigger 'resized'
+
+  setVisible: (flag)->
+    @$el.toggle(flag)
+
+  isVisible: ->
+    @$el.css('display') != 'none'
+
 #
 #
 #
 class App.Views.NoteIndexView extends Backbone.View
   initialize: ->
     _.bindAll(@)
-    @model.on 'change:content', @render
+    @model.on 'index_updated', @render
     @render()
 
   render: ->
-    #_.map(@model.indexItems, (item)-> new App.Views.NoteIndexItemView(model:item))
+    console.log "NoteIndexView.render"
+    indexItems = @model.indexItems
+    views = _.map(indexItems, (item)=> new App.Views.NoteIndexItemView(model: item))
+    list = $("<ul>")
+    _.each(views, (view)-> list.append(view.render().el))
+    @$el.html(list);
+    if this.debug
+      if @lastKeyup
+        $("#debug > .last-keyup").html(@lastKeyup.toString())
 
 #
 #
@@ -323,3 +385,29 @@ class App.Views.NoteIndexItemView extends Backbone.View
   scroll: ->
     lineNo = this.model.get("line")
     this.editor.scrollTo(lineNo)
+
+class App.Views.NoteMenuView extends Backbone.View
+  el: $('.note-editor-menu')
+  sidebar: true
+
+  events:
+    'click .toggle-sidebar': 'toggleSidebar'
+
+  initialize: ->
+    @load()
+    @render()
+
+  toggleSidebar: ->
+    @sidebar = !@sidebar
+    @save()
+    @trigger 'change:sidebar'
+    @render()
+
+  save: ->
+    $.cookie 'show-sidebar', @sidebar
+
+  load: ->
+    @sidebar = $.cookie('show-sidebar') != 'false'
+
+  render: ->
+    @$('.toggle-sidebar i').toggle(@sidebar)

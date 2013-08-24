@@ -7,6 +7,7 @@
         =link_to my_notes_path, method: :post do
           i.icon-plus
           |  New
+  =render 'context_navbar'
   ul.nav.navbar-nav.navbar-right
     -if user_signed_in?
       li.dropdown
