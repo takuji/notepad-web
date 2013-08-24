@@ -15,8 +15,12 @@ class App.Views.NoteView extends Backbone.View
   _setupViews: ->
     @sidebar = new App.Views.NoteEditorSidebarView(el: @$('.sidebar'))
     @rightSidebar = new App.Views.RightSidebarView(el: @$('.right-sidebar'))
-
-    @rightSidebar.on 'resized', => @rightSidebarResized(width: @rightSidebar.width())
+    # editor pane
+    @editor = new App.Views.NoteEditorView(el: @$(".editor-container"))
+    @editor.listenTo @sidebar, 'resized', => @editor.sidebarResized(width: @sidebar.width())
+    @editor.listenTo @rightSidebar, 'resized', => @editor.rightSidebarResized(width: @rightSidebar.width())
+    @sidebar.trigger 'resized'
+    @rightSidebar.trigger 'resized'
     # menu
     @menu = new App.Views.NoteMenuView()
     @menu.on 'change:sidebar', @toggleSidebar
@@ -26,7 +30,7 @@ class App.Views.NoteView extends Backbone.View
     @model.url = "/my_notes/#{id}.json"
     @model.fetch
       success: =>
-        @editor = new App.Views.NoteEditorView(el: @$(".editor-container"), model: @model)
+        @editor.setNote @model
         @preview = new App.Views.NoteHtmlView(el: @$('.preview'), model: @model)
         @noteIndexView = new App.Views.NoteIndexView(el: @$('.index'), model: @model)
         @_attachGlobalKeyEvents(@model)
@@ -72,16 +76,18 @@ class App.Views.NoteEditorView extends Backbone.View
 
   initialize: (options)->
     @$textArea = @$('textarea').autosize().focus()
-    self = this
-    _.bindAll @
-    this.model.on "change", this.render
-    if this.model.get("content")
-      this.$textArea.val(this.model.get("content"))
-      setTimeout((-> self.$textArea.trigger("autosize")), 0) # タイマーで実行しないとautosizeが機能しなかったので已む無くそうしている。
-    #this.$textArea.trigger("autosize")
-    this.render()
-    this.timer = setInterval((-> self.checkChange()), 1000)
-    this.autoSaveInterval = 5 * 1000
+    @render()
+    if @model
+      @setNote @model
+
+  setNote: (note)->
+    @model = note
+    @model.on "change", @render, @
+    if @model.get("content")
+      @$textArea.val(@model.get("content"))
+      setTimeout((=> @$textArea.trigger("autosize")), 0) # タイマーで実行しないとautosizeが機能しなかったので已む無くそうしている。
+    @timer = setInterval((=> @checkChange()), 1000)
+    @autoSaveInterval = 5 * 1000
     $("#debug").toggle(this.debug)
     @$textArea.textareaCaret(cursorMoved: (params)=> @onCursorMoved(params))
     $(window).bind "beforeunload", (event)=>
