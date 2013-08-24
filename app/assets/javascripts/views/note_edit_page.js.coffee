@@ -52,7 +52,11 @@ class App.Views.NoteView extends Backbone.View
     @
 
   toggleSidebar: (flag)->
-
+    @sidebar.setVisible(flag)
+    if @sidebar.isVisible()
+      @editor.setLeft(@sidebar.width())
+    else
+      @editor.setLeft(0)
 
 #
 #
@@ -85,6 +89,9 @@ class App.Views.NoteEditorView extends Backbone.View
         @save()
 
   render: ->
+
+  setLeft: (left)->
+    @$el.css('left', left + 'px')
 
   update: (e)->
     @lastKeyup = new Date()
@@ -320,6 +327,13 @@ class App.Views.NoteEditorSidebarView extends Backbone.View
     if w
       @$el.width +w
       @trigger 'resized'
+
+  setVisible: (flag)->
+    @$el.toggle(flag)
+
+  isVisible: ->
+    @$el.css('display') != 'none'
+
 #
 #
 #
