@@ -21,6 +21,7 @@ class App.Views.NoteView extends Backbone.View
     @editor.listenTo @rightSidebar, 'resized', => @editor.rightSidebarResized(width: @rightSidebar.width())
     @sidebar.trigger 'resized'
     @rightSidebar.trigger 'resized'
+    @toggleSidebar($.cookie('show-sidebar') != 'false')
     # menu
     @menu = new App.Views.NoteMenuView()
     @menu.on 'change:sidebar', @toggleSidebar
