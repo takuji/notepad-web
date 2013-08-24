@@ -8,13 +8,51 @@ class App.Views.NoteView extends Backbone.View
     _.bindAll(@)
     @$window = $(window)
     @$window.on 'resize', @render
+
+    @_setupViews()
     @render()
+
+  _setupViews: ->
+    @sidebar = new App.Views.NoteEditorSidebarView(el: @$('.sidebar'))
+    @rightSidebar = new App.Views.RightSidebarView(el: @$('.right-sidebar'))
+
+    @rightSidebar.on 'resized', => @rightSidebarResized(width: @rightSidebar.width())
+    # menu
+    @menu = new App.Views.NoteMenuView()
+    @menu.on 'change:sidebar', @toggleSidebar
+
+  loadNote: (id)->
+    @model = new App.Models.Note(id: id)
+    @model.url = "/my_notes/#{id}.json"
+    @model.fetch
+      success: =>
+        @editor = new App.Views.NoteEditorView(el: @$(".editor-container"), model: @model)
+        @preview = new App.Views.NoteHtmlView(el: @$('.preview'), model: @model)
+        @noteIndexView = new App.Views.NoteIndexView(el: @$('.index'), model: @model)
+        @_attachGlobalKeyEvents(@model)
+      error: =>
+        console.log "Error!"
+
+  _attachGlobalKeyEvents: (note)->
+    $('body').on 'keydown', (e)=>
+      if @_isSaveKey(e)
+        e.preventDefault()
+        note.saveContent()
+
+  _isSaveKey: (e)->
+    if App.Views.isCtrlPressed(e)
+      e.keyCode == 83
+    else
+      false
 
   render: ->
     height = @$window.height() - @marginTop
     @$el.height(height)
     console.log height
     @
+
+  toggleSidebar: (flag)->
+
 
 #
 #
@@ -42,17 +80,11 @@ class App.Views.NoteEditorView extends Backbone.View
     this.autoSaveInterval = 5 * 1000
     $("#debug").toggle(this.debug)
     @$textArea.textareaCaret(cursorMoved: (params)=> @onCursorMoved(params))
+    $(window).bind "beforeunload", (event)=>
+      if @model.dirty
+        @save()
 
   render: ->
-    indexItems = this.model.indexItems
-    self = this
-    views = $.map(indexItems, (item)-> new App.Views.NoteIndexItemView(model:item, editor:self))
-    list = $("<ul>")
-    _.each(views, (view)->list.append(view.render().el))
-    $(".index").html(list);
-    if this.debug
-      if @lastKeyup
-        $("#debug > .last-keyup").html(@lastKeyup.toString())
 
   update: (e)->
     @lastKeyup = new Date()
@@ -227,7 +259,7 @@ class App.Views.RightSidebarView extends Backbone.View
     @$handle.draggable
       axis: 'x'
       stop: (e, ui)=> @resize(e)
-#      drag: (e, ui)=> @resize(e)
+    @load()
 
   resize: (e)->
     console.log @$handle.offset()
@@ -267,6 +299,7 @@ class App.Views.NoteEditorSidebarView extends Backbone.View
       axis: 'x'
       appendTo: 'body'
       stop: (e, ui)=> @resize(e)
+    @load()
   #drag: (e, ui)=> @resize(e)
 
   resize: (e)->
@@ -293,11 +326,19 @@ class App.Views.NoteEditorSidebarView extends Backbone.View
 class App.Views.NoteIndexView extends Backbone.View
   initialize: ->
     _.bindAll(@)
-    @model.on 'change:content', @render
+    @model.on 'index_updated', @render
     @render()
 
   render: ->
-    #_.map(@model.indexItems, (item)-> new App.Views.NoteIndexItemView(model:item))
+    console.log "NoteIndexView.render"
+    indexItems = @model.indexItems
+    views = _.map(indexItems, (item)=> new App.Views.NoteIndexItemView(model: item))
+    list = $("<ul>")
+    _.each(views, (view)-> list.append(view.render().el))
+    @$el.html(list);
+    if this.debug
+      if @lastKeyup
+        $("#debug > .last-keyup").html(@lastKeyup.toString())
 
 #
 #
@@ -323,3 +364,24 @@ class App.Views.NoteIndexItemView extends Backbone.View
   scroll: ->
     lineNo = this.model.get("line")
     this.editor.scrollTo(lineNo)
+
+class App.Views.NoteMenuView extends Backbone.View
+  el: $('.note-editor-menu')
+  sidebar: true
+
+  events:
+    'click .toggle-sidebar': 'toggleSidebar'
+
+  initialize: ->
+    @load()
+
+  toggleSidebar: ->
+    @sidebar = !@sidebar
+    @save()
+    @trigger 'change:sidebar'
+
+  save: ->
+    $.cookie 'show-sidebar', @sidebar
+
+  load: ->
+    @sidebar = $.cookie('show-sidebar') != 'false'

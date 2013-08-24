@@ -3,20 +3,29 @@
 #
 class App.Models.Note extends Backbone.Model
   initialize: (options)->
+    @.on 'change:content', @updateIndex, @
+    @.on 'change:content', @updateTitle, @
     @._updateTitle(options.content)
     @._updateIndex(options.content);
     @.url = "/my_notes/#{options.id}"
 
   updateContent: (newContent)->
     if newContent != this.get("content")
-      this._updateTitle(newContent)
-      this._updateIndex(newContent)
-      this.set("content", newContent)
+      @._updateTitle(newContent)
+      @._updateIndex(newContent)
+      @.set("content", newContent)
       @dirty = true
 
   saveContent: ->
     this.save()
     @dirty = false
+
+  updateIndex: ->
+    @_updateIndex @get('content')
+    @trigger 'index_updated', @
+
+  updateTitle: ->
+    @_updateTitle @get('title')
 
   delete: ->
     console.log 'deleted!'
