@@ -1,3 +1,6 @@
+Backbone.View.prototype.isVisible = ->
+  @$el.css('display') != 'none'
+
 #
 #
 #
@@ -25,6 +28,7 @@ class App.Views.NoteView extends Backbone.View
     # menu
     @menu = new App.Views.NoteMenuView()
     @menu.on 'change:sidebar', @toggleSidebar
+    @menu.on 'change:preview', @toggleRightSidebar
 
   loadNote: (id)->
     @model = new App.Models.Note(id: id)
@@ -67,6 +71,13 @@ class App.Views.NoteView extends Backbone.View
       @editor.setLeft(@sidebar.width())
     else
       @editor.setLeft(0)
+
+  toggleRightSidebar: (flag)->
+    @rightSidebar.setVisible(flag)
+    if @rightSidebar.isVisible()
+      @editor.rightSidebarResized(width: @rightSidebar.width())
+    else
+      @editor.rightSidebarResized(width: 0)
 
 #
 #
@@ -303,6 +314,9 @@ class App.Views.RightSidebarView extends Backbone.View
       @$el.width +w
       @trigger 'resized'
 
+  setVisible: (flag)->
+    @$el.toggle(flag)
+
 #
 #
 #
@@ -396,29 +410,38 @@ class App.Views.NoteIndexItemView extends Backbone.View
 
 class App.Views.NoteMenuView extends Backbone.View
   el: $('.note-editor-menu')
-  sidebar: true
+  show_sidebar: true
+  show_preview: true
 
   events:
     'click .toggle-sidebar': 'toggleSidebar'
-    'click .show-sidebar-btn': 'toggleSidebar'
+    'click .toggle-preview': 'togglePreview'
 
   initialize: ->
     @load()
     @render()
 
   toggleSidebar: ->
-    @sidebar = !@sidebar
+    @show_sidebar = !@show_sidebar
     @save()
     @trigger 'change:sidebar'
     @render()
 
+  togglePreview: ->
+    @show_preview = !@show_preview
+    @save()
+    @trigger 'change:preview'
+    @render()
+
   save: ->
-    $.cookie 'show-sidebar', @sidebar
+    $.cookie 'show-sidebar', @show_sidebar
+    $.cookie 'show-preview', @show_preview
 
   load: ->
-    @sidebar = $.cookie('show-sidebar') != 'false'
-    @$('.show-sidebar-btn').toggleClass('active', @sidebar)
+    @show_sidebar = $.cookie('show-sidebar') != 'false'
+    @show_preview = $.cookie('show-preview') != 'false'
 
   render: ->
-    @$('.toggle-sidebar i').toggle(@sidebar)
-    console.log @sidebar
+    @$('.toggle-sidebar i').toggle(@show_sidebar)
+    @$('.toggle-preview i').toggle(@show_preview)
+    console.log @show_sidebar
