@@ -1,3 +1,6 @@
+Backbone.View.prototype.isVisible = ->
+  @$el.css('display') != 'none'
+
 #
 #
 #
@@ -25,6 +28,7 @@ class App.Views.NoteView extends Backbone.View
     # menu
     @menu = new App.Views.NoteMenuView()
     @menu.on 'change:sidebar', @toggleSidebar
+    @menu.on 'change:preview', @toggleRightSidebar
 
   loadNote: (id)->
     @model = new App.Models.Note(id: id)
@@ -67,6 +71,13 @@ class App.Views.NoteView extends Backbone.View
       @editor.setLeft(@sidebar.width())
     else
       @editor.setLeft(0)
+
+  toggleRightSidebar: (flag)->
+    @rightSidebar.setVisible(flag)
+    if @rightSidebar.isVisible()
+      @editor.rightSidebarResized(width: @rightSidebar.width())
+    else
+      @editor.rightSidebarResized(width: 0)
 
 #
 #
@@ -302,6 +313,9 @@ class App.Views.RightSidebarView extends Backbone.View
     if w
       @$el.width +w
       @trigger 'resized'
+
+  setVisible: (flag)->
+    @$el.toggle(flag)
 
 #
 #
