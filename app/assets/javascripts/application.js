@@ -21,7 +21,7 @@
 //= require textarea-helper
 //= require twitter/bootstrap
 //= require underscore-min
-//= require backbone-min
+//= require backbone
 //= require jquery.autosize-min
 //= require markdown/marked
 //= require highlight.js/highlight.pack
