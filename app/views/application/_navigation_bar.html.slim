@@ -4,9 +4,12 @@
     /%li=link_to "My Notes", my_notes_path
     -if user_signed_in?
       li
+        a href="#{my_notes_path}"
+          i.icon-list
+      li
         =link_to my_notes_path, method: :post do
+          i.icon-file-text-alt
           i.icon-plus
-          |  New
   =render 'context_navbar'
   ul.nav.navbar-nav.navbar-right
     -if user_signed_in?

@@ -34,9 +34,14 @@ class App.Views.NoteView extends Backbone.View
         @editor.setNote @model
         @preview = new App.Views.NoteHtmlView(el: @$('.preview'), model: @model)
         @noteIndexView = new App.Views.NoteIndexView(el: @$('.index'), model: @model)
+        @listenTo @noteIndexView, 'heading:selected', @onHeadingSelected
         @_attachGlobalKeyEvents(@model)
       error: =>
         console.log "Error!"
+
+  onHeadingSelected: (heading)->
+    lineNo = heading.get('line')
+    @editor.scrollTo(lineNo)
 
   _attachGlobalKeyEvents: (note)->
     $('body').on 'keydown', (e)=>
@@ -354,6 +359,8 @@ class App.Views.NoteIndexView extends Backbone.View
     console.log "NoteIndexView.render"
     indexItems = @model.indexItems
     views = _.map(indexItems, (item)=> new App.Views.NoteIndexItemView(model: item))
+    @stopListening()
+    _.each views, (view)=> @listenTo(view, 'clicked', @headingClicked)
     list = $("<ul>")
     _.each(views, (view)-> list.append(view.render().el))
     @$el.html(list);
@@ -361,6 +368,8 @@ class App.Views.NoteIndexView extends Backbone.View
       if @lastKeyup
         $("#debug > .last-keyup").html(@lastKeyup.toString())
 
+  headingClicked: (heading)->
+    @trigger 'heading:selected', heading
 #
 #
 #
@@ -369,22 +378,21 @@ class App.Views.NoteIndexItemView extends Backbone.View
   className: "indexItem"
   mark: '<i class="icon-caret-right"></i>'
   events:
-    "click": "scroll"
+    "click": "onClicked"
 
   initialize: (options)->
     @editor = options.editor
 
   render: ->
-    content = this.model.get("title") || "?"
-    @$el.html(@mark + ' ' + content).attr("data-line":this.model.get("line"), "data-depth":this.model.get("depth"))
+    content = @model.get("title") || "?"
+    @$el.html(@mark + ' ' + content).attr("data-line": @model.get("line"), "data-depth": @model.get("depth"))
     @
 
   toElem: ->
-    this.$el.text(this.model.get("title") || "?").attr("data-line":this.model.get("line"), "data-depth":this.model.get("depth"))
+    this.$el.text(@model.get("title") || "?").attr("data-line": @model.get("line"), "data-depth": @model.get("depth"))
 
-  scroll: ->
-    lineNo = this.model.get("line")
-    this.editor.scrollTo(lineNo)
+  onClicked: ->
+    @trigger 'clicked', @model
 
 class App.Views.NoteMenuView extends Backbone.View
   el: $('.note-editor-menu')
@@ -392,6 +400,7 @@ class App.Views.NoteMenuView extends Backbone.View
 
   events:
     'click .toggle-sidebar': 'toggleSidebar'
+    'click .show-sidebar-btn': 'toggleSidebar'
 
   initialize: ->
     @load()
@@ -408,6 +417,8 @@ class App.Views.NoteMenuView extends Backbone.View
 
   load: ->
     @sidebar = $.cookie('show-sidebar') != 'false'
+    @$('.show-sidebar-btn').toggleClass('active', @sidebar)
 
   render: ->
     @$('.toggle-sidebar i').toggle(@sidebar)
+    console.log @sidebar
