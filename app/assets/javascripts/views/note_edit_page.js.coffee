@@ -337,9 +337,12 @@ class App.Views.NoteEditorSidebarView extends Backbone.View
 
   resize: (e)->
     console.log e
-    @$el.width @$handle.position().left
-    @save()
-    @trigger 'resized'
+    if @$handle.position().left > 30
+      @$el.width @$handle.position().left
+      @save()
+      @trigger 'resized'
+    else
+      @$handle.css 'left', @$el.width()
 
   width: ->
     @$el.width() + @$handle.width()
@@ -351,7 +354,7 @@ class App.Views.NoteEditorSidebarView extends Backbone.View
   load: ->
     w = $.cookie('sidebar-width')
     if w
-      @$el.width +w
+      @$el.width(+w)
       @trigger 'resized'
 
   setVisible: (flag)->
