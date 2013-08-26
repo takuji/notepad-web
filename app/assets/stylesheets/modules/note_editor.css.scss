@@ -157,8 +157,6 @@ body#my_notes-show,#my_notes-edit {
   }
 }
 
-
-
 .editor-container {
   position: absolute;
 
@@ -234,4 +232,15 @@ body#my_notes-show,#my_notes-edit {
       font-size: 100%;
     }
   }
+}
+
+.image-panel {
+  display: none;
+  z-index: 2;
+  position: absolute;
+  top: 100px;
+  left: 40px;
+  width: 400px;
+  height: 300px;
+  background-color: #ffff00;
 }

@@ -415,10 +415,12 @@ class App.Views.NoteMenuView extends Backbone.View
   el: $('.note-editor-menu')
   show_sidebar: true
   show_preview: true
+  show_image_panel: false
 
   events:
     'click .toggle-sidebar': 'toggleSidebar'
     'click .toggle-preview': 'togglePreview'
+    'click .toggle-image-panel': 'toggleImagePanel'
 
   initialize: ->
     @load()
@@ -436,6 +438,13 @@ class App.Views.NoteMenuView extends Backbone.View
     @trigger 'change:preview'
     @render()
 
+  toggleImagePanel: ->
+    alert "fufu"
+    @show_image_panel = !@show_image_panel
+    if @show_image_panel
+      panel = new App.Views.ImagePanel()
+      panel.show()
+
   save: ->
     $.cookie 'show-sidebar', @show_sidebar
     $.cookie 'show-preview', @show_preview
@@ -448,3 +457,22 @@ class App.Views.NoteMenuView extends Backbone.View
     @$('.toggle-sidebar i').toggle(@show_sidebar)
     @$('.toggle-preview i').toggle(@show_preview)
     console.log @show_sidebar
+
+class App.Views.ImagePanel extends Backbone.View
+  el: $('#image-panel')
+
+  initialize: ->
+
+  render: ->
+    @
+
+  show: ->
+    @$el.show()
+    @_upload()
+
+  _upload: ->
+    @$('#image_file').fileupload
+      dataType: 'json'
+      done: (e, data)=>
+        _.each data.result.files, (file, i)=>
+          console.log i
