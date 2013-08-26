@@ -18,6 +18,7 @@
 //= require jquery.ui.draggable
 //= require jquery.cookie
 //= require jquery.appear
+//= require jquery.fileupload
 //= require textarea-helper
 //= require twitter/bootstrap
 //= require underscore-min
