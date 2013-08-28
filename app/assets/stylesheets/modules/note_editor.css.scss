@@ -20,12 +20,13 @@ $handle-background-color: #ccc;
 }
 
 body#my_notes-show,#my_notes-edit {
-  background-color: $note-background-color;
+  //background-color: $note-background-color;
+  padding-top: 44px;
 }
 
 .note {
   position: relative;
-  padding: 0;
+  box-sizing: border-box;
 
 
   &::after {
@@ -44,7 +45,7 @@ body#my_notes-show,#my_notes-edit {
       bottom: 0;
       right: -$handle-width;
       width: $handle-width;
-      background-color: $handle-background-color;
+      //background-color: $handle-background-color;
       cursor: col-resize;
 
       &.ui-draggable-dragging {
@@ -61,6 +62,9 @@ body#my_notes-show,#my_notes-edit {
     background-color: $index-background-color;
     overflow: scroll;
     height: 100%;
+    border: 1px #ddd solid;
+    @include border-radius(10px);
+    @include box-shadow(rgba(#ccc, 0.5) 0px 0px 4px 2px inset);
     //@include border-radius(6px);
 
     ul {
@@ -74,7 +78,7 @@ body#my_notes-show,#my_notes-edit {
         white-space: nowrap;
 
         &:hover {
-          background-color: #f8f8f8;
+          background-color: #f8e0e0;
         }
 
         i {
