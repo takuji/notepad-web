@@ -25,6 +25,7 @@ class App.Views.NoteView extends Backbone.View
     @sidebar.trigger 'resized'
     @rightSidebar.trigger 'resized'
     @toggleSidebar($.cookie('show-sidebar') != 'false')
+    @toggleRightSidebar($.cookie('show-preview') != 'false')
     # menu
     @menu = new App.Views.NoteMenuView()
     @menu.on 'change:sidebar', @toggleSidebar

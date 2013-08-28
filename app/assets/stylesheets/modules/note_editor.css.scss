@@ -139,6 +139,7 @@ body#my_notes-show,#my_notes-edit {
     right: 0px;
     z-index: 0;
     overflow-y: scroll;
+    padding: 0 2px 4px 2px;
 
     textarea {
       width:100%;
@@ -146,15 +147,12 @@ body#my_notes-show,#my_notes-edit {
       padding: 10px;
       resize: none;
       margin: 0px;
-      border: 0;
-      //border-bottom: 1px dotted #888;
-      //background-color: #fff;
-      //@include border-radius(6px);
-      @include box-shadow(red 0px 0px 0px);
+      @include box-shadow(rgba(#ccc, 0.8) 1px 1px 2px);
+      border: 1px solid rgba(#ccc, 0.8);
       //outline: 0px none transparent;
       outline: none !important;
       &:focus {
-        border: 0;
+        //border: 0;
         outline: 0px none transparent !important;
       }
     }
@@ -187,7 +185,7 @@ body#my_notes-show,#my_notes-edit {
     bottom: 0;
     left: 0px;
     width: $handle-width;
-    background-color: $handle-background-color;
+    //background-color: $handle-background-color;
     cursor: col-resize;
     z-index: 2;
 
@@ -204,7 +202,7 @@ body#my_notes-show,#my_notes-edit {
   top: 0;
   bottom: 0;
   //@include border-radius(6px 0px 0px 6px);
-  background-color: #fff;
+  //background-color: #fff;
   overflow-y: scroll;
   overflow-x: visible;
 
