@@ -4,10 +4,9 @@ class ImagesController < ApplicationController
   def create
     logger.info 'ImagesController#create'
     images = params[:file].map do |file|
-      image = Image.new
-      image.file = file
-      image.save
-      image
+      current_user.images.create do |image|
+        image.file = file
+      end
     end
     @images = {files: images.map{|image| image_to_hash(image)}}
     logger.info @images
