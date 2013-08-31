@@ -10,7 +10,9 @@
       .handle
       .preview-pane
         .preview
-
+    input.image-uploader type="file" name="file[]" data-url="/images" multiple=true
 #debug
   .last-keyup
   .time-since-last-change
+
+=render 'image_panel'

@@ -16,6 +16,7 @@ gem 'anjlab-bootstrap-rails', :require => 'bootstrap-rails', :github => 'anjlab/
 gem 'haml-rails'
 gem 'slim-rails'
 gem 'kaminari'
+gem 'carrierwave'
 
 gem 'sass-rails', '~> 4.0.0'
 gem 'uglifier', '>= 1.3.0'

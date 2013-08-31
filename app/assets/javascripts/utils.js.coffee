@@ -60,3 +60,12 @@ $.fn.extend
       }
     else
       prevPos
+
+App.Utils.binaryFromImage = (image)->
+  canvas = document.createElement("canvas")
+  canvas.width = image.width
+  canvas.height = image.height;
+  ctx = canvas.getContext("2d")
+  ctx.drawImage(image, 0, 0)
+  dataURL = canvas.toDataURL("image/png");
+  dataURL.replace(/^data:image\/(png|jpg);base64,/, "");

@@ -5,7 +5,7 @@ Backbone.View.prototype.isVisible = ->
 #
 #
 class App.Views.NoteView extends Backbone.View
-  marginTop: 40
+  marginTop: 44
 
   initialize: ->
     _.bindAll(@)
@@ -25,6 +25,7 @@ class App.Views.NoteView extends Backbone.View
     @sidebar.trigger 'resized'
     @rightSidebar.trigger 'resized'
     @toggleSidebar($.cookie('show-sidebar') != 'false')
+    @toggleRightSidebar($.cookie('show-preview') != 'false')
     # menu
     @menu = new App.Views.NoteMenuView()
     @menu.on 'change:sidebar', @toggleSidebar
@@ -97,6 +98,18 @@ class App.Views.NoteEditorView extends Backbone.View
     if @model
       @setNote @model
 
+    @_initImageUploader()
+
+  _initImageUploader: ->
+    @$('.image-uploader').fileupload
+      dataType: 'json'
+      done: (e, data)=>
+        _.each data.result.files, (file, i)=>
+          console.log i
+          @_insertAtCaretPos("![photo](#{file.url})")
+          @trigger 'image:uploaded', file
+      dropZone: @$textArea
+
   setNote: (note)->
     @model = note
     @model.on "change", @render, @
@@ -162,10 +175,13 @@ class App.Views.NoteEditorView extends Backbone.View
     line[0] == '#'
 
   _insertTabAtCaretPos: ->
+    @_insertAtCaretPos("\t")
+
+  _insertAtCaretPos: (text)->
     content = @getContent()
     pos = @caretPos.pos
-    @$textArea.val content.substring(0, pos) + "\t" + content.substring(pos)
-    @$textArea.setCaretPosition(pos + 1)
+    @$textArea.val content.substring(0, pos) + text + content.substring(pos)
+    @$textArea.setCaretPosition(pos + text.length)
 
   getContent: ->
     @$textArea.val()
@@ -251,9 +267,15 @@ class App.Views.NoteHtmlView extends Backbone.View
     @resize()
 
   render: ->
-    @$el.html @html
+    html = @_escapeImageSrc(@html)
+    $content = $(html)
+    $content.find('img').imagecache()
+    @$el.html $content
     @hightlightSyntax()
     @
+
+  _escapeImageSrc: (html)->
+    html.replace /\ssrc=/g, ' data-src='
 
   compile: ->
     @html = marked (@model.get('content') || '')
@@ -415,10 +437,12 @@ class App.Views.NoteMenuView extends Backbone.View
   el: $('.note-editor-menu')
   show_sidebar: true
   show_preview: true
+  show_image_panel: false
 
   events:
     'click .toggle-sidebar': 'toggleSidebar'
     'click .toggle-preview': 'togglePreview'
+    'click .toggle-image-panel': 'toggleImagePanel'
 
   initialize: ->
     @load()
@@ -436,6 +460,13 @@ class App.Views.NoteMenuView extends Backbone.View
     @trigger 'change:preview'
     @render()
 
+  toggleImagePanel: ->
+    alert "fufu"
+    @show_image_panel = !@show_image_panel
+    if @show_image_panel
+      panel = new App.Views.ImagePanel()
+      panel.show()
+
   save: ->
     $.cookie 'show-sidebar', @show_sidebar
     $.cookie 'show-preview', @show_preview
@@ -448,3 +479,23 @@ class App.Views.NoteMenuView extends Backbone.View
     @$('.toggle-sidebar i').toggle(@show_sidebar)
     @$('.toggle-preview i').toggle(@show_preview)
     console.log @show_sidebar
+
+class App.Views.ImagePanel extends Backbone.View
+  el: $('#image-panel')
+
+  initialize: ->
+
+  render: ->
+    @
+
+  show: ->
+    @$el.show()
+    @_upload()
+
+  _upload: ->
+    @$('#image_file').fileupload
+      dataType: 'json'
+      done: (e, data)=>
+        _.each data.result.files, (file, i)=>
+          console.log i
+          @trigger 'image:uploaded', file

@@ -48,6 +48,11 @@
   box-sizing: border-box;
   overflow: scroll;
   padding-top: 20px;
+
+  img {
+    max-width: 640px;
+    max-height: 480px;
+  }
 }
 
 .note-list {

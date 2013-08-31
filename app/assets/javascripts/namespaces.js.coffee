@@ -1,4 +1,5 @@
 App =
+  Utils: {}
   Validation: {}
   Views: {}
   Models: {}
