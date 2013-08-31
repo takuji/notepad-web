@@ -98,6 +98,18 @@ class App.Views.NoteEditorView extends Backbone.View
     if @model
       @setNote @model
 
+    @_initImageUploader()
+
+  _initImageUploader: ->
+    @$('.image-uploader').fileupload
+      dataType: 'json'
+      done: (e, data)=>
+        _.each data.result.files, (file, i)=>
+          console.log i
+          @_insertAtCaretPos("![photo](#{file.url})")
+          @trigger 'image:uploaded', file
+      dropZone: @$textArea
+
   setNote: (note)->
     @model = note
     @model.on "change", @render, @
@@ -163,10 +175,13 @@ class App.Views.NoteEditorView extends Backbone.View
     line[0] == '#'
 
   _insertTabAtCaretPos: ->
+    @_insertAtCaretPos("\t")
+
+  _insertAtCaretPos: (text)->
     content = @getContent()
     pos = @caretPos.pos
-    @$textArea.val content.substring(0, pos) + "\t" + content.substring(pos)
-    @$textArea.setCaretPosition(pos + 1)
+    @$textArea.val content.substring(0, pos) + text + content.substring(pos)
+    @$textArea.setCaretPosition(pos + text.length)
 
   getContent: ->
     @$textArea.val()
@@ -483,3 +498,4 @@ class App.Views.ImagePanel extends Backbone.View
       done: (e, data)=>
         _.each data.result.files, (file, i)=>
           console.log i
+          @trigger 'image:uploaded', file
