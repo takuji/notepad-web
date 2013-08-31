@@ -26,6 +26,7 @@
 //= require jquery.autosize-min
 //= require markdown/marked
 //= require highlight.js/highlight.pack
+//= require jquery.imagecache
 //= require namespaces
 //= require utils
 //= require models
