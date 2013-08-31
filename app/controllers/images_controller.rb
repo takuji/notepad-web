@@ -1,4 +1,5 @@
 class ImagesController < ApplicationController
+  before_filter :authenticate_user!
 
   def create
     logger.info 'ImagesController#create'
@@ -14,8 +15,8 @@ class ImagesController < ApplicationController
   end
 
   def show
-    @image = Image.find params[:id]
-    send_file @image.file.current_path
+    @image = current_user.images.find params[:id]
+    send_file @image.file.current_path, disposition: :inline
   end
 
 private
