@@ -2,23 +2,34 @@ class ImagesController < ApplicationController
 
   def create
     logger.info 'ImagesController#create'
-    @images = {
-      files: [
-        {
-          name: 'rails.png',
-          size: 6646,
-          url: image_url('rails.png'),
-          thumbnailUrl: image_url('rails.png'),
-          deleteUrl: image_url('rails.png'),
-          deleteType: 'DELETE'
-        }
-      ]
-    }
+    images = params[:file].map do |file|
+      image = Image.new
+      image.file = file
+      image.save
+      image
+    end
+    @images = {files: images.map{|image| image_to_hash(image)}}
+    logger.info @images
     render json: @images
   end
 
   def show
-    path = Rails.root.join 'public/images/rails.png'
-    send_file path
+    @image = Image.find params[:id]
+    send_file @image.file.current_path
+  end
+
+private
+
+  def image_to_hash(image)
+    file = image.file
+    url = image_url image
+    {
+      name: file.identifier,
+      size: file.size,
+      url: url,
+      thumbnailUrl: url,
+      deleteUrl: url,
+      deleteType: 'DELETE'
+    }
   end
 end
