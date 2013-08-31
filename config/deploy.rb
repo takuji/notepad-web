@@ -66,7 +66,7 @@ namespace :deploy do
   desc "Make the symlink to public/uploads directory"
   task :symlink_uploads do
      run "mkdir -p #{shared_path}/uploads"
-     run "ln -nfs #{shared_path}/uploads  #{current_path}/public/uploads"
+     run "ln -nfs #{shared_path}/uploads  #{release_path}/public/uploads"
   end
 end
 
