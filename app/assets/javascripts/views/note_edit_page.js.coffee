@@ -252,9 +252,15 @@ class App.Views.NoteHtmlView extends Backbone.View
     @resize()
 
   render: ->
-    @$el.html @html
+    html = @_escapeImageSrc(@html)
+    $content = $(html)
+    $content.find('img').imagecache()
+    @$el.html $content
     @hightlightSyntax()
     @
+
+  _escapeImageSrc: (html)->
+    html.replace /\ssrc=/g, ' data-src='
 
   compile: ->
     @html = marked (@model.get('content') || '')
