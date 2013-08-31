@@ -21,6 +21,7 @@ class User < ActiveRecord::Base
   end
 
   has_many :notes
+  has_many :images
 
   def latest_notes
     notes.active.order("updated_at DESC")

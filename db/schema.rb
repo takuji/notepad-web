@@ -11,13 +11,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130829160949) do
+ActiveRecord::Schema.define(version: 20130831123813) do
 
   create_table "images", force: true do |t|
     t.string   "file"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "user_id"
   end
+
+  add_index "images", ["user_id"], name: "index_images_on_user_id", using: :btree
 
   create_table "notes", force: true do |t|
     t.integer  "user_id"
