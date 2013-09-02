@@ -238,6 +238,10 @@ body#my_notes-show,#my_notes-edit {
   img {
     max-width: 320px;
   }
+
+  pre > code {
+    background: whitesmoke;
+  }
 }
 
 .image-panel {
