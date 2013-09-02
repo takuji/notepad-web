@@ -107,6 +107,7 @@ class App.Views.NoteEditorView extends Backbone.View
         _.each data.result.files, (file, i)=>
           console.log i
           @_insertAtCaretPos("![photo](#{file.url})")
+          @_updateModel()
           @trigger 'image:uploaded', file
       dropZone: @$textArea
 
@@ -131,7 +132,10 @@ class App.Views.NoteEditorView extends Backbone.View
 
   update: (e)->
     @lastKeyup = new Date()
-    this.model.updateContent($("textarea", this.el).val())
+    @_updateModel()
+
+  _updateModel: ->
+    @model.updateContent(@$textArea.val())
 
   lineCount: -> this.$textArea.val().split("\n").length;
 
