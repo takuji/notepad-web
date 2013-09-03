@@ -17,6 +17,7 @@ gem 'haml-rails'
 gem 'slim-rails'
 gem 'kaminari'
 gem 'carrierwave'
+gem 'evernote_oauth'
 
 gem 'sass-rails', '~> 4.0.0'
 gem 'uglifier', '>= 1.3.0'
