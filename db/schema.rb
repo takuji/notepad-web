@@ -11,13 +11,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130903144708) do
+ActiveRecord::Schema.define(version: 20130903164930) do
 
   create_table "evernote_accounts", force: true do |t|
     t.integer  "user_id"
     t.string   "oauth_token"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "notebook_name", default: "Notepad"
   end
 
   add_index "evernote_accounts", ["user_id"], name: "index_evernote_accounts_on_user_id", using: :btree

@@ -19,6 +19,16 @@ class EvernoteAccount < ActiveRecord::Base
     note_store.listNotebooks(oauth_token)
   end
 
+  # Returns the notebook for this application
+  def notebook
+    @notebook ||= note_store.listNotebooks.select{|notebook| notebook.name == notebook_name}.first
+  end
+
+  def create_notebook
+    notebook = Evernote::EDAM::Type::Notebook.new
+    notebook.name = notebook_name
+    note_store.createNotebook oauth_token, notebook
+  end
 
 private
 
