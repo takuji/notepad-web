@@ -18,6 +18,8 @@ Notepad::Application.routes.draw do
     member do
       get :auth_callback
     end
+
+    resources :notebooks, controller: :evernote_notebooks
   end
 
   # The priority is based upon order of creation:

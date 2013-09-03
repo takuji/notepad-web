@@ -14,4 +14,20 @@ class EvernoteAccount < ActiveRecord::Base
   after_destroy do
     user.update_column :use_evernote, false
   end
+
+  def notebooks
+    note_store.listNotebooks(oauth_token)
+  end
+
+
+private
+
+  def note_store
+    @note_store ||= client.note_store
+  end
+
+  def client
+    p oauth_token
+    @client ||= EvernoteOAuth::Client.new(token: oauth_token)
+  end
 end

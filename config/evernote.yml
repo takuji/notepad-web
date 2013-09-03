@@ -1,12 +1,12 @@
 development:
-  :consumer_key: shimo-3428
-  :consumer_secret: e9eedfb301f1d27f
-  :sandbox: true
+  consumer_key: shimo-3428
+  consumer_secret: e9eedfb301f1d27f
+  sandbox: true
 test:
-  :consumer_key: shimo-3428
-  :consumer_secret: e9eedfb301f1d27f
-  :sandbox: true
+  consumer_key: shimo-3428
+  consumer_secret: e9eedfb301f1d27f
+  sandbox: true
 production:
-  :consumer_key: shimo-3428
-  :consumer_secret: e9eedfb301f1d27f
-  :sandbox: true
+  consumer_key: shimo-3428
+  consumer_secret: e9eedfb301f1d27f
+  sandbox: true
