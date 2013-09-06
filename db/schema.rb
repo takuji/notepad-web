@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130903164930) do
+ActiveRecord::Schema.define(version: 20130906171702) do
 
   create_table "evernote_accounts", force: true do |t|
     t.integer  "user_id"
@@ -35,11 +35,12 @@ ActiveRecord::Schema.define(version: 20130903164930) do
   create_table "notes", force: true do |t|
     t.integer  "user_id"
     t.text     "content"
-    t.datetime "created_at",                   null: false
-    t.datetime "updated_at",                   null: false
+    t.datetime "created_at",                    null: false
+    t.datetime "updated_at",                    null: false
     t.text     "html_content"
     t.string   "title"
-    t.boolean  "deleted",      default: false
+    t.boolean  "deleted",       default: false
+    t.string   "evernote_guid"
   end
 
   add_index "notes", ["user_id"], name: "index_notes_on_user_id", using: :btree

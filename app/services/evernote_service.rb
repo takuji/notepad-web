@@ -24,4 +24,8 @@ class EvernoteService
     logger.error e
     false
   end
+
+  def create_note(note)
+    created_note = evernote_account.create_note note
+  end
 end
