@@ -14,6 +14,14 @@ Notepad::Application.routes.draw do
 
   resources :images
 
+  resource :evernote, controller: :evernote do
+    member do
+      get :auth_callback
+    end
+
+    resources :notebooks, controller: :evernote_notebooks
+  end
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

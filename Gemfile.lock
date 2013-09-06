@@ -78,6 +78,10 @@ GEM
       warden (~> 1.2.3)
     diff-lcs (1.2.4)
     erubis (2.7.0)
+    evernote-thrift (1.25.0)
+    evernote_oauth (0.2.1)
+      evernote-thrift
+      oauth (>= 0.4.1)
     execjs (1.4.0)
       multi_json (~> 1.0)
     factory_girl (4.2.0)
@@ -242,6 +246,7 @@ DEPENDENCIES
   coffee-rails (~> 4.0.0)
   compass-rails (~> 2.0.alpha.0)
   devise
+  evernote_oauth
   factory_girl_rails
   font-awesome-rails
   haml-rails

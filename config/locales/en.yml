@@ -8,3 +8,7 @@ en:
       confirm_to_delete: "Delete?"
   session:
     sign_out: "Sign out"
+  evernote:
+    messages:
+      authenticated: "Connected with your Evernote account."
+      failed_to_authenticate: "Failed to connect with your Evernote account."
