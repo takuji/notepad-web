@@ -465,7 +465,6 @@ class App.Views.NoteMenuView extends Backbone.View
     @render()
 
   toggleImagePanel: ->
-    alert "fufu"
     @show_image_panel = !@show_image_panel
     if @show_image_panel
       panel = new App.Views.ImagePanel()
