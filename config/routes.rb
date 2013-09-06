@@ -22,6 +22,8 @@ Notepad::Application.routes.draw do
     resources :notebooks, controller: :evernote_notebooks
   end
 
+  resources :settings
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

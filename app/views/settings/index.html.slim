@@ -1,0 +1,11 @@
+section
+  h2.exports Exports
+
+  h3.service Evernote
+  -if current_user.use_evernote?
+    | Your are already using Evernote
+  -else
+    =link_to 'Connect with Evernote', evernote_path, method: :post, class: 'btn btn-default'
+
+  h3.service Hatena Blog
+  | Coming soon?
