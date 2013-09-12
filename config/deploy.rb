@@ -53,6 +53,12 @@ namespace :deploy do
     #run "cd #{current_path} && RAILS_ENV=#{rails_env} script/delayed_job start"
   end
 
+  desc "Restart unicorn"
+  task :restart2, :roles => :app, :except => { :no_release => true } do
+    stop
+    start
+  end
+
   desc "Update, migrate, and restart"
   task :umr do
     transaction do
