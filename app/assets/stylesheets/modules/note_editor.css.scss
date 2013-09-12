@@ -261,8 +261,8 @@ input.image-uploader {
 
 .note-state {
   position: absolute;
-  top: 2px;
-  right: 4px;
+  top: 4px;
+  right: 5px;
   width: 16px;
   height: 16px;
   @include border-radius(8px);
@@ -273,6 +273,6 @@ input.image-uploader {
   }
   
   &.is-modified {
-    background-color: rgba(#888888, 0.5);
+    background-color: rgba(#44ff44, 0.5);
   }
 }
