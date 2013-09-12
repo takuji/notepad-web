@@ -121,6 +121,7 @@ class App.Views.NoteEditorView extends Backbone.View
     @autoSaveInterval = 5 * 1000
     $("#debug").toggle(this.debug)
     @$textArea.textareaCaret(cursorMoved: (params)=> @onCursorMoved(params))
+    @stateView = new App.Views.NoteStateView(el: @$('.note-state'), model: @model)
     $(window).bind "beforeunload", (event)=>
       if @model.dirty
         @save()
@@ -256,6 +257,14 @@ class App.Views.NoteEditorView extends Backbone.View
 
   updateCaretPos: ->
     @caretPos = @$textArea.getCaretLocation()
+
+class App.Views.NoteStateView extends Backbone.View
+  initialize: ->
+    @model.on 'change:content', @onStateChanged, @
+    @model.on 'saved', @onStateChanged, @
+
+  onStateChanged: ->
+    @$el.toggleClass 'is-modified', @model.isModified()
 
 #
 #

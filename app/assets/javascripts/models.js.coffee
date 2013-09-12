@@ -11,14 +11,18 @@ class App.Models.Note extends Backbone.Model
 
   updateContent: (newContent)->
     if newContent != this.get("content")
+      @dirty = true
       @._updateTitle(newContent)
       @._updateIndex(newContent)
       @.set("content", newContent)
-      @dirty = true
 
   saveContent: ->
     this.save()
     @dirty = false
+    @trigger 'saved'
+
+  isModified: ->
+    !!@dirty
 
   updateIndex: ->
     @_updateIndex @get('content')

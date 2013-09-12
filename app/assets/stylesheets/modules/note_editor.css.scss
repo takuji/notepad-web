@@ -258,3 +258,21 @@ body#my_notes-show,#my_notes-edit {
 input.image-uploader {
   display: none;
 }
+
+.note-state {
+  position: absolute;
+  top: 2px;
+  right: 4px;
+  width: 16px;
+  height: 16px;
+  @include border-radius(8px);
+  //background-color: rgba(limegreen, 0.5);
+
+  &.is-saved {
+
+  }
+  
+  &.is-modified {
+    background-color: rgba(#888888, 0.5);
+  }
+}
