@@ -19,6 +19,7 @@ class App.Views.NoteListPage extends Backbone.View
     @$el.height($window.height() - 44)
 
   replaceNoteList: (notes)->
+    delete @note_list_view
     @note_list_view = new App.Views.NoteListView(el: @$('.note-list-pane'), collection: notes)
     @note_list_view.render()
 
