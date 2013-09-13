@@ -109,7 +109,7 @@ class App.Views.NoteEditorView extends Backbone.View
           @_insertAtCaretPos("![photo](#{file.url})")
           @_updateModel()
           @trigger 'image:uploaded', file
-      dropZone: @$textArea
+      #dropZone: @$textArea
 
   setNote: (note)->
     @model = note
