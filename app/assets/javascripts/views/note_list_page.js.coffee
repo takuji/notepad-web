@@ -1,11 +1,26 @@
 class App.Views.NoteListPage extends Backbone.View
   initialize: ->
     $(window).on 'resize', => @resize()
+    @search = new App.Views.NoteSearchView(el: $('.note-search'))
+    @listenTo @search, 'search:success', @replaceNoteList
     @resize()
+    @_initSubviews()
+
+  _initSubviews: ->
+    notes = new App.Collections.NoteList([])
+    notes.url = '/my_notes'
+    @note_list_view = new App.Views.NoteListView(el: @$('.note-list-pane'), collection: notes)
+    preview = new App.Views.NotePreviewView(el: $('.note-preview'))
+    @note_list_view.on 'noteSelected', (id)-> preview.show(id)
+    @note_list_view.fetchMore()
 
   resize: ->
     $window = $(window)
     @$el.height($window.height() - 44)
+
+  replaceNoteList: (notes)->
+    @note_list_view = new App.Views.NoteListView(el: @$('.note-list-pane'), collection: notes)
+    @note_list_view.render()
 
 #
 #
@@ -28,6 +43,7 @@ class App.Views.NoteListView extends Backbone.View
     @$more = @$('.more')
     @collection.on 'selected', @selectNote
     @$noteList = @$('.note-list')
+    @$noteList.empty()
 
   render: ->
     @collection.each (note)=>
@@ -161,3 +177,35 @@ class App.Views.NotePreviewView extends Backbone.View
   hightlightSyntax: ->
     @$('pre code').each (i, elm)->
       hljs.highlightBlock(elm)
+
+
+class App.Views.NoteSearchView extends Backbone.View
+  el: $('.note-search')
+
+  events:
+    'click .btn': 'search'
+
+  search: (e)->
+    e.preventDefault()
+    q = @$('#q').val()
+    if !!q
+      @_searchNotes q
+    else
+      @_loadNotes()
+
+  _searchNotes: (q)->
+    @collection = new App.Collections.NoteList([])
+    encoded_q = encodeURIComponent(q)
+    @collection.url = "/my_notes/search?q=#{encoded_q}"
+    @_fetchNotes(@collection)
+
+  _loadNotes: ->
+    @collection = new App.Collections.NoteList([])
+    @collection.url = '/my_notes'
+    @_fetchNotes(@collection)
+
+  _fetchNotes: (collection)->
+    collection.fetch
+      success: =>
+        console.log collection.size()
+        @trigger 'search:success', collection

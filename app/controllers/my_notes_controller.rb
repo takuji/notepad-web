@@ -14,6 +14,10 @@ class MyNotesController < ApplicationController
   def search
     if params[:q]
       @notes = Note.search params[:q], page: params[:page] || 1
+      respond_to do |format|
+        format.html
+        format.json{ render json: @notes }
+      end
     end
   end
 
