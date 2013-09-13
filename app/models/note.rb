@@ -1,4 +1,7 @@
 class Note < ActiveRecord::Base
+  include Tire::Model::Search
+  include Tire::Model::Callbacks
+
   scope :active, ->{ where(deleted: false) }
   scope :deleted, ->{ where(deleted: true) }
 

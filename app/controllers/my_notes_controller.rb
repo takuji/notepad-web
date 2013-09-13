@@ -11,6 +11,12 @@ class MyNotesController < ApplicationController
     end
   end
 
+  def search
+    if params[:q]
+      @notes = Note.search params[:q], page: params[:page] || 1
+    end
+  end
+
   def deleted
     @notes = current_user.latest_notes.deleted.select(:id, :title).page(params[:page])
     respond_to do |format|
