@@ -1,10 +1,11 @@
-h1= t('note.titles.deleted')
+.note-list-page.deleted-note-list-page
+  .note-list-pane
+    ul.note-list
+    .more
+      span.btn.more More
+  .content-pane
+    .note-info
+    .note-preview-pane
+      .note-preview
 
--if @notes.blank?
-  =t('messages.no_notes')
--else
-  table.table.notes
-    tbody
-      -@notes.each do |note|
-        tr
-          td=link_to note.title, my_note_path(note)
+=render 'templates_for_deleted'

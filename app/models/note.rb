@@ -12,7 +12,11 @@ class Note < ActiveRecord::Base
   def move_to_trash
     update_attribute :deleted, true
   end
-  
+
+  def move_to_inbox
+    update_attribute :deleted, false
+  end
+
   private
   
   def update_title

@@ -27,7 +27,7 @@ class MyNotesController < ApplicationController
   end
 
   def deleted
-    @notes = current_user.latest_notes.deleted.select(:id, :title).page(params[:page])
+    @notes = current_user.deleted_notes.select(:id, :title, :created_at).page(params[:page])
     respond_to do |format|
       format.html
       format.json do
@@ -87,6 +87,15 @@ class MyNotesController < ApplicationController
   def delete
     @note = current_user.notes.find(params[:id])
     if @note.move_to_trash
+      head :ok
+    else
+      head :unprocessable_entity
+    end
+  end
+
+  def undelete
+    @note = current_user.notes.find(params[:id])
+    if @note.move_to_inbox
       head :ok
     else
       head :unprocessable_entity

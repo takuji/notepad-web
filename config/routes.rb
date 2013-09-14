@@ -10,6 +10,7 @@ Notepad::Application.routes.draw do
       get :content
       get :html_content
       post :delete
+      post :undelete
     end
   end
 
