@@ -29,6 +29,10 @@ class User < ActiveRecord::Base
   has_one :evernote_account
 
   def latest_notes
-    notes.active.order("updated_at DESC")
+    notes.active.order('updated_at DESC')
+  end
+
+  def deleted_notes
+    notes.deleted.order('updated_at DESC')
   end
 end

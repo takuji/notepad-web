@@ -77,3 +77,10 @@ namespace :deploy do
 end
 
 after 'deploy:update_code', 'deploy:symlink_uploads'
+
+namespace :es do
+  desc 'Update elasticsearch index'
+  task :update_index do
+    run "cd #{current_path} && RAILS_ENV=#{rails_env} bundle exec rake tire:import:all"
+  end
+end

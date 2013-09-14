@@ -9,7 +9,16 @@
       li
         =link_to my_notes_path, method: :post do
           i.icon-file-text-alt
-          i.icon-plus
+          | +
+      li.dropdown
+        a.dropdown-toggle href="#" data-toggle="dropdown"
+          i.icon-inbox
+          b.caret
+        ul.dropdown-menu.pull-right
+          li
+            =link_to deleted_my_notes_path do
+              i.icon-trash
+              =" #{t('common.trash')}"
   =render 'context_navbar'
   ul.nav.navbar-nav.navbar-right
     -if user_signed_in?

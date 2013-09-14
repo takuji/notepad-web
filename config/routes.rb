@@ -4,11 +4,13 @@ Notepad::Application.routes.draw do
   resources :my_notes do
     collection do
       get :deleted
+      get :search
     end
     member do
       get :content
       get :html_content
       post :delete
+      post :undelete
     end
   end
 

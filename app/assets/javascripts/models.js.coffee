@@ -40,6 +40,15 @@ class App.Models.Note extends Backbone.Model
     q.fail =>
       console.log 'failed'
 
+  undelete: ->
+    console.log 'undeleted!'
+    q = $.post @url + '/undelete'
+    q.done =>
+      console.log 'success'
+      @trigger 'undeleted', @
+    q.fail =>
+      console.log 'failed'
+
   isBlank: ->
     !this.get("content")?
 

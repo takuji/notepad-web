@@ -18,6 +18,7 @@ gem 'slim-rails'
 gem 'kaminari'
 gem 'carrierwave'
 gem 'evernote_oauth'
+gem 'tire'
 
 gem 'sass-rails', '~> 4.0.0'
 gem 'uglifier', '>= 1.3.0'
@@ -55,6 +56,8 @@ gem 'capistrano_colors', :require => nil
 
 # To use debugger
 # gem 'debugger'
+
+gem 'quiet_assets', :group => :development
 
 group :development, :test do
   gem 'rspec-rails'

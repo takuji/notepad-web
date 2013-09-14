@@ -1,0 +1,8 @@
+=form_tag nil, method: :get, class: 'search-form' do
+  =search_field_tag :q, params[:q]
+  =button_tag t('common.search')
+
+-if @notes.present?
+  ul.note-list
+    -@notes.each do |note|
+      li=note.title

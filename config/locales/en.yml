@@ -12,3 +12,6 @@ en:
     messages:
       authenticated: "Connected with your Evernote account."
       failed_to_authenticate: "Failed to connect with your Evernote account."
+  common:
+    search: "Search"
+    trash: "Trash"
