@@ -13,7 +13,12 @@ class MyNotesController < ApplicationController
 
   def search
     if params[:q]
-      @notes = Note.search params[:q], page: params[:page] || 1
+      q = params[:q]
+      user_id = current_user.id
+      @notes = Note.search page: params[:page] || 1 do
+        query {string q}
+        filter :terms, user_id: [user_id]
+      end
       respond_to do |format|
         format.html
         format.json{ render json: @notes }
