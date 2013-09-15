@@ -1,4 +1,7 @@
 class App.Views.NoteListPage extends Backbone.View
+  KEY_CODE_K: 'K'.charCodeAt(0)
+  KEY_CODE_J: 'J'.charCodeAt(0)
+
   initialize: (options)->
     console.log options
     @collection_url = options.collection_url
@@ -8,6 +11,7 @@ class App.Views.NoteListPage extends Backbone.View
     @listenTo @search, 'search:success', @replaceNoteList
     @resize()
     @_initSubviews()
+    @_attachGlobalKeyEvents()
 
   _initSubviews: ->
     notes = new App.Collections.NoteList([])
@@ -16,6 +20,16 @@ class App.Views.NoteListPage extends Backbone.View
     preview = new App.Views.NotePreviewView(el: $('.note-preview'))
     @note_list_view.on 'noteSelected', (id)-> preview.show(id)
     @note_list_view.fetchMore()
+
+  _attachGlobalKeyEvents: ->
+    $('body').on 'keydown', (e)=>
+      switch e.keyCode
+        when @KEY_CODE_J
+          console.log 'J'
+          @note_list_view.selectNextItem()
+        when @KEY_CODE_K
+          console.log 'K'
+          @note_list_view.selectPrevItem()
 
   resize: ->
     $window = $(window)
@@ -32,6 +46,7 @@ class App.Views.NoteListPage extends Backbone.View
 class App.Views.NoteListView extends Backbone.View
   cache: {}
   selectedNoteView: null
+  views: {}
 
   events:
     'mouseenter li': 'preview'
@@ -41,17 +56,17 @@ class App.Views.NoteListView extends Backbone.View
     'appear .more':  'fetchMore'
 
   initialize: ->
-    _.bindAll @
-    @collection.on 'add', @addItem
-    $(window).on 'scroll', @fetchMoreIfReachedBottom
+    @collection.on 'add', @noteAdded, @
+    @listenTo @collection, 'remove', @noteRemoved
+    $(window).on 'scroll', => @fetchMoreIfReachedBottom()
     @$more = @$('.more')
-    @collection.on 'selected', @selectNote
+    @collection.on 'selected', @selectNote, @
     @$noteList = @$('.note-list')
     @$noteList.empty()
 
   render: ->
     @collection.each (note)=>
-      @addItem note
+      @noteAdded note
 
   fetchMore: ->
     console.log 'appear'
@@ -89,16 +104,48 @@ class App.Views.NoteListView extends Backbone.View
   unselectNote: (noteView)->
     @_clearCurrentSelect()
 
+  selectNextItem: ->
+    @_selectNextItem(1)
+
+  selectPrevItem: ->
+    @_selectNextItem(-1)
+
+  _selectNextItem: (d)->
+    if @selectedNoteView
+      current_note = @selectedNoteView.model
+      index = @collection.indexOf(current_note)
+      next_note = @collection.at(index + d)
+      if next_note
+        @selectedNoteView.unselect()
+        next_note.trigger('select')
+    else
+      if d > 0
+        next_note = @collection.at(0)
+        if next_note
+          next_note.trigger('select')
+
   _clearCurrentSelect: ->
     if @selectedNoteView
       @selectedNoteView.unselect()
 
-  addItem: (note)->
+  noteAdded: (note)->
+    console.log "Note #{note.id} added"
     view = new App.Views.NoteListItemView(model: note)
     @listenTo view, 'selected', @selectNote
     @listenTo view, 'unselected', @unselectNote
     view.render()
     @$('.note-list').append view.el
+    @views[note.id] = view
+    console.log "Note #{note.id} added!"
+    @
+
+  noteRemoved: (note)->
+    console.log "Note #{note.id} removed"
+    view = @views[note.id]
+    if view
+      @stopListening(view)
+      delete @views[note.id]
+      console.log "Note #{note.id} removed!"
 
 #
 #
@@ -117,6 +164,7 @@ class App.Views.NoteListItemView extends Backbone.View
   initialize: ->
     @model.on 'deleted', @remove, @
     @model.on 'undeleted', @remove, @
+    @model.on 'select', @select, @
     @render()
 
   render: ->
@@ -157,7 +205,7 @@ class App.Views.NoteListItemView extends Backbone.View
     location.href = "/my_notes/#{@model.get('id')}/edit"
 
   deleteNote: (e)->
-    console.log 'delete'
+    console.log "Deleting note #{@model.get('id')}"
     e.stopPropagation()
     @model.delete()
 
@@ -167,8 +215,11 @@ class App.Views.NoteListItemView extends Backbone.View
     @model.undelete()
 
   remove: ->
+    console.log "1"
     if @model.collection
+      console.log "2"
       @model.collection.remove @model
+    console.log "3"
     @$el.remove()
 
 #
