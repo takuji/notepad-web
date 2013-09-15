@@ -121,7 +121,7 @@ class App.Views.NoteListItemView extends Backbone.View
   render: ->
     id = @model.get('id')
     @$el.attr 'data-id', id
-    title = @model.get('title')
+    title = $('<span class="title">').text(@model.get('title'))
     template = _.template $('#templates .note-index-actions-template').html()
     actions = template link: "/my_notes/#{id}"
     @$el.html(title)

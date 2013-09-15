@@ -8,7 +8,7 @@ $note-background-color: #eee;
 $index-background-color: #f8f8f8;
 $index-mark-color: #484;
 $handle-dragging-background-color: #dfc;
-$handle-width: 5px;
+$handle-width: 4px;
 $handle-background-color: #ccc;
 
 @mixin handle-dragging {
@@ -47,6 +47,7 @@ body#my_notes-show,#my_notes-edit {
       width: $handle-width;
       //background-color: $handle-background-color;
       cursor: col-resize;
+      box-sizing: content-box;
 
       &.ui-draggable-dragging {
         @include handle-dragging;
@@ -57,11 +58,11 @@ body#my_notes-show,#my_notes-edit {
   .index {
     position: absolute;
     top: 0;
-    bottom: 0;
-    width: 100%;
+    bottom: 4px;
+    left: 4px;
+    right: 0;
     background-color: $index-background-color;
     overflow: scroll;
-    height: 100%;
     border: 1px #ddd solid;
     @include border-radius(10px);
     @include box-shadow(rgba(#ccc, 0.5) 0px 0px 4px 2px inset);
@@ -76,6 +77,10 @@ body#my_notes-show,#my_notes-edit {
         cursor: pointer;
         padding: 0 10px;
         white-space: nowrap;
+
+        .title {
+          padding: 0 5px;
+        }
 
         &:hover {
           background-color: #f8e0e0;
@@ -142,6 +147,7 @@ body#my_notes-show,#my_notes-edit {
     padding: 0 2px 4px 2px;
 
     textarea {
+      box-sizing: border-box;
       width:100%;
       min-height: 480px;
       padding: 10px;
@@ -151,9 +157,14 @@ body#my_notes-show,#my_notes-edit {
       border: 1px solid rgba(#ccc, 0.8);
       //outline: 0px none transparent;
       outline: none !important;
+      //background-image: url("/assets/paper1.png");
+      //background-position: -10px -10px;
+      background-color: #fffffa;
+      
       &:focus {
         //border: 0;
-        outline: 0px none transparent !important;
+        //outline: 0px none transparent !important;
+        border: 1px solid rgba(#aaf, 0.8);
       }
     }
   }
@@ -188,6 +199,7 @@ body#my_notes-show,#my_notes-edit {
     //background-color: $handle-background-color;
     cursor: col-resize;
     z-index: 2;
+    box-sizing: content-box;
 
     &.ui-draggable-dragging {
       @include handle-dragging;
