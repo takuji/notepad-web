@@ -11,11 +11,9 @@ class App.Collections.NoteList extends Backbone.Collection
         page: @page
       success: (col, res, options)=>
         @page += 1
-        models = col.models
-        _.each models, (model)=>
-          col.remove model
-          @.add model
         @_hasNext = col.models.length > 0
+        while col.models.length
+          @.push(col.shift())
       error: (col, res, options)=>
         console.log 'Failed to fetch notes'
 
