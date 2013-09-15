@@ -1,9 +1,18 @@
 <div id="templates">
-  <div class="note-index">
-    <li data-id="{{id}}">
-      <a href="{{link}}">{{title}}</a>
-    </li>
-  </div>
+  <script type="text/template" class="note-list-item">
+    <div class="title">{{title}}</div>
+    <div class="created_at">
+      <span>{{updated_at}}</span>
+      <ul class="note-index-actions">
+        <li class="edit">
+          <i class="icon-edit"></i>
+        </li>
+        <li class="delete">
+          <i class="icon-trash"></i>
+        </li>
+      </ul>
+    </div>
+  </script>
 
   <script type="text/template" class="note-index-actions-template">
     <ul class="note-index-actions">

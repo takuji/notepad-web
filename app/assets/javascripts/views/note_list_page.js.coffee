@@ -106,6 +106,7 @@ class App.Views.NoteListView extends Backbone.View
 class App.Views.NoteListItemView extends Backbone.View
   tagName: 'li'
   className: 'note-list-item'
+  template: _.template($('#templates .note-list-item').html())
 
   events:
     'click .delete': 'deleteNote'
@@ -120,15 +121,21 @@ class App.Views.NoteListItemView extends Backbone.View
 
   render: ->
     id = @model.get('id')
-    @$el.attr 'data-id', id
-    title = $('<span class="title">').text(@model.get('title'))
-    template = _.template $('#templates .note-index-actions-template').html()
-    actions = template link: "/my_notes/#{id}"
-    @$el.html(title)
-    time = new Date(Date.parse @model.get('created_at'))
-    time_string = "#{time.getFullYear()}/#{time.getMonth() + 1}/#{time.getDate()}"
-    $('<div>').addClass('created_at').text(time_string).append(actions).appendTo(@$el)
+    @$el.attr('data-id': id)
+    params =
+      title: @model.get('title')
+      updated_at: @_iso8601ToDateString(@model.get('updated_at'))
+    @$el.html @template(params)
     @
+
+  _iso8601ToDateString: (dateISO8601)->
+    @_timeToDateString @_iso8601ToTime(dateISO8601)
+
+  _iso8601ToTime: (dateISO8601)->
+    new Date(Date.parse dateISO8601)
+
+  _timeToDateString: (time)->
+    "#{time.getFullYear()}/#{time.getMonth() + 1}/#{time.getDate()}"
 
   isSelected: ->
     @$el.hasClass 'selected'

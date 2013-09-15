@@ -2,7 +2,7 @@ class MyNotesController < ApplicationController
   before_filter :authenticate_user!
 
   def index
-    @notes = current_user.latest_notes.select(:id, :title, :created_at).page(params[:page])
+    @notes = current_user.latest_notes.select(:id, :title, :created_at, :updated_at).page(params[:page])
     respond_to do |format|
       format.html
       format.json do
@@ -27,7 +27,7 @@ class MyNotesController < ApplicationController
   end
 
   def deleted
-    @notes = current_user.deleted_notes.select(:id, :title, :created_at).page(params[:page])
+    @notes = current_user.deleted_notes.select(:id, :title, :created_at, :updated_at).page(params[:page])
     respond_to do |format|
       format.html
       format.json do
