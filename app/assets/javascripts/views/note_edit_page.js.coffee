@@ -436,8 +436,8 @@ class App.Views.NoteIndexItemView extends Backbone.View
     @editor = options.editor
 
   render: ->
-    content = @model.get("title") || "?"
-    @$el.html(@mark + ' ' + content).attr("data-line": @model.get("line"), "data-depth": @model.get("depth"))
+    content = $('<span class="title">').text(@model.get("title") || "?")
+    @$el.html(@mark).append(content).attr("data-line": @model.get("line"), "data-depth": @model.get("depth"))
     @
 
   toElem: ->
