@@ -46,7 +46,7 @@ class App.Views.NoteView extends Backbone.View
 
   onHeadingSelected: (heading)->
     lineNo = heading.get('line')
-    @editor.scrollTo(lineNo)
+    @editor.goToLine(lineNo)
 
   _attachGlobalKeyEvents: (note)->
     $('body').on 'keydown', (e)=>
@@ -145,6 +145,10 @@ class App.Views.NoteEditorView extends Backbone.View
     h  = this.$textArea.height()
     y  = h * (lineNo - 1) / this.lineCount()
     @$('.editor').scrollTop(Math.floor(y))
+
+  goToLine: (lineNo)->
+    @scrollTo(lineNo)
+    @moveCaretToLine(lineNo)
 
   checkChange: ->
     if @lastKeyup
