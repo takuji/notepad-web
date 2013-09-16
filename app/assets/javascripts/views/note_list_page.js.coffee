@@ -181,7 +181,7 @@ class App.Views.NoteListView extends Backbone.View
 class App.Views.NoteListItemView extends Backbone.View
   tagName: 'li'
   className: 'note-list-item'
-  template: _.template($('#templates .note-list-item').html())
+  template: if $('#templates .note-list-item').length then _.template($('#templates .note-list-item').html()) else null
 
   events:
     'click .delete': 'deleteNote'
