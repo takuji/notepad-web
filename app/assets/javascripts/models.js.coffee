@@ -5,9 +5,10 @@ class App.Models.Note extends Backbone.Model
   initialize: (options)->
     @.on 'change:content', @updateIndex, @
     @.on 'change:content', @updateTitle, @
-    @._updateTitle(options.content)
-    @._updateIndex(options.content);
-    @.url = "/my_notes/#{options.id}"
+    if options
+      @._updateTitle(options.content)
+      @._updateIndex(options.content);
+      @.url = "/my_notes/#{options.id}"
 
   updateContent: (newContent)->
     if newContent != this.get("content")

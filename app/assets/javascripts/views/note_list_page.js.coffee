@@ -99,7 +99,7 @@ class App.Views.NoteListView extends Backbone.View
     unless @isNoteSelected()
       $note = $(e.currentTarget)
       id = $note.attr("data-id")
-      @trigger 'noteSelected', id
+      @trigger 'noteSelected', id if id
 
   isNoteSelected: ->
     @selectedNoteView? && @selectedNoteView.isSelected()
@@ -274,16 +274,31 @@ class App.Views.NotePreviewView extends Backbone.View
 
   show: (note_id)->
     @note_id = note_id
-    @render()
+    if @cache[note_id]
+      @model = @cache[note_id]
+      @render()
+    else
+      @_loadNote note_id, (note)=>
+        @model = note
+        @_cacheNote note
+        @render()
+
+  _loadNote: (note_id)->
+    @model = new App.Models.Note()
+    @model.url = "/my_notes/#{note_id}"
+    @model.fetch
+      success: (note)=>
+        @_cacheNote(note)
+        @render()
+      error: =>
+        console.log "Failed to load note #{note_id}"
+
+  _cacheNote: (note)->
+    @cache[note.id] = note
 
   render: ->
-    if @note_id
-      if @cache[@note_id]
-        @$el.html(@cache[@note_id])
-      else
-        @$el.load "/my_notes/#{@note_id}/html_content", (responseText)=>
-          @cache[@note_id] = responseText
-      @hightlightSyntax()
+    @$('.note').html @model.get('html_content')
+    @hightlightSyntax()
     @
 
   hightlightSyntax: ->
