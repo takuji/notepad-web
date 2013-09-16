@@ -118,7 +118,7 @@ class App.Views.NoteListView extends Backbone.View
     topInParent = @_topInParent(view)
     topInNodeList = @_topInNoteList(view)
     if topInParent > 0
-      dy = topInNodeList + @LIST_ITEM_HEIGHT - @$el.height()
+      dy = topInNodeList + @LIST_ITEM_HEIGHT + 10 - @$el.height()
       @$el.scrollTop(dy)
     else
       @$el.scrollTop(topInNodeList)
