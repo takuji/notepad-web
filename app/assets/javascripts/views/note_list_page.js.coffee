@@ -47,6 +47,7 @@ class App.Views.NoteListView extends Backbone.View
   cache: {}
   selectedNoteView: null
   views: {}
+  LIST_ITEM_HEIGHT: 45
 
   events:
     'mouseenter li': 'preview'
@@ -106,9 +107,32 @@ class App.Views.NoteListView extends Backbone.View
 
   selectNextItem: ->
     @_selectNextItem(1)
+    if @_isNoteViewHidden @selectedNoteView
+      @_scrollToShowNoteListItemView @selectedNoteView
+
+  _isNoteViewHidden: (view)->
+    topInParent = @_topInParent(view)
+    topInParent + @LIST_ITEM_HEIGHT > @$el.height() || topInParent < 0
+
+  _scrollToShowNoteListItemView: (view)->
+    topInParent = @_topInParent(view)
+    topInNodeList = @_topInNoteList(view)
+    if topInParent > 0
+      dy = topInNodeList + @LIST_ITEM_HEIGHT - @$el.height()
+      @$el.scrollTop(dy)
+    else
+      @$el.scrollTop(topInNodeList)
+
+  _topInParent: (view)->
+    view.$el.position().top - @$el.position().top
+
+  _topInNoteList: (view)->
+    view.$el.position().top - @$noteList.position().top
 
   selectPrevItem: ->
     @_selectNextItem(-1)
+    if @_isNoteViewHidden @selectedNoteView
+      @_scrollToShowNoteListItemView @selectedNoteView
 
   _selectNextItem: (d)->
     if @selectedNoteView
