@@ -23,13 +23,14 @@ class App.Views.NoteListPage extends Backbone.View
 
   _attachGlobalKeyEvents: ->
     $('body').on 'keydown', (e)=>
-      switch e.keyCode
-        when @KEY_CODE_J
-          console.log 'J'
-          @note_list_view.selectNextItem()
-        when @KEY_CODE_K
-          console.log 'K'
-          @note_list_view.selectPrevItem()
+      unless @inSearch()
+        switch e.keyCode
+          when @KEY_CODE_J
+            console.log 'J'
+            @note_list_view.selectNextItem()
+          when @KEY_CODE_K
+            console.log 'K'
+            @note_list_view.selectPrevItem()
 
   resize: ->
     $window = $(window)
@@ -40,6 +41,9 @@ class App.Views.NoteListPage extends Backbone.View
     @note_list_view = new App.Views.NoteListView(el: @$('.note-list-pane'), collection: notes)
     @note_list_view.render()
 
+  inSearch: ->
+    @search.inSearch()
+
 #
 #
 #
@@ -47,6 +51,7 @@ class App.Views.NoteListView extends Backbone.View
   cache: {}
   selectedNoteView: null
   views: {}
+  LIST_ITEM_HEIGHT: 45
 
   events:
     'mouseenter li': 'preview'
@@ -58,7 +63,7 @@ class App.Views.NoteListView extends Backbone.View
   initialize: ->
     @collection.on 'add', @noteAdded, @
     @listenTo @collection, 'remove', @noteRemoved
-    $(window).on 'scroll', => @fetchMoreIfReachedBottom()
+    @$el.on 'scroll', => @fetchMoreIfReachedBottom()
     @$more = @$('.more')
     @collection.on 'selected', @selectNote, @
     @$noteList = @$('.note-list')
@@ -106,9 +111,32 @@ class App.Views.NoteListView extends Backbone.View
 
   selectNextItem: ->
     @_selectNextItem(1)
+    if @_isNoteViewHidden @selectedNoteView
+      @_scrollToShowNoteListItemView @selectedNoteView
+
+  _isNoteViewHidden: (view)->
+    topInParent = @_topInParent(view)
+    topInParent + @LIST_ITEM_HEIGHT > @$el.height() || topInParent < 0
+
+  _scrollToShowNoteListItemView: (view)->
+    topInParent = @_topInParent(view)
+    topInNodeList = @_topInNoteList(view)
+    if topInParent > 0
+      dy = topInNodeList + @LIST_ITEM_HEIGHT + 10 - @$el.height()
+      @$el.scrollTop(dy)
+    else
+      @$el.scrollTop(topInNodeList)
+
+  _topInParent: (view)->
+    view.$el.position().top - @$el.position().top
+
+  _topInNoteList: (view)->
+    view.$el.position().top - @$noteList.position().top
 
   selectPrevItem: ->
     @_selectNextItem(-1)
+    if @_isNoteViewHidden @selectedNoteView
+      @_scrollToShowNoteListItemView @selectedNoteView
 
   _selectNextItem: (d)->
     if @selectedNoteView
@@ -250,9 +278,12 @@ class App.Views.NotePreviewView extends Backbone.View
 
 class App.Views.NoteSearchView extends Backbone.View
   el: $('.note-search')
+  in_search: false
 
   events:
     'click .btn': 'search'
+    'focus #q': 'startSearch'
+    'blur #q': 'stopSearch'
 
   search: (e)->
     e.preventDefault()
@@ -278,3 +309,14 @@ class App.Views.NoteSearchView extends Backbone.View
       success: =>
         console.log collection.size()
         @trigger 'search:success', collection
+
+  startSearch: ->
+    console.log 'start search'
+    @in_search = true
+
+  stopSearch: ->
+    console.log 'stop search'
+    @in_search = false
+
+  inSearch: ->
+    @in_search
