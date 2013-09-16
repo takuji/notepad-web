@@ -33,7 +33,7 @@ class App.Views.NoteListPage extends Backbone.View
             console.log 'K'
             @note_list_view.selectPrevItem()
           when @KEY_CODE_ENTER
-            @note_list_view.openSelectedNote()
+            @openSelectedNote()
           else
             console.log e.keyCode
 
@@ -49,6 +49,12 @@ class App.Views.NoteListPage extends Backbone.View
   inSearch: ->
     @search.inSearch()
 
+  openSelectedNote: ->
+    unless @inTrash()
+      @note_list_view.openSelectedNote()
+
+  inTrash: ->
+    !!@collection_url
 #
 #
 #
