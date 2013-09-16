@@ -1,6 +1,7 @@
 class App.Views.NoteListPage extends Backbone.View
   KEY_CODE_K: 'K'.charCodeAt(0)
   KEY_CODE_J: 'J'.charCodeAt(0)
+  KEY_CODE_ENTER: 13
 
   initialize: (options)->
     console.log options
@@ -31,6 +32,10 @@ class App.Views.NoteListPage extends Backbone.View
           when @KEY_CODE_K
             console.log 'K'
             @note_list_view.selectPrevItem()
+          when @KEY_CODE_ENTER
+            @note_list_view.openSelectedNote()
+          else
+            console.log e.keyCode
 
   resize: ->
     $window = $(window)
@@ -97,6 +102,10 @@ class App.Views.NoteListView extends Backbone.View
     $note = $(e.currentTarget)
     id = $note.attr("data-id")
     location.href = "/my_notes/#{id}/edit"
+
+  openSelectedNote: ->
+    if @selectedNoteView
+      @selectedNoteView.openNote()
 
   selectNote: (noteView)->
     if noteView != @selectedNoteView
