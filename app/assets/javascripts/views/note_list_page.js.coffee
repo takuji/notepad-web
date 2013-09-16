@@ -59,7 +59,7 @@ class App.Views.NoteListView extends Backbone.View
   initialize: ->
     @collection.on 'add', @noteAdded, @
     @listenTo @collection, 'remove', @noteRemoved
-    $(window).on 'scroll', => @fetchMoreIfReachedBottom()
+    @$el.on 'scroll', => @fetchMoreIfReachedBottom()
     @$more = @$('.more')
     @collection.on 'selected', @selectNote, @
     @$noteList = @$('.note-list')
