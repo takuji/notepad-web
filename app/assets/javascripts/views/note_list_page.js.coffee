@@ -215,18 +215,9 @@ class App.Views.NoteListItemView extends Backbone.View
     @$el.attr('data-id': id)
     params =
       title: @model.get('title')
-      updated_at: @_iso8601ToDateString(@model.get('updated_at'))
+      updated_at: App.Utils.iso8601ToDateString(@model.get('updated_at'))
     @$el.html @template(params)
     @
-
-  _iso8601ToDateString: (dateISO8601)->
-    @_timeToDateString @_iso8601ToTime(dateISO8601)
-
-  _iso8601ToTime: (dateISO8601)->
-    new Date(Date.parse dateISO8601)
-
-  _timeToDateString: (time)->
-    "#{time.getFullYear()}/#{time.getMonth() + 1}/#{time.getDate()}"
 
   isSelected: ->
     @$el.hasClass 'selected'
@@ -271,6 +262,10 @@ class App.Views.NoteListItemView extends Backbone.View
 class App.Views.NotePreviewView extends Backbone.View
   cache: {}
   note_id: null
+  note_info_template: null
+
+  initialize: ->
+    @note_info_template = _.template($('#templates .note-info').html())
 
   show: (note_id)->
     @note_id = note_id
@@ -298,8 +293,15 @@ class App.Views.NotePreviewView extends Backbone.View
 
   render: ->
     @$('.note').html @model.get('html_content')
+    @_renderNoteInfo(@model)
     @hightlightSyntax()
     @
+
+  _renderNoteInfo: (note)->
+    note_info = @note_info_template
+      created_at: App.Utils.iso8601ToDateString(note.get('created_at'))
+      updated_at: App.Utils.iso8601ToDateString(note.get('updated_at'))
+    $('.content-pane > .note-info').html note_info
 
   hightlightSyntax: ->
     @$('pre code').each (i, elm)->

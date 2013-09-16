@@ -24,6 +24,16 @@
       z-index: 1;
       background-color: #fff;
       border-bottom: 1px solid #ddd;
+
+      .key {
+        padding: 0 .2em 0 .6em;
+        font-size: 80%;
+        color: #000;
+      }
+
+      .value {
+        color: #555;
+      }
     }
   }
 }

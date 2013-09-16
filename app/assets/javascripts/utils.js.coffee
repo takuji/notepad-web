@@ -69,3 +69,12 @@ App.Utils.binaryFromImage = (image)->
   ctx.drawImage(image, 0, 0)
   dataURL = canvas.toDataURL("image/png");
   dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
+
+App.Utils.iso8601ToDateString = (dateISO8601)->
+  App.Utils.timeToDateString App.Utils.iso8601ToTime(dateISO8601)
+
+App.Utils.iso8601ToTime = (dateISO8601)->
+  new Date(Date.parse dateISO8601)
+
+App.Utils.timeToDateString = (time)->
+  "#{time.getFullYear()}/#{time.getMonth() + 1}/#{time.getDate()}"
