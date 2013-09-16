@@ -23,13 +23,14 @@ class App.Views.NoteListPage extends Backbone.View
 
   _attachGlobalKeyEvents: ->
     $('body').on 'keydown', (e)=>
-      switch e.keyCode
-        when @KEY_CODE_J
-          console.log 'J'
-          @note_list_view.selectNextItem()
-        when @KEY_CODE_K
-          console.log 'K'
-          @note_list_view.selectPrevItem()
+      unless @inSearch()
+        switch e.keyCode
+          when @KEY_CODE_J
+            console.log 'J'
+            @note_list_view.selectNextItem()
+          when @KEY_CODE_K
+            console.log 'K'
+            @note_list_view.selectPrevItem()
 
   resize: ->
     $window = $(window)
@@ -39,6 +40,9 @@ class App.Views.NoteListPage extends Backbone.View
     delete @note_list_view
     @note_list_view = new App.Views.NoteListView(el: @$('.note-list-pane'), collection: notes)
     @note_list_view.render()
+
+  inSearch: ->
+    @search.inSearch()
 
 #
 #
@@ -274,9 +278,12 @@ class App.Views.NotePreviewView extends Backbone.View
 
 class App.Views.NoteSearchView extends Backbone.View
   el: $('.note-search')
+  in_search: false
 
   events:
     'click .btn': 'search'
+    'focus #q': 'startSearch'
+    'blur #q': 'stopSearch'
 
   search: (e)->
     e.preventDefault()
@@ -302,3 +309,14 @@ class App.Views.NoteSearchView extends Backbone.View
       success: =>
         console.log collection.size()
         @trigger 'search:success', collection
+
+  startSearch: ->
+    console.log 'start search'
+    @in_search = true
+
+  stopSearch: ->
+    console.log 'stop search'
+    @in_search = false
+
+  inSearch: ->
+    @in_search
