@@ -2,6 +2,7 @@ class App.Views.NoteListPage extends Backbone.View
   KEY_CODE_K: 'K'.charCodeAt(0)
   KEY_CODE_J: 'J'.charCodeAt(0)
   KEY_CODE_ENTER: 13
+  KEY_CODE_DELETE: 46
 
   initialize: (options)->
     console.log options
@@ -34,6 +35,8 @@ class App.Views.NoteListPage extends Backbone.View
             @note_list_view.selectPrevItem()
           when @KEY_CODE_ENTER
             @openSelectedNote()
+          when @KEY_CODE_DELETE
+            @deleteSelectedNote()
           else
             console.log e.keyCode
 
@@ -52,6 +55,10 @@ class App.Views.NoteListPage extends Backbone.View
   openSelectedNote: ->
     unless @inTrash()
       @note_list_view.openSelectedNote()
+
+  deleteSelectedNote: ->
+    unless @inTrash()
+      @note_list_view.deleteSelectedNote()
 
   inTrash: ->
     !!@collection_url
@@ -112,6 +119,27 @@ class App.Views.NoteListView extends Backbone.View
   openSelectedNote: ->
     if @selectedNoteView
       @selectedNoteView.openNote()
+
+  deleteSelectedNote: ->
+    if @selectedNoteView
+      view = @_nextNoteView(@selectedNoteView) || @_prevNoteView(@selectedNoteView)
+      @selectedNoteView.deleteNote()
+      view.select()
+
+  _nextNoteView: (noteView)->
+    @_nthNextNoteView(noteView, 1)
+
+  _prevNoteView: (noteView)->
+    @_nthNextNoteView(noteView, -1)
+
+  _nthNextNoteView: (noteView, n)->
+    note = noteView.model
+    index = @collection.indexOf(note)
+    next_note = @collection.at(index + n)
+    if next_note
+      @views[next_note.id]
+    else
+      null
 
   selectNote: (noteView)->
     if noteView != @selectedNoteView
@@ -240,7 +268,7 @@ class App.Views.NoteListItemView extends Backbone.View
 
   deleteNote: (e)->
     console.log "Deleting note #{@model.get('id')}"
-    e.stopPropagation()
+    e.stopPropagation() if e
     @model.delete()
 
   undeleteNote: (e)->
