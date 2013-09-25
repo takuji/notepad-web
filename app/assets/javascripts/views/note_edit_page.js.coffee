@@ -143,7 +143,9 @@ class App.Views.NoteEditorView extends Backbone.View
   scrollTo: (lineNo)->
     y0 = this.$textArea.offset().top
     h  = this.$textArea.height()
-    y  = h * (lineNo - 1) / this.lineCount()
+    lineCount = this.lineCount()
+    y  = h * (lineNo - 1) / lineCount
+    console.log "lineNo=#{lineNo}, y0=#{y0}, h=#{h}, lines=#{lineCount}, y=#{y}"
     @$('.editor').scrollTop(Math.floor(y))
 
   goToLine: (lineNo)->
