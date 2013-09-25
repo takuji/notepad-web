@@ -149,8 +149,8 @@ class App.Views.NoteEditorView extends Backbone.View
     @$('.editor').scrollTop(Math.floor(y))
 
   goToLine: (lineNo)->
-    @scrollTo(lineNo)
     @moveCaretToLine(lineNo)
+    @scrollTo(lineNo)
 
   checkChange: ->
     if @lastKeyup
