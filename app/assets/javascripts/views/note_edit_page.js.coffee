@@ -179,7 +179,10 @@ class App.Views.NoteEditorView extends Backbone.View
       when 9 # tab
         e.preventDefault()
         if @caretPos
-          @forwardHeadingLevel(@caretPos.l_line)
+          if App.Views.isShiftPressed(e)
+            @backwardHeadingLevel(@caretPos.l_line)
+          else
+            @forwardHeadingLevel(@caretPos.l_line)
 
   _isLineHeading: ->
     line = @getLine(@caretPos.l_line)
@@ -202,18 +205,28 @@ class App.Views.NoteEditorView extends Backbone.View
     @update(e)
 
   forwardHeadingLevel: (l_line)->
+    @_nextHeadingLevel l_line,
+      nextLevel: (level)=> (level + 1) % 7
+      nextCaretPos: (nextLevel, level) => if nextLevel > level then @caretPos.pos + 1 else @caretPos.pos - 6
+
+  backwardHeadingLevel: (l_line)->
+    @_nextHeadingLevel l_line,
+      nextLevel: (level)=> (level + 6) % 7
+      nextCaretPos: (nextLevel, level)=> if nextLevel > level then @caretPos.pos + 6 else @caretPos.pos - 1
+
+  _nextHeadingLevel: (l_line, funcs)->
     console.log "l_line = #{l_line}"
     line = @getLine(l_line)
     console.log line
     level = @headingLevel(line)
     console.log "heading level = #{level}"
-    nextLevel = (level + 1) % 7
+    nextLevel = funcs.nextLevel(level)
     h = @makeHeading(nextLevel)
     heading = @extractHeading(line)
     newLine = h + heading
     text = @$textArea.val()
     @$textArea.val @replaceLine(text, l_line, newLine)
-    newCaretPos = if nextLevel > level then @caretPos.pos + 1 else @caretPos.pos - 6
+    newCaretPos = funcs.nextCaretPos(nextLevel, level)
     @$textArea.setCaretPosition(newCaretPos)
 
   moveCaretToLine: (line_no)->
