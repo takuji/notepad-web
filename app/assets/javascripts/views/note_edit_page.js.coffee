@@ -5,7 +5,7 @@ Backbone.View.prototype.isVisible = ->
 #
 #
 class App.Views.NoteView extends Backbone.View
-  marginTop: 44
+  marginTop: 65
 
   initialize: ->
     _.bindAll(@)

@@ -4,6 +4,8 @@ class App.Views.NoteListPage extends Backbone.View
   KEY_CODE_ENTER: 13
   KEY_CODE_DELETE: 46
 
+  marginTop: 65
+
   initialize: (options)->
     console.log options
     @collection_url = options.collection_url
@@ -42,7 +44,7 @@ class App.Views.NoteListPage extends Backbone.View
 
   resize: ->
     $window = $(window)
-    @$el.height($window.height() - 44)
+    @$el.height($window.height() - @marginTop)
 
   replaceNoteList: (notes)->
     delete @note_list_view
@@ -208,6 +210,8 @@ class App.Views.NoteListView extends Backbone.View
     @$('.note-list').append view.el
     @views[note.id] = view
     console.log "Note #{note.id} added!"
+    unless @selectedNoteView
+      view.select()
     @
 
   noteRemoved: (note)->
@@ -251,9 +255,7 @@ class App.Views.NoteListItemView extends Backbone.View
     @$el.hasClass 'selected'
 
   toggleSelection: ->
-    if @isSelected()
-      @unselect()
-    else
+    unless @isSelected()
       @select()
 
   select: ->

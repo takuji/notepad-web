@@ -43,13 +43,10 @@ class MyNotesController < ApplicationController
 
   def show
     @note = current_user.notes.find(params[:id])
-    respond_to do |format|
-      format.html do
-        render layout:"note"
-      end
-      format.json do
-        render json:@note
-      end
+    if @note
+      redirect_to action: :edit
+    else
+      redirect_to action: :index
     end
   end
 
