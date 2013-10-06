@@ -10,3 +10,7 @@ App.Inits =
 
   initDeletedNoteList: ->
     new App.Views.NoteListPage(el: $('.note-list-page'), collection_url: '/my_notes/deleted')
+
+  initDashboard: ->
+    console.log 'dashboard'
+    new App.Views.Dashboard(el: $('.dashboard'))
