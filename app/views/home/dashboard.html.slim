@@ -8,6 +8,8 @@
       .recent-notes
         - @notes.each do |note|
           =render 'notes/note_for_dashboard', note: note
+      .pagination-centered
+        =paginate @notes
 
     .col-md-3
       h1 Stats
