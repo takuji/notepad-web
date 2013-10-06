@@ -1,0 +1,16 @@
+@import "compass.css.scss";
+
+.dashboard {
+  h1 {
+    font-size: 20px;
+  }
+}
+
+.note-stat {
+  .total-note-count {
+    padding: 10px;
+    font-size: 32px;
+    background-color: #eee;
+    @include border-radius(6px);
+  }
+}

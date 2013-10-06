@@ -1,2 +1,12 @@
 -if notice
   .alert.alert-default= notice
+
+.dashboard
+  h1 Stats
+
+  table.table.note-stat
+    tr
+      td
+        span.total-note-count
+          =current_user.notes.count
+        | notes

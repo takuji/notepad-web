@@ -13,8 +13,8 @@ html lang="en"
     /link rel="stylesheet" href="/stylesheets/bootstrap3/css/bootstrap.min.css" type="text/css"
   body id="#{params[:controller]}-#{params[:action]}"
     =render 'navigation_bar'
-    .container
-      .content
+    .container-fluid
+      .content.row-fluid
         /= bootstrap_flash
         = yield
       footer
