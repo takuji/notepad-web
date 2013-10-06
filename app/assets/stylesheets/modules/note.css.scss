@@ -20,6 +20,10 @@
     font-weight: bold;
   }
 
+  .updated_at {
+    color: #666;
+  }
+
   .content {
     max-height: 400px;
     padding: 4px 8px;
@@ -34,5 +38,10 @@
     img {
       max-width: 50%;
     }
+  }
+
+  .footer {
+    border-top: 1px solid #eee;
+    height: 30px;
   }
 }

@@ -1,5 +1,6 @@
 .note.note-for-dashboard
   .header
-    span.title = note.title
+    span.updated_at = note_datetime note.updated_at
   .content
     = note.html_content.html_safe
+  .footer
