@@ -2,11 +2,26 @@
   .alert.alert-default= notice
 
 .dashboard
-  h1 Stats
 
-  table.table.note-stat
-    tr
-      td
-        span.total-note-count
-          =current_user.notes.count
-        | notes
+  .row
+    .col-md-9
+      .recent-notes
+        - @notes.each do |note|
+          =render 'notes/note_for_dashboard', note: note
+
+    .col-md-3
+      h1 Stats
+
+      table.note-stat
+        tr
+          td
+            span.total-note-count
+              =current_user.notes.count
+          td
+            | notes
+        tr
+          td
+            span.total-note-count
+              =current_user.groups.count
+          td
+            | groups

@@ -1,16 +1,33 @@
 @import "compass.css.scss";
 
 .dashboard {
+
   h1 {
     font-size: 20px;
+  }
+
+  .recent-notes {
+    &>* {
+      margin-bottom: 20px;
+    }
   }
 }
 
 .note-stat {
+  border-top: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
+
   .total-note-count {
-    padding: 10px;
-    font-size: 32px;
-    background-color: #eee;
-    @include border-radius(6px);
+    font-size: 20px;
+    font-weight: bold;
+  }
+
+  td {
+    padding: 0px 4px;
+    vertical-align: bottom;
+    
+    &:first-child {
+      text-align: right;
+    }
   }
 }
