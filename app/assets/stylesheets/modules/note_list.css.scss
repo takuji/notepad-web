@@ -79,18 +79,18 @@
   >li {
     // box
     padding: 4px 6px 6px;
-    border-top: 1px dotted #888;
+    border-bottom: 1px dotted #ddd;
     cursor: pointer;
 
     // background
     //background-color: #f8f8f8;
 
     &:last-child {
-      border-bottom: 1px dotted #888;
+      //border-bottom: 1px dotted #888;
     }
 
     &:hover {
-      //background-color: #efd;
+      background-color: #efd;
 
       .note-index-actions {
         display: block;

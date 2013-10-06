@@ -1,0 +1,7 @@
+ul#navigation
+  li = link_to 'Home', root_path
+  li = link_to 'Notes', my_notes_path
+  -if @note
+    li = link_to @note.title, my_notes_path(@note)
+    -if params[:action] == 'edit'
+      li = link_to 'edit', edit_my_note_path(@note)
