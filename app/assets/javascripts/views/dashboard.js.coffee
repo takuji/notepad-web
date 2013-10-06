@@ -59,8 +59,8 @@ class App.Views.Dashboard extends Backbone.View
         @_selectNote($notes[0])
   
   openSelectedNote: ->
-    unless @inTrash()
-      @note_list_view.openSelectedNote()
+    id = $(@current_note).attr('data-id')
+    location.href = "/my_notes/#{id}"
 
   deleteSelectedNote: ->
     unless @inTrash()
