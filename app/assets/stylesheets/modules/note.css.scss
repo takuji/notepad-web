@@ -22,6 +22,7 @@
 
   .content {
     max-height: 400px;
+    padding: 4px 8px;
     overflow-y: hidden;
 
     @include note-common;
