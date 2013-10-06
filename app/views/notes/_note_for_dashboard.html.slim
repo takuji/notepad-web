@@ -2,5 +2,5 @@
   .header
     span.updated_at = note_datetime note.updated_at
   .content
-    = note.html_content.html_safe
+    = note.html_content.html_safe if note.html_content.present?
   .footer
