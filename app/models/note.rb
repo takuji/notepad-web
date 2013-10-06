@@ -6,6 +6,8 @@ class Note < ActiveRecord::Base
   scope :deleted, ->{ where(deleted: true) }
 
   belongs_to :user
+  has_many :group_note
+  has_many :groups, through: :group_note, uniq: true
 
   before_save :update_title
 

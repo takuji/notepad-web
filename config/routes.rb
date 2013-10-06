@@ -14,6 +14,8 @@ Notepad::Application.routes.draw do
     end
   end
 
+  resources :groups
+
   resources :images
 
   resource :evernote, controller: :evernote do

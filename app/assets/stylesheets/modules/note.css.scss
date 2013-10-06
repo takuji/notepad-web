@@ -1,0 +1,64 @@
+@import "compass";
+@import "common";
+@import "note_common";
+
+.note-for-dashboard {
+  border: 1px solid #ddd;
+
+  @include border-radius(4px);
+
+  &>div {
+    padding: 2px 4px;
+  }
+  
+  .header {
+    background-color: $border-color2;
+  }
+
+  .title {
+    font-size: 20px;
+    font-weight: bold;
+  }
+
+  .updated_at {
+    color: #666;
+  }
+
+  .edit {
+    display: none;
+  }
+
+  .content {
+    max-height: 400px;
+    padding: 4px 8px;
+    overflow-y: hidden;
+
+    @include note-common;
+
+    h1:first-child {
+      margin-top: 4px;
+    }
+    
+    img {
+      max-width: 50%;
+    }
+  }
+
+  .footer {
+    border-top: 1px solid #eee;
+    height: 30px;
+
+    .edit {
+      font-size: 20px;
+      a {
+        color: $text-color2;
+      }
+    }
+  }
+
+  &:hover {
+    .edit {
+      display: inline;
+    }
+  }
+}

@@ -1,0 +1,9 @@
+.note.note-for-dashboard data-id="#{note.id}"
+  .header
+    span.updated_at = note_datetime note.updated_at
+  .content
+    = note.html_content.html_safe if note.html_content.present?
+  .footer
+    span.edit.pull-right
+      =link_to edit_my_note_path(note) do
+        i.icon-edit
