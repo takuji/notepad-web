@@ -24,6 +24,10 @@
     color: #666;
   }
 
+  .edit {
+    display: none;
+  }
+
   .content {
     max-height: 400px;
     padding: 4px 8px;
@@ -43,5 +47,18 @@
   .footer {
     border-top: 1px solid #eee;
     height: 30px;
+
+    .edit {
+      font-size: 20px;
+      a {
+        color: $text-color2;
+      }
+    }
+  }
+
+  &:hover {
+    .edit {
+      display: inline;
+    }
   }
 }
