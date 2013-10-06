@@ -1,0 +1,9 @@
+.groups {
+  h1 {
+    &:first-child {
+      border-bottom: 1px solid #ebe8d5;
+      font-size: 20px;
+      color: #666600;
+    }
+  }
+}

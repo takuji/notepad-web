@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131003141013) do
+ActiveRecord::Schema.define(version: 20131003150916) do
 
   create_table "evernote_accounts", force: true do |t|
     t.integer  "user_id"
@@ -22,6 +22,25 @@ ActiveRecord::Schema.define(version: 20131003141013) do
   end
 
   add_index "evernote_accounts", ["user_id"], name: "index_evernote_accounts_on_user_id", using: :btree
+
+  create_table "group_notes", force: true do |t|
+    t.integer  "group_id"
+    t.integer  "note_id",    limit: 8
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "group_notes", ["group_id"], name: "index_group_notes_on_group_id", using: :btree
+  add_index "group_notes", ["note_id"], name: "index_group_notes_on_note_id", using: :btree
+
+  create_table "groups", force: true do |t|
+    t.integer  "user_id"
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "groups", ["user_id"], name: "index_groups_on_user_id", using: :btree
 
   create_table "images", force: true do |t|
     t.string   "file"
