@@ -4,6 +4,8 @@ class App.Views.Dashboard extends Backbone.View
   KEY_CODE_ENTER: 13
   KEY_CODE_DELETE: 46
 
+  marginTop: 50
+
   current_note: null
 
   initialize: (options)->
@@ -47,6 +49,7 @@ class App.Views.Dashboard extends Backbone.View
     $note = $(note)
     y = $note.offset().top
     console.log y
+    $(window).scrollTop(y - @marginTop)
 
   selectPrevNote: ->
     console.log 'Prev'
