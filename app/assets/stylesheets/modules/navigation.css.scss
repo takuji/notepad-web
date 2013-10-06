@@ -1,9 +1,10 @@
 @import "compass";
+@import "common";
 
 ul#navigation {
   padding: 2px 4px;
   margin: 0;
-  border-bottom: 1px solid #ddd;
+  border-bottom: 1px solid $border-color3;
 
   li {
     display: inline;

@@ -208,6 +208,8 @@ class App.Views.NoteListView extends Backbone.View
     @$('.note-list').append view.el
     @views[note.id] = view
     console.log "Note #{note.id} added!"
+    unless @selectedNoteView
+      view.select()
     @
 
   noteRemoved: (note)->
