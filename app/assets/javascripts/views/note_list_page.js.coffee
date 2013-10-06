@@ -253,9 +253,7 @@ class App.Views.NoteListItemView extends Backbone.View
     @$el.hasClass 'selected'
 
   toggleSelection: ->
-    if @isSelected()
-      @unselect()
-    else
+    unless @isSelected()
       @select()
 
   select: ->
