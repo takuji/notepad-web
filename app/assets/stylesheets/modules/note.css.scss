@@ -1,5 +1,6 @@
 @import "compass";
 @import "common";
+@import "note_common";
 
 .note-for-dashboard {
   border: 1px solid #ddd;
@@ -22,6 +23,8 @@
   .content {
     max-height: 400px;
     overflow-y: hidden;
+
+    @include note-common;
 
     h1:first-child {
       margin-top: 4px;
