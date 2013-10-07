@@ -78,7 +78,7 @@ class App.Views.NoteListView extends Backbone.View
     #'click li':      'openNote'
     'click .more': 'fetchMore'
     'dblclick li': 'openNote'
-    'appear .more':  'fetchMore'
+    #'appear .more':  'fetchMore'
 
   initialize: ->
     @collection.on 'add', @noteAdded, @
