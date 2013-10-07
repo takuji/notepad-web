@@ -1,5 +1,7 @@
 .note.note-for-dashboard data-id="#{note.id}"
   .header
+    =image_tag note.user.image if note.user.image.present?
+    span.name = note.user.name
     span.updated_at = note_datetime note.updated_at
   .content
     = note.html_content.html_safe if note.html_content.present?

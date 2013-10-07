@@ -13,6 +13,19 @@
   
   .header {
     background-color: $border-color2;
+    font-size: 12px;
+
+    img {
+      position: relative;
+      top: -1px;
+      margin-right: 6px;
+      max-width: 16px;
+      max-height: 16px;
+    }
+
+    .name {
+      margin-right: 10px;
+    }
   }
 
   .title {
