@@ -14,6 +14,7 @@
   .header {
     background-color: $border-color2;
     font-size: 12px;
+    color: #666;
 
     img {
       position: relative;
@@ -26,15 +27,15 @@
     .name {
       margin-right: 10px;
     }
+
+    .updated_at {
+
+    }
   }
 
   .title {
     font-size: 20px;
     font-weight: bold;
-  }
-
-  .updated_at {
-    color: #666;
   }
 
   .edit {
