@@ -9,3 +9,5 @@ $ ->
   else if $('.note-list-page').length
     App.Inits.initNoteList()
 
+  if $('.dashboard').length
+    App.Inits.initDashboard()

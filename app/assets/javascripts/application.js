@@ -32,7 +32,6 @@
 //= require models
 //= require collections
 //= require views
-//= require views/note_list_page
-//= require views/note_edit_page
+//= require_directory ./views
 //= require inits
 //= require app
