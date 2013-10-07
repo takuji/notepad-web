@@ -21,8 +21,8 @@ class App.Views.NoteListPage extends Backbone.View
     notes = new App.Collections.NoteList([])
     notes.url = @collection_url || '/my_notes'
     @note_list_view = new App.Views.NoteListView(el: @$('.note-list-pane'), collection: notes)
-    preview = new App.Views.NotePreviewView(el: $('.note-preview'))
-    @note_list_view.on 'noteSelected', (id)-> preview.show(id)
+    @preview = new App.Views.NotePreviewView(el: $('.note-preview'))
+    @note_list_view.on 'noteSelected', (id)=> @preview.show(id)
     @note_list_view.fetchMore()
 
   _attachGlobalKeyEvents: ->
@@ -49,6 +49,7 @@ class App.Views.NoteListPage extends Backbone.View
   replaceNoteList: (notes)->
     delete @note_list_view
     @note_list_view = new App.Views.NoteListView(el: @$('.note-list-pane'), collection: notes)
+    @note_list_view.on 'noteSelected', (id)=> @preview.show(id)
     @note_list_view.render()
 
   inSearch: ->
