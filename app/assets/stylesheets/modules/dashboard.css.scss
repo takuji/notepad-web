@@ -13,6 +13,38 @@
       margin-bottom: 20px;
     }
   }
+
+  .dashboard-actions {
+    padding: 10px;
+    margin: 0;
+    margin-bottom: 20px;
+    background-color: #664;
+    @include border-radius(10px);
+
+    li {
+      display: inline;
+      width: 100px;
+      margin-right: 10px;
+
+      a {
+        display: inline-block;
+        font-size: 32px;
+        color: #fff;
+        padding: 6px 20px;
+        @include border-radius(6px);
+
+        &:hover {
+          text-decoration: none;
+          background-color: #886;
+        }
+
+        div {
+          display: block;
+          font-size: 12px;
+        }
+      }
+    }
+  }
 }
 
 .note-stat {
