@@ -5,20 +5,21 @@
 
   .row
     .col-md-9
-      ul.dashboard-actions
-        li
-          a href="#{my_notes_path}"
-            i.icon-list
-            .title List
-        li
-          =link_to my_notes_path, method: :post do
-            i.icon-file-text-alt
-            | +
-            .title New
-        li
-          =link_to deleted_my_notes_path do
-            i.icon-trash
-            .title Archive
+      - if first_page?
+        ul.dashboard-actions
+          li
+            a href="#{my_notes_path}"
+              i.icon-list
+              .title List
+          li
+            =link_to my_notes_path, method: :post do
+              i.icon-file-text-alt
+              | +
+              .title New
+          li
+            =link_to deleted_my_notes_path do
+              i.icon-trash
+              .title Archive
 
       .recent-notes
         - @notes.each do |note|

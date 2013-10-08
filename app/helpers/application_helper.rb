@@ -7,4 +7,8 @@ module ApplicationHelper
   def title(s)
     content_for :title, s
   end
+
+  def first_page?
+    params[:page].blank? || params[:page].to_i <= 1
+  end
 end
