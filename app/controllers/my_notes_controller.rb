@@ -43,10 +43,13 @@ class MyNotesController < ApplicationController
 
   def show
     @note = current_user.notes.find(params[:id])
-    if @note
-      redirect_to action: :edit
-    else
-      redirect_to action: :index
+    respond_to do |format|
+      format.html do
+        redirect_to :edit
+      end
+      format.json do
+        render json: @note
+      end
     end
   end
 
@@ -66,18 +69,19 @@ class MyNotesController < ApplicationController
       format.html do
         render layout: 'note'
       end
-      format.json do
-        render json:@note
-      end
     end
   end
 
   def update
     @note = current_user.notes.find(params[:id])
-    if @note.update_attributes(content: params[:content], html_content: params[:html_content])
-      render json:@note
-    else
-      render json:@note, :status => :unprocessable_entity
+    respond_to do |format|
+      format.json do
+        if @note.update_attributes(content: params[:content], html_content: params[:html_content])
+          render json:@note
+        else
+          render json:@note, :status => :unprocessable_entity
+        end
+      end
     end
   end
 
