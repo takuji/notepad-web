@@ -8,17 +8,16 @@ class User < ActiveRecord::Base
   class << self
     def find_for_twitter_oauth(auth, signed_in_resource=nil)
       user = User.where(:provider => auth.provider, :uid => auth.uid).first
-      unless user
-        user = User.create(name:auth.extra.raw_info.name,
-                           provider:auth.provider,
-                           uid:auth.uid,
-                           email:auth.info.email || "",
-                           password:Devise.friendly_token[0,20],
-                           image: auth.info.image
-        )
-      end
-      if user.image.blank?
-        user.update_column :image, auth.info.image
+      if user
+        user.image = auth.info.image
+        user.save
+      else
+        user = User.create(name: auth.extra.raw_info.name,
+                           provider: auth.provider,
+                           uid: auth.uid,
+                           email: auth.info.email || '',
+                           password: Devise.friendly_token[0,20],
+                           image: auth.info.image)
       end
       user
     end
