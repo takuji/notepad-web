@@ -1,6 +1,7 @@
 class App.Views.NoteListPage extends Backbone.View
   KEY_CODE_K: 'K'.charCodeAt(0)
   KEY_CODE_J: 'J'.charCodeAt(0)
+  KEY_CODE_N: 'N'.charCodeAt(0)
   KEY_CODE_ENTER: 13
   KEY_CODE_DELETE: 46
 
@@ -35,6 +36,8 @@ class App.Views.NoteListPage extends Backbone.View
           when @KEY_CODE_K
             console.log 'K'
             @note_list_view.selectPrevItem()
+          when @KEY_CODE_N
+            @createNewNote()
           when @KEY_CODE_ENTER
             @openSelectedNote()
           when @KEY_CODE_DELETE
@@ -62,6 +65,9 @@ class App.Views.NoteListPage extends Backbone.View
   deleteSelectedNote: ->
     unless @inTrash()
       @note_list_view.deleteSelectedNote()
+
+  createNewNote: ->
+    location.href = '/my_notes/new'
 
   inTrash: ->
     !!@collection_url

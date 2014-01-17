@@ -36,6 +36,10 @@ class MyNotesController < ApplicationController
     end
   end
 
+  def new
+    create
+  end
+
   def create
     @note = Note.create!(user: current_user)
     redirect_to action: :edit, id:@note
